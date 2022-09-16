@@ -1,46 +1,63 @@
-import React, { useEffect, useState } from 'react';
-import './App.css';
-import { linearAPI } from './network/api';
+import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { MainMenu } from './menu/MainMenu';
+import { FrontPage } from './pages/FrontPage';
+import { LoginPage } from './pages/LoginPage';
 
-function App() {
-  const [data, setData] = useState() 
-  const [dirty, setDirty] = useState(false) 
+export interface IApplicationProps {}
 
-  useEffect(()=>{
-    if (dirty === true) return
+const Application: React.FunctionComponent<IApplicationProps> = (props) => {
+    return (
+        <div>
+            <BrowserRouter>
+                <MainMenu />
+                <Routes>
+                    <Route path="/dashboard" element={<FrontPage />} />
+                    <Route path="/" element={<LoginPage />} />
+                </Routes>
+            </BrowserRouter>
+        </div>
+    );
+};
 
-    setDirty(true)
+export default Application;
 
-    linearAPI.get("/session/login").then(
-      (response) => {
-        if (response.status !== 200) return
+// import React, { useEffect, useState } from 'react';
+// import './App.css';
+// import { linearAPI } from './network/api';
 
-        console.log("Logged in")
-      }
-    )
+// function App() {
+//     const [data, setData] = useState();
+//     const [dirty, setDirty] = useState(false);
 
-    linearAPI.get("/weatherforecast").then(
-      (response: any) =>{
-        if (response.status !== 200) return
-  
-        setData(response.data[0].date.toString())
-      }
-    )
+//     useEffect(() => {
+//         if (dirty === true) return;
 
-  }, []
+//         setDirty(true);
 
-  )
-  
-  
+//         linearAPI.get('/session/login').then((response) => {
+//             if (response.status !== 200) return;
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Testing!</h1>
-      </header>
-      <section><p>{data}</p></section>
-    </div>
-  );
-}
+//             console.log('Logged in');
+//         });
 
-export default App;
+//         linearAPI.get('/weatherforecast').then((response: any) => {
+//             if (response.status !== 200) return;
+
+//             setData(response.data[0].date.toString());
+//         });
+//     }, []);
+
+//     return (
+//         <div className="App">
+//             <header className="App-header">
+//                 <h1>Testing!</h1>
+//             </header>
+//             <section>
+//                 <p>{data}</p>
+//             </section>
+//         </div>
+//     );
+// }
+
+// export default App;
