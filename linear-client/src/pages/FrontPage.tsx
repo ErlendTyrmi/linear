@@ -1,25 +1,20 @@
+import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
-import { linearAPI } from '../network/api';
+import store from '../stores/store';
 
-export const FrontPage = () => {
-    const [data, setData] = useState('');
-
+const FrontPage = () => {
+    const [dirty, setDirty] = useState(false);
     useEffect(() => {
-        linearAPI.get('/weatherforecast').then((response: any) => {
-            console.log(response.status);
-            console.log(response.data);
-            // if ((response.status as number) !== 200) {
-            //     setData('No cookies 4 U');
-            // } else {
-            //     setData(response.data[0].date.toString());
-            // }
-        });
+        if (dirty === false || store.test.data === '') store.test.getTest();
+        setDirty(true);
     }, []);
 
     return (
         <div>
             <h1>This is the content</h1>
-            <p>{data}</p>
+            <p>{store.test.data}</p>
         </div>
     );
 };
+
+export default observer(FrontPage);

@@ -1,13 +1,16 @@
 import { Button, Menu, MenuItem } from '@mui/material';
+import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { linearAPI } from '../network/api';
+import store from '../stores/store';
 
-export const SessionMenu = () => {
+const SessionMenu = () => {
     const navigate = useNavigate();
     const [anchor, setAnchor] = useState<null | HTMLElement>(null);
     const open = Boolean(anchor);
+
+    // Placement of the menu
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchor(event.currentTarget);
     };
@@ -16,25 +19,21 @@ export const SessionMenu = () => {
         setAnchor(null);
     };
 
-    const handleLogin = () => {
-        navigate('/dashboard');
-        handleClose();
-    };
-
     const handleLogout = () => {
-        navigate('/');
         handleClose();
-
-        linearAPI.get('/session/logout').then((response) => {
-            if (response.status !== 200) return;
-            console.log('Logged out');
+        store.session.logout().then((response) => {
+            if ((response.status as number) !== 200) {
+                // Logout failed
+            } else {
+                navigate('login', { replace: true });
+            }
         });
     };
 
     return (
         <div>
             <Button id="session-button" aria-controls={open ? 'session-menu' : undefined} aria-haspopup="true" aria-expanded={open ? 'true' : undefined} onClick={handleClick}>
-                Dashboard
+                Account
             </Button>
             <Menu
                 id="session-menu"
@@ -46,19 +45,11 @@ export const SessionMenu = () => {
                 }}
             >
                 <MenuItem onClick={handleClose}>My account</MenuItem>
-                <MenuItem onClick={handleLogin}>Login</MenuItem>
+
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
         </div>
     );
-
-    // <Menu>
-    //     <ManuItem
-    //         onClickCapture={() => {
-    //             navigate('/login');
-    //         }}
-    //     >
-    //         login
-    //     </Button>
-    // </Menu>
 };
+
+export default observer(SessionMenu);

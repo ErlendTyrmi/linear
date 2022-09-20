@@ -1,16 +1,33 @@
 import Button from '@mui/material/Button';
-import { useEffect } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { linearAPI } from '../network/api';
+import { observer } from 'mobx-react-lite';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import store from '../stores/store';
 
-export const LoginPage = () => {
+const LoginPage = () => {
     const navigate = useNavigate();
+    const [dirty, setDirty] = useState(false);
+
+    // Clear all stores on login
+    useEffect(() => {
+        if (dirty === false) {
+            store.clear();
+            setDirty(true);
+        }
+    });
 
     const login = () => {
-        linearAPI.get('/session/login').then((response) => {
-            if (response.status !== 200) return;
-            console.log('Logged in');
-            navigate('/dashboard');
+        store.session.login().then((response) => {
+            let status = response.status as number;
+
+            if (status === 401) {
+                // Login failed
+            } else if (status === 200) {
+                store.session.user = response.data;
+                navigate('/', { replace: true });
+            } else {
+                // Other error
+            }
         });
     };
 
@@ -28,3 +45,5 @@ export const LoginPage = () => {
         </menu>
     );
 };
+
+export default observer(LoginPage);

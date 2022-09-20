@@ -1,19 +1,29 @@
+import { Button } from '@mui/material';
+import { autorun, reaction } from 'mobx';
+import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
-import { SessionMenu } from './SessionMenu';
+import store from '../stores/store';
+import SessionMenu from './SessionMenu';
 
-export const MainMenu = () => {
+const MainMenu = () => {
     const navigate = useNavigate();
 
-    return (
-        <menu>
-            <button
-                onClickCapture={() => {
-                    navigate('/');
-                }}
-            >
-                Home
-            </button>
-            <SessionMenu />
-        </menu>
-    );
+    if (store.session.user !== undefined) {
+        return (
+            <menu>
+                <Button
+                    onClickCapture={() => {
+                        navigate('/');
+                    }}
+                >
+                    Home
+                </Button>
+                <SessionMenu />
+            </menu>
+        );
+    }
+
+    return null;
 };
+
+export default observer(MainMenu);
