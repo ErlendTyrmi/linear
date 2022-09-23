@@ -1,4 +1,4 @@
-import { Button, Menu, MenuItem } from '@mui/material';
+import { Button, Menu, MenuItem, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { useState } from 'react';
@@ -21,6 +21,7 @@ const SessionMenu = () => {
 
     const handleLogout = () => {
         handleClose();
+        store.clear();
         store.session.logout().then((response) => {
             if ((response.status as number) !== 200) {
                 // Logout failed
@@ -33,7 +34,7 @@ const SessionMenu = () => {
     return (
         <div>
             <Button id="session-button" aria-controls={open ? 'session-menu' : undefined} aria-haspopup="true" aria-expanded={open ? 'true' : undefined} onClick={handleClick}>
-                Account
+                {store.session.user?.name}
             </Button>
             <Menu
                 id="session-menu"
@@ -44,8 +45,6 @@ const SessionMenu = () => {
                     'aria-labelledby': 'session-button'
                 }}
             >
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
         </div>

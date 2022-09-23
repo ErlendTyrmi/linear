@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import { linearAPI } from '../network/api';
 
 export default class TestStore {
@@ -12,18 +12,25 @@ export default class TestStore {
 
     // Clear
     clear = () => {
-        this.data = '';
+        console.log('testStore cleared');
+        this.setData('');
     };
+
+    setData(data: string) {
+        this.data = data;
+    }
+    getData = () => this.data;
 
     // API Methods
     getTest = () => {
         linearAPI.get('/landing').then((response: any) => {
-            console.log(response.status);
             console.log(response.data);
+            console.log(response.status);
+
             if ((response.status as number) !== 200) {
                 this.data = 'No cookie';
             } else {
-                this.data = response.data[0].date.toString();
+                this.setData(response.data[0].date.toString());
             }
         });
     };

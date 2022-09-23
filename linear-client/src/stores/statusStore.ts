@@ -17,11 +17,14 @@ export default class StatusStore {
     status: LoadStatus = LoadStatus.idle;
     messages: string[] = [];
     errors: string[] = [];
+    loginError: boolean = false;
 
     // Clear
     clear = () => {
+        console.log('statusStore cleared');
         this.status = LoadStatus.idle;
         this.messages = [];
         this.errors = [];
+        this.loginError = false;
     };
 }

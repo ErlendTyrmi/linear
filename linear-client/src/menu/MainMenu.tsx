@@ -8,22 +8,18 @@ import SessionMenu from './SessionMenu';
 const MainMenu = () => {
     const navigate = useNavigate();
 
-    if (store.session.user !== undefined) {
-        return (
-            <menu>
-                <Button
-                    onClickCapture={() => {
-                        navigate('/');
-                    }}
-                >
-                    Home
-                </Button>
-                <SessionMenu />
-            </menu>
-        );
-    }
-
-    return null;
+    return (
+        <menu>
+            <Button
+                onClickCapture={() => {
+                    navigate('/');
+                }}
+            >
+                Home
+            </Button>
+            <SessionMenu />
+        </menu>
+    );
 };
 
 export default observer(MainMenu);

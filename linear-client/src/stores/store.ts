@@ -1,4 +1,5 @@
 import { makeAutoObservable } from 'mobx';
+import { makePersistable } from 'mobx-persist-store';
 import SessionStore from './sessionStore';
 import StatusStore from './statusStore';
 import TestStore from './testStore';
@@ -6,6 +7,7 @@ import TestStore from './testStore';
 class Store {
     constructor() {
         makeAutoObservable(this);
+        this.clear();
     }
 
     // Stores
@@ -15,6 +17,7 @@ class Store {
 
     // Clear everything
     clear() {
+        console.log('store cleared');
         this.test.clear();
         this.session.clear();
         this.status.clear();

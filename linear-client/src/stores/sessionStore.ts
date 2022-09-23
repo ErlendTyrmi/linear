@@ -1,4 +1,5 @@
-import { makeAutoObservable } from 'mobx';
+import { action, makeAutoObservable } from 'mobx';
+import { makePersistable } from 'mobx-persist-store';
 import { useEffect } from 'react';
 import { unstable_HistoryRouter, useNavigate } from 'react-router-dom';
 import { LinearUser } from '../entities/linearUser';
@@ -8,15 +9,27 @@ import store from './store';
 export default class SessionStore {
     constructor() {
         makeAutoObservable(this);
-        this.clear();
+        makePersistable(this, {
+            name: 'store',
+            properties: ['user'],
+            storage: window.localStorage,
+            expireIn: 30 * 60000, // 30 minutes
+            removeOnExpiration: true
+        }).then(
+            action((persistStore) => {
+                console.log(persistStore.isHydrated ? 'hydrated' : 'failed to hydrate');
+            })
+        );
     }
 
     // Variables
-    user: LinearUser | undefined = undefined;
+    user: LinearUser | null = null;
 
     // Clear
     clear() {
-        this.user = undefined;
+        console.log('sessionStore cleared');
+        this.user = null;
+        console.log(this.user);
     }
 
     // API Methods
@@ -28,6 +41,14 @@ export default class SessionStore {
     logout() {
         store.clear();
         return linearAPI.get('/session/logout');
+    }
+
+    setUser(user: LinearUser) {
+        this.user = user;
+    }
+
+    getUser() {
+        return this.user;
     }
 
     loadUser() {

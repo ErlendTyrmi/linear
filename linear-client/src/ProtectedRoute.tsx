@@ -7,12 +7,11 @@ import store from './stores/store';
 const ProtectedRoute: React.FC<{ children: ReactJSXElement }> = ({ children }) => {
     const navigate = useNavigate();
 
-    if (store.session.user === undefined) {
+    if (store.session.user === undefined || store.status.loginError === true) {
         store.session.loadUser().then((response) => {
             if (response.status === 200) {
-                store.session.user = response.data;
+                store.session.setUser(response.data);
             } else {
-                store.clear();
                 navigate('/login', { replace: true });
             }
         });
