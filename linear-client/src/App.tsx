@@ -1,20 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import MainMenu from './menu/MainMenu';
+import FrontPage from './pages/FrontPage';
+import LoginPage from './pages/LoginPage';
+import ProtectedRoute from './ProtectedRoute';
 
-function App() {
+const Application = () => {
+    return (
+        <div>
+            <BrowserRouter>
+                <MainMenu />
+                <Routes>
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route
+                        path="/"
+                        element={
+                            <ProtectedRoute>
+                                <FrontPage />
+                            </ProtectedRoute>
+                        }
+                    />
+                </Routes>
+            </BrowserRouter>
+        </div>
+    );
+};
 
-  const axios = require('axios').default;
-
-  let url = process.env.REACT_APP_API_BASE_URL
-
-  return (
-    <div className="App">
-      <header className="App-header">
-        {url}
-      </header>
-    </div>
-  );
-}
-
-export default App;
+export default Application;
