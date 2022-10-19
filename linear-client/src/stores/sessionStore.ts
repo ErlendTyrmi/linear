@@ -2,7 +2,7 @@ import { action, makeAutoObservable } from 'mobx';
 import { makePersistable } from 'mobx-persist-store';
 import { useEffect } from 'react';
 import { unstable_HistoryRouter, useNavigate } from 'react-router-dom';
-import { LinearUser } from '../entities/linearUser';
+import { User } from '../entities/user';
 import { linearAPI } from '../network/api';
 import store from './store';
 
@@ -23,7 +23,7 @@ export default class SessionStore {
     }
 
     // Variables
-    user: LinearUser | null = null;
+    user: User | null = null;
 
     // Clear
     clear() {
@@ -33,9 +33,9 @@ export default class SessionStore {
     }
 
     // API Methods
-    login() {
+    login(usermame: string, password: string) {
         store.clear();
-        return linearAPI.get('/session/login');
+        return linearAPI.post('/session/login', { username: usermame, password: password });
     }
 
     logout() {
@@ -43,7 +43,7 @@ export default class SessionStore {
         return linearAPI.get('/session/logout');
     }
 
-    setUser(user: LinearUser) {
+    setUser(user: User) {
         this.user = user;
     }
 
@@ -52,6 +52,6 @@ export default class SessionStore {
     }
 
     loadUser() {
-        return linearAPI.get('/session/user');
+        return linearAPI.get('/session');
     }
 }

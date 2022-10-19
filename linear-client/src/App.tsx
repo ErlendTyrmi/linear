@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import MainMenu from './menu/MainMenu';
 import FrontPage from './pages/FrontPage';
-import LoginPage from './pages/LoginPage';
+import LoginPage from './pages/LoginPage/LoginPage';
 import ProtectedRoute from './ProtectedRoute';
 
 const Application = () => {
