@@ -1,5 +1,7 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import { runInAction } from 'mobx';
+
+import { useEffect, useState } from 'react';
 import store from '../stores/store';
 
 const axios = require('axios').default;
@@ -17,17 +19,34 @@ axios.interceptors.response.use(
     function (error: AxiosError) {
         // Redirect to login if 401 error
         if (error.code === AxiosError.ERR_BAD_REQUEST) {
-            console.log('was 401');
-            // Logout (and clear stores) on 401
+            // Logout on 401
             runInAction(() => {
                 store.session.logout();
             });
         }
-        console.log(error);
-        // return Promise.reject(error);
+        return Promise.reject(error);
     }
 );
 
 export const linearAPI = {
+    post: (url: string, param: any): Promise<AxiosResponse> => axios.post(url, param),
     get: (url: string): Promise<AxiosResponse> => axios.get(url)
+    // put
+    // delete
+};
+
+const useGet = (url: string, payload: any) => {
+    const [data, setData] = useState(null);
+    const [error, setError] = useState('');
+    const [loaded, setLoaded] = useState(false);
+
+    useEffect(() => {
+        axios
+            .get(url, payload)
+            .then((response: AxiosResponse) => setData(response.data))
+            .catch((error: AxiosError) => setError(error.message))
+            .finally(() => setLoaded(true));
+    }, []);
+
+    return { data, error, loaded };
 };

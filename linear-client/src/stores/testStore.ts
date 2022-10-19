@@ -8,7 +8,7 @@ export default class TestStore {
     }
 
     // Variables
-    data: string = '';
+    data: any = [];
 
     // Clear
     clear = () => {
@@ -23,14 +23,14 @@ export default class TestStore {
 
     // API Methods
     getTest = () => {
-        linearAPI.get('/landing').then((response: any) => {
+        linearAPI.get('/order/all').then((response: any) => {
             console.log(response.data);
             console.log(response.status);
 
             if ((response.status as number) !== 200) {
-                this.data = 'No cookie';
+                this.data = [];
             } else {
-                this.setData(response.data[0].date.toString());
+                this.setData(response.data);
             }
         });
     };
