@@ -1,10 +1,11 @@
-import { makeAutoObservable, runInAction } from 'mobx';
+
+import { makeAutoObservable } from 'mobx';
+
 import { linearAPI } from '../network/api';
 
 export default class TestStore {
     constructor() {
         makeAutoObservable(this);
-        this.clear();
     }
 
     // Variables
@@ -12,7 +13,7 @@ export default class TestStore {
 
     // Clear
     clear = () => {
-        console.log('testStore cleared');
+        //console.log('testStore cleared');
         this.setData('');
     };
 

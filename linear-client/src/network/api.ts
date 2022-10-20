@@ -1,7 +1,8 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import { runInAction } from 'mobx';
-
 import { useEffect, useState } from 'react';
+import { appText } from '../appText';
+
 import store from '../stores/store';
 
 const axios = require('axios').default;
@@ -12,7 +13,6 @@ axios.defaults.withCredentials = true;
 // Response interceptor
 axios.interceptors.response.use(
     function (response: AxiosResponse) {
-        console.log(response);
         return response;
     },
 
@@ -21,6 +21,9 @@ axios.interceptors.response.use(
         if (error.code === AxiosError.ERR_BAD_REQUEST) {
             // Logout on 401
             runInAction(() => {
+
+                store.status.setLastError(appText.errorLogin['da']);
+
                 store.session.logout();
             });
         }

@@ -7,7 +7,6 @@ import TestStore from './testStore';
 class Store {
     constructor() {
         makeAutoObservable(this);
-        this.clear();
     }
 
     // Stores
@@ -20,7 +19,7 @@ class Store {
         console.log('store cleared');
         this.test.clear();
         this.session.clear();
-        this.status.clear();
+        //this.status.clear();
     }
 }
 
