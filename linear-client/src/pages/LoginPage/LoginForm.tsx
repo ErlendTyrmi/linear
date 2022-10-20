@@ -67,6 +67,7 @@ const Login = () => {
                             type="email"
                             label={appText.loginName['da']}
                             placeholder={appText.loginName['da']}
+
                             margin="normal"
                             onChange={handleUsernameChange}
                             onKeyPress={handleKeyPress}
