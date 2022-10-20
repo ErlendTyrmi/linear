@@ -1,16 +1,17 @@
 import { Button, Menu, MenuItem, Typography } from '@mui/material';
+import { autorun } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import store from '../stores/store';
+import rootStore from '../stores/store';
 
 const SessionMenu = () => {
     const navigate = useNavigate();
     const [anchor, setAnchor] = useState<null | HTMLElement>(null);
     const open = Boolean(anchor);
 
-    // Placement of the menu
+    // Placement of the dropdown menu
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchor(event.currentTarget);
     };
@@ -21,20 +22,19 @@ const SessionMenu = () => {
 
     const handleLogout = () => {
         handleClose();
-        store.clear();
-        store.session.logout().then((response) => {
+        rootStore.sessionStore.logout().then((response) => {
             if ((response.status as number) !== 200) {
                 // Logout failed
-            } else {
-                navigate('login', { replace: true });
             }
+            rootStore.sessionStore.clear();
+            navigate('/login');
         });
     };
 
     return (
         <div>
             <Button id="session-button" aria-controls={open ? 'session-menu' : undefined} aria-haspopup="true" aria-expanded={open ? 'true' : undefined} onClick={handleClick}>
-                {store.session.user?.name}
+                {rootStore.sessionStore.user?.name}
             </Button>
             <Menu
                 id="session-menu"

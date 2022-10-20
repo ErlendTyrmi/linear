@@ -4,9 +4,12 @@ import { useEffect } from 'react';
 import { unstable_HistoryRouter, useNavigate } from 'react-router-dom';
 import { User } from '../entities/user';
 import { linearAPI } from '../network/api';
-import store from './store';
+import rootStore from './store';
 
-export default class SessionStore {
+export class SessionStore {
+    // Variables
+    user: User | null = null;
+
     constructor() {
         makeAutoObservable(this);
         makePersistable(this, {
@@ -22,9 +25,6 @@ export default class SessionStore {
         );
     }
 
-    // Variables
-    user: User | null = null;
-
     // Clear
     clear() {
         //console.log('sessionStore cleared');
@@ -33,12 +33,12 @@ export default class SessionStore {
 
     // API Methods
     login(usermame: string, password: string) {
-        store.clear();
+        this.clear();
         return linearAPI.post('/session/login', { username: usermame, password: password });
     }
 
     logout() {
-        store.clear();
+        this.clear();
         return linearAPI.get('/session/logout');
     }
 
@@ -54,3 +54,5 @@ export default class SessionStore {
         return linearAPI.get('/session');
     }
 }
+
+export default new SessionStore();

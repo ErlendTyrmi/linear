@@ -1,40 +1,45 @@
-import { Card, Typography } from '@mui/material';
+import { Card, LinearProgress, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Order } from '../entities/order';
-import store from '../stores/store';
+import { useGet } from '../network/api';
+import rootStore from '../stores/store';
 
 const FrontPage = () => {
     const navigate = useNavigate();
     const [dirty, setDirty] = useState(false);
 
-    useEffect(() => {
-        if (dirty === false || store.test.data === '') {
-            store.test.getTest();
+    // useEffect(() => {
+    //     if (dirty === false || rootStore.testStore.data === '') {
+    //         rootStore.testStore.getTest();
 
-            if (store.session.getUser() === null) {
-                navigate('/login');
-            }
-        }
-        setDirty(true);
-    }, [dirty, navigate]);
+    //         if (rootStore.sessionStore.getUser() === null) {
+    //             navigate('/login');
+    //         }
+    //     }
+    //     setDirty(true);
+    // }, [dirty, navigate]);
+
+    // This does not save in store. Very neat, but is it applicable?
+    const { data, error, loaded } = useGet('/order/all', {});
 
     return (
         <Typography>
             <h1>We got data</h1>
-            <p>UserName: {store.session.user?.name}</p>
+            <p>UserName: {rootStore.sessionStore.user?.name}</p>
             <h2>Data</h2>
-            {store.test.data &&
-                store.test.data.map((data: Order) => (
+            {!loaded && <LinearProgress />}
+            {data &&
+                (data as Order[]).map((order: Order) => (
                     <Card>
-                        <h3>{data.advertiserProductName}</h3>
-                        <p>Annoncør: {data.advertiserName}</p>
-                        <p>Dette er en {data.salesProductName}-ordre.</p>
-                        <p>Budget: {data.orderBudget}</p>
-                        <p>Status: {data.orderStatus}</p>
+                        <h3>{order.advertiserProductName}</h3>
+                        <p>Annoncør: {order.advertiserName}</p>
+                        <p>Dette er en {order.salesProductName}-ordre.</p>
+                        <p>Budget: {order.orderBudget}</p>
+                        <p>Status: {order.orderStatus}</p>
                         <p>
-                            Vises fra uge {data.startWeek} til uge {data.endWeek}
+                            Vises fra uge {order.startWeek} til uge {order.endWeek}
                         </p>
                     </Card>
                 ))}

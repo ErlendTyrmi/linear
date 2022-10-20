@@ -1,9 +1,8 @@
-
 import { makeAutoObservable } from 'mobx';
 
 import { linearAPI } from '../network/api';
 
-export default class TestStore {
+export class TestStore {
     constructor() {
         makeAutoObservable(this);
     }
@@ -36,3 +35,5 @@ export default class TestStore {
         });
     };
 }
+
+export default new TestStore();

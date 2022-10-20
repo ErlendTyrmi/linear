@@ -1,8 +1,6 @@
 import { Button } from '@mui/material';
-import { autorun, reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
-import store from '../stores/store';
 import SessionMenu from './SessionMenu';
 
 const MainMenu = () => {

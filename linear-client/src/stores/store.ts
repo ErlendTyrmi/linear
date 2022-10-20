@@ -1,26 +1,24 @@
-import { makeAutoObservable } from 'mobx';
-import { makePersistable } from 'mobx-persist-store';
-import SessionStore from './sessionStore';
-import StatusStore from './statusStore';
-import TestStore from './testStore';
+import sessionStore, { SessionStore } from './sessionStore';
+import statusStore, { StatusStore } from './statusStore';
+import testStore, { TestStore } from './testStore';
 
-class Store {
-    constructor() {
-        makeAutoObservable(this);
-    }
+export type RootStore = {
+    testStore: TestStore;
+    sessionStore: SessionStore;
+    statusStore: StatusStore;
+    clear(): void;
+};
 
-    // Stores
-    test = new TestStore();
-    session = new SessionStore();
-    status = new StatusStore();
+const rootStore: RootStore = {
+    testStore,
+    sessionStore,
+    statusStore,
 
-    // Clear everything
     clear() {
-        console.log('store cleared');
-        this.test.clear();
-        this.session.clear();
-        //this.status.clear();
+        testStore.clear();
+        sessionStore.clear();
+        //statusStore.clear()
     }
-}
+};
 
-export default new Store();
+export default rootStore;

@@ -3,7 +3,7 @@ import { runInAction } from 'mobx';
 import { useEffect, useState } from 'react';
 import { appText } from '../appText';
 
-import store from '../stores/store';
+import rootStore from '../stores/store';
 
 const axios = require('axios').default;
 axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
@@ -15,16 +15,13 @@ axios.interceptors.response.use(
     function (response: AxiosResponse) {
         return response;
     },
-
     function (error: AxiosError) {
         // Redirect to login if 401 error
         if (error.code === AxiosError.ERR_BAD_REQUEST) {
             // Logout on 401
             runInAction(() => {
-
-                store.status.setLastError(appText.errorLogin['da']);
-
-                store.session.logout();
+                rootStore.sessionStore.clear();
+                rootStore.sessionStore.logout();
             });
         }
         return Promise.reject(error);
@@ -38,7 +35,7 @@ export const linearAPI = {
     // delete
 };
 
-const useGet = (url: string, payload: any) => {
+export const useGet = (url: string, payload: any) => {
     const [data, setData] = useState(null);
     const [error, setError] = useState('');
     const [loaded, setLoaded] = useState(false);
