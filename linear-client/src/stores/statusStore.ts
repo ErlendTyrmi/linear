@@ -1,30 +1,33 @@
 import { makeAutoObservable } from 'mobx';
 
-enum LoadStatus {
-    error,
-    success,
+export enum LoadStatus {
+    idle,
     loading,
-    idle
+    done
 }
 
 export default class StatusStore {
     constructor() {
         makeAutoObservable(this);
-        this.clear();
+        console.log('statusstore is created');
     }
 
     // Variables
-    status: LoadStatus = LoadStatus.idle;
+    loading: boolean = false;
     messages: string[] = [];
-    errors: string[] = [];
+    lastError: string | null = null;
     loginError: boolean = false;
 
     // Clear
     clear = () => {
         console.log('statusStore cleared');
-        this.status = LoadStatus.idle;
+        this.loading = false;
         this.messages = [];
-        this.errors = [];
+        this.lastError = null;
         this.loginError = false;
     };
+
+    setLoading = (value: boolean) => (this.loading = value);
+    setLastError = (value: string | null) => (this.lastError = value);
+    setIsLoginError = (value: boolean) => (this.loginError = value);
 }

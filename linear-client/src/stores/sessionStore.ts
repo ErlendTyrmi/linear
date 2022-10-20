@@ -27,9 +27,8 @@ export default class SessionStore {
 
     // Clear
     clear() {
-        console.log('sessionStore cleared');
+        //console.log('sessionStore cleared');
         this.user = null;
-        console.log(this.user);
     }
 
     // API Methods
