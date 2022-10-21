@@ -3,7 +3,7 @@ import { runInAction } from 'mobx';
 import { useEffect, useState } from 'react';
 import { appText } from '../appText';
 
-import rootStore from '../stores/store';
+import store from '../stores/store';
 
 const axios = require('axios').default;
 axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
@@ -19,12 +19,18 @@ axios.interceptors.response.use(
         // Redirect to login if 401 error
         if (error.code === AxiosError.ERR_BAD_REQUEST) {
             // Logout on 401
-            runInAction(() => {
-                rootStore.sessionStore.clear();
-                rootStore.sessionStore.logout();
-            });
+            console.log('Rejected by Axios Interceptor: ' + error);
+            store.session.clear();
+            store.session.logout();
+            store.message.setError(appText.errorLogin['da']);
+        } else if (error.code === AxiosError.ERR_NETWORK) {
+            console.log('Rejected by Axios Interceptor: ' + error);
+            store.message.setError(appText.errorNetwork['da']);
+        } else {
+            console.log('Rejected by Axios Interceptor: ' + error);
+            store.message.setError(appText.error['da'] + ' ' + error.code);
         }
-        return Promise.reject(error);
+        return Promise.allSettled;
     }
 );
 
@@ -35,18 +41,18 @@ export const linearAPI = {
     // delete
 };
 
-export const useGet = (url: string, payload: any) => {
-    const [data, setData] = useState(null);
-    const [error, setError] = useState('');
-    const [loaded, setLoaded] = useState(false);
+// export const useGet = (url: string, payload: any) => {
+//     const [data, setData] = useState(null);
+//     const [error, setError] = useState('');
+//     const [loaded, setLoaded] = useState(false);
 
-    useEffect(() => {
-        axios
-            .get(url, payload)
-            .then((response: AxiosResponse) => setData(response.data))
-            .catch((error: AxiosError) => setError(error.message))
-            .finally(() => setLoaded(true));
-    }, []);
+//     useEffect(() => {
+//         axios
+//             .get(url, payload)
+//             .then((response: AxiosResponse) => setData(response.data))
+//             .catch((error: AxiosError) => setError(error.message))
+//             .finally(() => setLoaded(true));
+//     }, []);
 
-    return { data, error, loaded };
-};
+//     return { data, error, loaded };
+// };

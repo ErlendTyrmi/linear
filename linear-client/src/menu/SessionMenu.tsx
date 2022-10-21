@@ -1,10 +1,11 @@
-import { Button, Menu, MenuItem, Typography } from '@mui/material';
+import { Button, Color, Menu, MenuItem, Typography } from '@mui/material';
 import { autorun } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import rootStore from '../stores/store';
+import { appText } from '../appText';
+import store from '../stores/store';
 
 const SessionMenu = () => {
     const navigate = useNavigate();
@@ -22,19 +23,19 @@ const SessionMenu = () => {
 
     const handleLogout = () => {
         handleClose();
-        rootStore.sessionStore.logout().then((response) => {
+        store.session.logout().then((response) => {
             if ((response.status as number) !== 200) {
-                // Logout failed
+                store.message.setError(appText.error['da']);
             }
-            rootStore.sessionStore.clear();
+            store.session.clear();
             navigate('/login');
         });
     };
 
     return (
         <div>
-            <Button id="session-button" aria-controls={open ? 'session-menu' : undefined} aria-haspopup="true" aria-expanded={open ? 'true' : undefined} onClick={handleClick}>
-                {rootStore.sessionStore.user?.name}
+            <Button color="primary" aria-controls={open ? 'session-menu' : undefined} aria-haspopup="true" aria-expanded={open ? 'true' : undefined} onClick={handleClick}>
+                {store.session.user?.name}
             </Button>
             <Menu
                 id="session-menu"

@@ -4,11 +4,11 @@ import { useEffect } from 'react';
 import { unstable_HistoryRouter, useNavigate } from 'react-router-dom';
 import { User } from '../entities/user';
 import { linearAPI } from '../network/api';
-import rootStore from './store';
 
 export class SessionStore {
     // Variables
     user: User | null = null;
+    loading: boolean = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -20,7 +20,7 @@ export class SessionStore {
             removeOnExpiration: true
         }).then(
             action((persistStore) => {
-                console.log(persistStore.isHydrated ? 'hydrated' : 'failed to hydrate');
+                console.log(persistStore.isHydrated ? 'session hydrated' : 'session failed to hydrate');
             })
         );
     }
@@ -29,11 +29,13 @@ export class SessionStore {
     clear() {
         //console.log('sessionStore cleared');
         this.user = null;
+        this.loading = false;
     }
 
     // API Methods
     login(usermame: string, password: string) {
         this.clear();
+        this.setLoading(true);
         return linearAPI.post('/session/login', { username: usermame, password: password });
     }
 
@@ -42,15 +44,12 @@ export class SessionStore {
         return linearAPI.get('/session/logout');
     }
 
-    setUser(user: User) {
-        this.user = user;
-    }
+    setLoading = (loading: boolean) => (this.loading = loading);
 
-    getUser() {
-        return this.user;
-    }
+    setUser = (user: User) => (this.user = user);
 
     loadUser() {
+        // TODO set user here insted of in component
         return linearAPI.get('/session');
     }
 }

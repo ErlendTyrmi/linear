@@ -1,6 +1,8 @@
+import { Axios, AxiosError, AxiosResponse } from 'axios';
 import { makeAutoObservable } from 'mobx';
 
 import { linearAPI } from '../network/api';
+import store from './store';
 
 export class TestStore {
     constructor() {
@@ -8,30 +10,24 @@ export class TestStore {
     }
 
     // Variables
+    loading: boolean = false;
     data: any = [];
 
     // Clear
     clear = () => {
-        //console.log('testStore cleared');
+        this.setLoading(false);
         this.setData('');
     };
 
-    setData(data: string) {
-        this.data = data;
-    }
-    getData = () => this.data;
+    setLoading = (loading: boolean) => (this.loading = loading);
+    setData = (data: string) => (this.data = data);
 
     // API Methods
-    getTest = () => {
-        linearAPI.get('/order/all').then((response: any) => {
-            console.log(response.data);
-            console.log(response.status);
-
-            if ((response.status as number) !== 200) {
-                this.data = [];
-            } else {
-                this.setData(response.data);
-            }
+    getData = async () => {
+        this.setLoading(true);
+        linearAPI.get('/order/all').then((response: AxiosResponse) => {
+            this.setLoading(false);
+            this.setData(response.data);
         });
     };
 }

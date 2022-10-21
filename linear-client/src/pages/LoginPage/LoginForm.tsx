@@ -5,48 +5,43 @@ import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { appText } from '../../appText';
-import rootStore from '../../stores/store';
+import store from '../../stores/store';
 
 const LoginForm = () => {
-    const sessionStore = rootStore.sessionStore;
-    const statusStore = rootStore.statusStore;
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const handleLogin = () => {
-        statusStore.clear();
-        sessionStore.clear();
-        statusStore.setLoading(true);
+        store.message.clear();
+        store.session.clear();
 
-        sessionStore
-            .login(username, password)
-            .then((response) => {
-                let status = response.status as number;
+        store.session.login(username, password).then((response) => {
+            // let status = response.status as number;
 
-                if (status === 200) {
-                    runInAction(() => {
-                        sessionStore.setUser(response.data);
-                    });
-                    navigate('/', { replace: true });
-                } else {
-                    // Unknown error
-                    statusStore.setError(appText.error['da']);
-                }
+            // if (status === 200) {
+            //     runInAction(() => {
+            store.session.setUser(response.data);
+            //     });
+            //     navigate('/', { replace: true });
+            // } else {
+            //     // Unknown error
+            //     store.message.setError(appText.error['da']);
+            // }
 
-                statusStore.setLoading(false);
-            })
-            .catch((error: AxiosError) => {
-                if (error.code === AxiosError.ERR_BAD_REQUEST) {
-                    statusStore.setError(appText.errorLogin['da']);
-                } else if (error.code === AxiosError.ERR_NETWORK) {
-                    statusStore.setError(appText.errorNetwork['da']);
-                } else {
-                    statusStore.setError(appText.error['da']);
-                }
+            store.session.setLoading(false);
+        });
+        // .catch((error: AxiosError) => {
+        //     if (error.code === AxiosError.ERR_BAD_REQUEST) {
+        //         store.message.setError(appText.errorLogin['da']);
+        //     } else if (error.code === AxiosError.ERR_NETWORK) {
+        //         store.message.setError(appText.errorNetwork['da']);
+        //     } else {
+        //         store.message.setError(appText.error['da']);
+        //     }
 
-                statusStore.setLoading(false);
-            });
+        //     store.session.setLoading(false);
+        // });
     };
 
     const handleKeyPress = (event: React.KeyboardEvent) => {
@@ -64,14 +59,14 @@ const LoginForm = () => {
     };
 
     return (
-        <form noValidate autoComplete="on">
+        <form noValidate autoComplete="off">
             <Card>
                 <CardHeader title={appText.login['da']} />
                 <CardContent>
                     <div>
-                        {statusStore.loading === true && <CircularProgress />}
+                        {store.session.loading === true && <CircularProgress />}
                         <TextField
-                            error={statusStore.lastError != null || isInvalid(username)}
+                            error={store.message.lastError != null || isInvalid(username)}
                             fullWidth
                             id="username"
                             type="email"
@@ -82,7 +77,7 @@ const LoginForm = () => {
                             onKeyPress={handleKeyPress}
                         />
                         <TextField
-                            error={statusStore.lastError != null || isInvalid(password)}
+                            error={store.message.lastError != null || isInvalid(password)}
                             fullWidth
                             id="password"
                             type="password"
@@ -93,16 +88,16 @@ const LoginForm = () => {
                             onKeyPress={handleKeyPress}
                         />
                     </div>
-                    <Typography>{statusStore.errors.length} errors</Typography>
-                    {statusStore.errors && statusStore.errors.map((data: string) => <Typography>{data}</Typography>)}
+                    <Typography>{store.message.errors.length} errors</Typography>
+                    {store.message.errors && store.message.errors.map((data: string) => <Typography>{data}</Typography>)}
                 </CardContent>
                 <CardActions>
-                    <Button variant="contained" size="large" color="secondary" onClick={handleLogin} disabled={statusStore.loading === true}>
+                    <Button variant="contained" size="large" color="secondary" onClick={handleLogin} disabled={store.session.loading === true}>
                         Login
                     </Button>
                 </CardActions>
             </Card>
-            <Button onClick={() => statusStore.setLoading(!statusStore.loading)}>HEY</Button>
+            <Button onClick={() => store.session.setLoading(!store.session.loading)}>HEY</Button>
         </form>
     );
 };

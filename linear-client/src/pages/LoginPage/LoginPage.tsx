@@ -4,7 +4,7 @@ import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import rootStore from '../../stores/store';
+import store from '../../stores/store';
 import LoginForm from './LoginForm';
 
 const LoginPage = () => {
