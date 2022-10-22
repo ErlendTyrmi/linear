@@ -48,10 +48,10 @@ export class SessionStore {
 
     setUser = (user: User) => (this.user = user);
 
-    loadUser() {
-        // TODO set user here insted of in component
-        return linearAPI.get('/session');
-    }
+    // loadUser() {
+    //     // TODO set user here insted of in component
+    //     return linearAPI.get('/session');
+    // }
 }
 
 export default new SessionStore();

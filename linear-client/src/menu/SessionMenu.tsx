@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { appText } from '../appText';
 import store from '../stores/store';
+import PersonIcon from '@mui/icons-material/Person';
 
 const SessionMenu = () => {
     const navigate = useNavigate();
@@ -36,6 +37,7 @@ const SessionMenu = () => {
         <div>
             <Button color="primary" aria-controls={open ? 'session-menu' : undefined} aria-haspopup="true" aria-expanded={open ? 'true' : undefined} onClick={handleClick}>
                 {store.session.user?.name}
+                <PersonIcon />
             </Button>
             <Menu
                 id="session-menu"

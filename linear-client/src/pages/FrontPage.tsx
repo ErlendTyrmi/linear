@@ -15,25 +15,25 @@ const FrontPage = () => {
         //     navigate('/login');
         // }
         store.test.getData();
-    }, [navigate, store.session]);
+    }, [navigate]);
 
     return (
         <Box>
             {store.test.loading && <LinearProgress />}
-            <h1>We got data?</h1>
+            <Typography variant="h2">We got data?</Typography>
             {store.test.data.count < 1 && <p>Not yet...</p>}
             {store.test.data &&
                 (store.test.data as Order[]).map((order: Order) => (
-                    <Card>
-                        <Typography variant="h2">{order.advertiserProductName}</Typography>
+                    <Box>
+                        <Typography variant="h3">{order.advertiserProductName}</Typography>
+                        Vises fra uge {order.startWeek} til uge {order.endWeek}
                         <ul>
                             <li>Annoncør: {order.advertiserName}</li>
                             <li>Dette er en {order.salesProductName}-ordre.</li>
                             <li>Budget: {order.orderBudget}</li>
                             <li>Status: {order.orderStatus}</li>
                         </ul>
-                        Vises fra uge {order.startWeek} til uge {order.endWeek}
-                    </Card>
+                    </Box>
                 ))}
         </Box>
     );

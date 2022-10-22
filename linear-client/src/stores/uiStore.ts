@@ -7,16 +7,16 @@ export class UiStore {
 
     // Variables
     menuOpen: boolean = true;
-    mobileMenuOpen: boolean = false;
 
     // Clear
     clear = () => {
         this.menuOpen = true;
-        this.mobileMenuOpen = false;
     };
 
-    setMenuOpen = (value: boolean) => (this.menuOpen = value);
-    setMobileMenuOpen = (value: boolean) => (this.mobileMenuOpen = value);
+    setMenuOpen = (value: boolean) => {
+        this.menuOpen = value;
+        console.log('Menu open: ' + this.menuOpen);
+    };
 }
 
 export default new UiStore();

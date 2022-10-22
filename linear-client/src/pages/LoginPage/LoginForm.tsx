@@ -23,7 +23,7 @@ const LoginForm = () => {
             //     runInAction(() => {
             store.session.setUser(response.data);
             //     });
-            //     navigate('/', { replace: true });
+            navigate('/', { replace: true });
             // } else {
             //     // Unknown error
             //     store.message.setError(appText.error['da']);
@@ -66,7 +66,7 @@ const LoginForm = () => {
                     <div>
                         {store.session.loading === true && <CircularProgress />}
                         <TextField
-                            error={store.message.lastError != null || isInvalid(username)}
+                            error={isInvalid(username)}
                             fullWidth
                             id="username"
                             type="email"
@@ -77,7 +77,7 @@ const LoginForm = () => {
                             onKeyPress={handleKeyPress}
                         />
                         <TextField
-                            error={store.message.lastError != null || isInvalid(password)}
+                            error={isInvalid(password)}
                             fullWidth
                             id="password"
                             type="password"
@@ -97,7 +97,6 @@ const LoginForm = () => {
                     </Button>
                 </CardActions>
             </Card>
-            <Button onClick={() => store.session.setLoading(!store.session.loading)}>HEY</Button>
         </form>
     );
 };
