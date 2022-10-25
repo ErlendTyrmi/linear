@@ -1,5 +1,6 @@
 import { Axios, AxiosError, AxiosResponse } from 'axios';
 import { makeAutoObservable } from 'mobx';
+import { User } from '../entities/user';
 
 import { linearAPI } from '../network/api';
 import store from './store';
@@ -23,9 +24,9 @@ export class TestStore {
     setData = (data: string) => (this.data = data);
 
     // API Methods
-    getData = async () => {
+    getDataForUser = async (user: User) => {
         this.setLoading(true);
-        linearAPI.get('/order/all').then((response: AxiosResponse) => {
+        linearAPI.getWithUserId('/order/mine', user.id).then((response: AxiosResponse) => {
             this.setLoading(false);
             this.setData(response.data);
         });

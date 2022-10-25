@@ -6,17 +6,17 @@ export class UiStore {
     }
 
     // Variables
-    menuOpen: boolean = true;
+    sessionmenuOpen: boolean = false;
 
     // Clear
     clear = () => {
-        this.menuOpen = true;
+        this.sessionmenuOpen = false;
     };
 
-    setMenuOpen = (value: boolean) => {
-        this.menuOpen = value;
-        console.log('Menu open: ' + this.menuOpen);
-    };
+    // Setters
+    setSessionMenuOpen(open: boolean) {
+        this.sessionmenuOpen = open;
+    }
 }
 
 export default new UiStore();

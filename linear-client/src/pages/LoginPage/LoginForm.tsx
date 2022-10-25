@@ -59,7 +59,7 @@ const LoginForm = () => {
     };
 
     return (
-        <form noValidate autoComplete="off">
+        <form noValidate autoComplete="on">
             <Card>
                 <CardHeader title={appText.login['da']} />
                 <CardContent>

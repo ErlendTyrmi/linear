@@ -8,4 +8,5 @@ export interface User {
     canDownloadMaterial: boolean;
     canWrite: boolean;
     canRead: boolean;
+    isAdmin: boolean;
 }

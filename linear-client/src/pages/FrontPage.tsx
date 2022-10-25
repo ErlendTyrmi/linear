@@ -10,11 +10,9 @@ const FrontPage = () => {
     let tries = 0;
 
     useEffect(() => {
-        // Handled in protectedroute :^)
-        // if (store.session.user === null) {
-        //     navigate('/login');
-        // }
-        store.test.getData();
+        if (store.session.user != null) {
+            store.test.getDataForUser(store.session.user!);
+        }
     }, [navigate]);
 
     return (
