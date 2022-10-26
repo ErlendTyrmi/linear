@@ -2,25 +2,31 @@ import sessionStore, { SessionStore } from './sessionStore';
 import statusStore, { MessageStore } from './messageStore';
 import testStore, { TestStore } from './testStore';
 import uiStore, { UiStore } from './uiStore';
+import advertiserStore, { AdvertiserStore } from './advertiserStore';
 
 export type RootStore = {
-    test: TestStore;
     session: SessionStore;
+    advertiser: AdvertiserStore;
+
+    test: TestStore;
+
     message: MessageStore;
     ui: UiStore;
     clear(): void;
 };
 
 const store: RootStore = {
-    test: testStore,
     session: sessionStore,
+    advertiser: advertiserStore,
+    test: testStore,
+
     message: statusStore,
     ui: uiStore,
 
     clear() {
         testStore.clear();
+        advertiserStore.clear();
         sessionStore.clear();
-        //statusStore.clear()
         uiStore.clear();
     }
 };

@@ -1,30 +1,43 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import DrawerLayout from './menu/DrawerLayout';
+import MessageDisplay from './MessageDisplay';
 import FrontPage from './pages/FrontPage';
 import LoginPage from './pages/LoginPage/LoginPage';
+import OtherPage from './pages/OtherPage';
 import ProtectedRoute from './ProtectedRoute';
 
 const Application = () => {
     return (
-        <div>
+        <MessageDisplay>
             <BrowserRouter>
                 {/* <MainMenu /> */}
-                <DrawerLayout>
-                    <Routes>
-                        <Route path="/login" element={<LoginPage />} />
-                        <Route
-                            path="/"
-                            element={
-                                <ProtectedRoute>
+
+                <Routes>
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route
+                        path="/"
+                        element={
+                            <ProtectedRoute>
+                                <DrawerLayout>
                                     <FrontPage />
-                                </ProtectedRoute>
-                            }
-                        />
-                    </Routes>
-                </DrawerLayout>
+                                </DrawerLayout>
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/other"
+                        element={
+                            <ProtectedRoute>
+                                <DrawerLayout>
+                                    <OtherPage />
+                                </DrawerLayout>
+                            </ProtectedRoute>
+                        }
+                    />
+                </Routes>
             </BrowserRouter>
-        </div>
+        </MessageDisplay>
     );
 };
 

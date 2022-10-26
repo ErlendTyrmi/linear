@@ -27,8 +27,8 @@ export class TestStore {
     getDataForUser = async (user: User) => {
         this.setLoading(true);
         linearAPI.getWithUserId('/order/mine', user.id).then((response: AxiosResponse) => {
-            this.setLoading(false);
             this.setData(response.data);
+            this.setLoading(false);
         });
     };
 }

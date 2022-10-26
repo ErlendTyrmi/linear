@@ -33,6 +33,7 @@ interface Props {
 const DrawerLayout = (props: Props) => {
     const { children } = props;
     const [menuOpen, setMenuOpen] = useState(false);
+    const [sessionMenuOpen, setSessionMenuOpen] = useState(false);
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -53,7 +54,7 @@ const DrawerLayout = (props: Props) => {
                     <Typography variant="h6" noWrap component="div" sx={{ flexGrow: '1' }}>
                         TVX linear
                     </Typography>
-                    <Button color="inherit" onClick={() => store.ui.setSessionMenuOpen(true)} endIcon={<PersonIcon />}>
+                    <Button color="inherit" onClick={() => setSessionMenuOpen(true)} endIcon={<PersonIcon />}>
                         {store.session.user?.name ?? appText.noUserName['da']}
                     </Button>
                 </Toolbar>
@@ -87,31 +88,23 @@ const DrawerLayout = (props: Props) => {
                 </Drawer>
             </Box>
 
+            {/* Session Menu */}
             <Box>
                 <Drawer
                     anchor="right"
-                    open={store.ui.sessionmenuOpen}
-                    onClose={() => store.ui.setSessionMenuOpen(false)}
+                    open={sessionMenuOpen}
+                    onClose={() => setSessionMenuOpen(false)}
                     sx={{
-                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
+                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: { xs: drawerWidth, sm: 420 } }
                     }}
                 >
-                    <SessionMenu />
+                    <SessionMenu setOpen={setSessionMenuOpen} />
                 </Drawer>
             </Box>
 
             <Box component="main" sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
                 <Toolbar />
                 {children}
-
-                <Typography paragraph>
-                    Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard
-                    McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the
-                    cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes
-                    of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum
-                    dolor sit amet..", comes from a line in section 1.10.32. The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and
-                    1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
-                </Typography>
             </Box>
         </Box>
     );

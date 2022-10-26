@@ -1,7 +1,28 @@
-import { Avatar, Button, Color, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem, Toolbar, Typography } from '@mui/material';
+import {
+    Avatar,
+    Box,
+    Button,
+    Color,
+    Divider,
+    FormControl,
+    Grid,
+    InputLabel,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    Menu,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+    ThemeProvider,
+    Toolbar,
+    Typography
+} from '@mui/material';
 import { autorun } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { appText } from '../appText';
@@ -11,61 +32,91 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import InboxIcon from '@mui/icons-material/Inbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { deepPurple } from '@mui/material/colors';
+import { collectStoredAnnotations } from 'mobx/dist/internal';
+import theme from '../theme';
+import { Advertiser } from '../entities/advertiser';
 
-const SessionMenu = () => {
+interface Props {
+    setOpen: any;
+}
+
+const SessionMenu = (props: Props) => {
+    const closeMenu = () => props.setOpen(false);
     const navigate = useNavigate();
-    const [anchor, setAnchor] = useState<null | HTMLElement>(null);
-    const open = Boolean(anchor);
+
+    useEffect(() => {
+        if (store.session.user?.isAdmin) {
+            // TODO: DL advertiser list
+        }
+    });
 
     const handleLogout = () => {
-        store.ui.setSessionMenuOpen(false);
-        store.session.logout().then((response) => {
-            if ((response.status as number) !== 200) {
-                store.message.setError(appText.error['da']);
-            }
-            store.session.clear();
-            navigate('/login');
-        });
+        closeMenu();
+        store.session.logout();
+        navigate('/login');
     };
 
     let name = store.session.user?.name ?? 'N N';
 
+    const advertisers = (store.advertiser.data as Advertiser[])?.map((advertiser: Advertiser) => <MenuItem value={advertiser.id}>{advertiser.name}</MenuItem>);
+
     return (
-        <div>
-            <Toolbar />
+        <Box>
+            <ThemeProvider theme={theme}>
+                <Toolbar />
+                <Grid container justifyContent="center">
+                    <Avatar alt={name} sx={{ width: 160, height: 160, bgcolor: 'primary.main', margin: 1 }}>
+                        {name}
+                    </Avatar>
+                </Grid>
 
-            {/* <Avatar alt="UserImage" src={require('../images/logo.png')} sx={{ width: 160, height: 160, bgcolor: deepPurple[500], marginLeft: '35px' }} /> */}
-            <Avatar alt={name} sx={{ width: 160, height: 160, bgcolor: deepPurple[500], marginLeft: '35px' }}>
-                {name}
-            </Avatar>
-
-            <List>
-                <ListItem>
-                    <ListItemIcon>
-                        <PersonIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={store.session.user?.name} />
-                </ListItem>
-                <ListItem>
-                    <ListItemIcon>
-                        <MailIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={store.session.user?.email} />
-                </ListItem>
-                <ListItem disablePadding></ListItem>
-            </List>
-            <Divider />
-            <List>
-                <ListItem disablePadding>
-                    <ListItemButton onClick={handleLogout}>
+                <List>
+                    <ListItem>
                         <ListItemIcon>
-                            <LogoutIcon />
+                            <PersonIcon />
                         </ListItemIcon>
-                        <ListItemText primary={'Log out'} />
-                    </ListItemButton>
-                </ListItem>
-            </List>
-        </div>
+                        <ListItemText primary={store.session.user?.name} />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemIcon>
+                            <MailIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={store.session.user?.email} />
+                    </ListItem>
+                    {store.advertiser.data && (
+                        <ListItem>
+                            <Box sx={{ width: '100%' }}>
+                                <FormControl fullWidth>
+                                    <InputLabel id="demo-simple-select-label">{appText.advertiserLabel['da']}</InputLabel>
+                                    <Select
+                                        labelId="advertiserlabel"
+                                        id="demo-simple-select"
+                                        value={store.advertiser.selected}
+                                        label={appText.advertiserLabel['da']}
+                                        onChange={(event: SelectChangeEvent) => {
+                                            store.advertiser.setSelected(event.target.value as string);
+                                        }}
+                                    >
+                                        {advertisers}
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                        </ListItem>
+                    )}
+                </List>
+                <Divider />
+                <List>
+                    <ListItem disablePadding>
+                        <ListItemButton onClick={handleLogout}>
+                            <ListItemIcon>
+                                <LogoutIcon />
+                            </ListItemIcon>
+                            <ListItemText primary={'Log out'} />
+                        </ListItemButton>
+                    </ListItem>
+                </List>
+            </ThemeProvider>
+        </Box>
     );
 };
 

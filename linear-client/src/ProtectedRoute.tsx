@@ -9,13 +9,13 @@ const ProtectedRoute: React.FC<{ children: ReactJSXElement }> = ({ children }) =
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (store.session.user === null || store.session.user === undefined) {
+        if (store.session.active === false || store.session.active === undefined) {
             console.log('ProtectedRoute stopped navigation. Navigating to login...');
             navigate('/login', { replace: true });
         }
-    }, [navigate, store.session.user]);
+    }, [navigate, store.session]);
 
-    return store.session.user === null || store.session.user === undefined ? null : children;
+    return store.session.active === false || store.session.active === undefined ? null : children;
 };
 
 export default observer(ProtectedRoute);

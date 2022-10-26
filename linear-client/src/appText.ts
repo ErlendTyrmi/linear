@@ -15,5 +15,8 @@ export const appText = {
     },
     noUserName: {
         da: 'Intet Brugernavn'
+    },
+    advertiserLabel: {
+        da: 'anoncør'
     }
 };

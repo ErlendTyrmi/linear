@@ -1,10 +1,11 @@
-import { Button, Card, CardActions, CardContent, CardHeader, CircularProgress, createStyles, makeStyles, TextField, Theme, Typography } from '@mui/material';
+import { Backdrop, Button, Card, CardActions, CardContent, CardHeader, CircularProgress, createStyles, makeStyles, TextField, Theme, Typography } from '@mui/material';
 import { AxiosError } from 'axios';
 import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { appText } from '../../appText';
+import { User } from '../../entities/user';
 import store from '../../stores/store';
 
 const LoginForm = () => {
@@ -14,38 +15,19 @@ const LoginForm = () => {
 
     const handleLogin = () => {
         store.message.clear();
-        store.session.clear();
-
         store.session.login(username, password).then((response) => {
-            // let status = response.status as number;
-
-            // if (status === 200) {
-            //     runInAction(() => {
+            console.log(response);
             store.session.setUser(response.data);
-            //     });
-            navigate('/', { replace: true });
-            // } else {
-            //     // Unknown error
-            //     store.message.setError(appText.error['da']);
-            // }
-
+            if (store.session.user != null) {
+                store.session.setActive(true);
+                navigate('/');
+            }
             store.session.setLoading(false);
         });
-        // .catch((error: AxiosError) => {
-        //     if (error.code === AxiosError.ERR_BAD_REQUEST) {
-        //         store.message.setError(appText.errorLogin['da']);
-        //     } else if (error.code === AxiosError.ERR_NETWORK) {
-        //         store.message.setError(appText.errorNetwork['da']);
-        //     } else {
-        //         store.message.setError(appText.error['da']);
-        //     }
-
-        //     store.session.setLoading(false);
-        // });
     };
 
     const handleKeyPress = (event: React.KeyboardEvent) => {
-        if (event.key == 'Enter' && password.length > 0 && username.length > 0) {
+        if (event.key === 'Enter' && password.length > 0 && username.length > 0) {
             handleLogin();
         }
     };
@@ -60,11 +42,13 @@ const LoginForm = () => {
 
     return (
         <form noValidate autoComplete="on">
-            <Card>
+            <Card sx={{ position: 'relative' }}>
+                <Backdrop sx={{ position: 'absolute', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={store.session.loading}>
+                    <CircularProgress color="inherit" />
+                </Backdrop>
                 <CardHeader title={appText.login['da']} />
                 <CardContent>
                     <div>
-                        {store.session.loading === true && <CircularProgress />}
                         <TextField
                             error={isInvalid(username)}
                             fullWidth

@@ -7,6 +7,7 @@ import { linearAPI } from '../network/api';
 
 export class SessionStore {
     // Variables
+    active: boolean = false;
     user: User | null = null;
     loading: boolean = false;
 
@@ -14,9 +15,9 @@ export class SessionStore {
         makeAutoObservable(this);
         makePersistable(this, {
             name: 'store',
-            properties: ['user'],
+            properties: ['active'],
             storage: window.localStorage,
-            expireIn: 30 * 60000, // 30 minutes
+            expireIn: 24 * 60 * 60000, // 24h or on logout
             removeOnExpiration: true
         }).then(
             action((persistStore) => {
@@ -27,7 +28,7 @@ export class SessionStore {
 
     // Clear
     clear() {
-        //console.log('sessionStore cleared');
+        this.active = false;
         this.user = null;
         this.loading = false;
     }
@@ -35,23 +36,28 @@ export class SessionStore {
     // API Methods
     login(usermame: string, password: string) {
         this.clear();
-        this.setLoading(true);
+        this.loading = true;
         return linearAPI.post('/session/login', { username: usermame, password: password });
+    }
+
+    async loadUser() {
+        const response = await linearAPI.get('/session/');
+        this.user = response.data;
+        this.setActive(true);
     }
 
     logout() {
         this.clear();
-        return linearAPI.get('/session/logout');
+        linearAPI.get('/session/logout').then(() => {
+            this.clear();
+        });
     }
+
+    setActive = (active: boolean) => (this.active = active);
 
     setLoading = (loading: boolean) => (this.loading = loading);
 
     setUser = (user: User) => (this.user = user);
-
-    // loadUser() {
-    //     // TODO set user here insted of in component
-    //     return linearAPI.get('/session');
-    // }
 }
 
 export default new SessionStore();

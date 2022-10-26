@@ -6,16 +6,16 @@ export class UiStore {
     }
 
     // Variables
-    sessionmenuOpen: boolean = false;
+    something: boolean = false;
 
     // Clear
     clear = () => {
-        this.sessionmenuOpen = false;
+        this.something = false;
     };
 
     // Setters
     setSessionMenuOpen(open: boolean) {
-        this.sessionmenuOpen = open;
+        this.something = open;
     }
 }
 

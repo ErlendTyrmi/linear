@@ -20,9 +20,9 @@ export const MainMenu = () => {
             </Toolbar>
             <Divider />
             <List>
-                {['Overblik', 'Ny Ordre', 'Ordre', 'Status', 'Nyheder'].map((text, index) => (
+                {['/', 'Other'].map((text, index) => (
                     <ListItem key={text} disablePadding>
-                        <ListItemButton>
+                        <ListItemButton onClickCapture={() => navigate(text)}>
                             <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                             <ListItemText primary={text} />
                         </ListItemButton>

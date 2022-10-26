@@ -22,7 +22,6 @@ axios.interceptors.response.use(
         if (error.code === AxiosError.ERR_BAD_REQUEST) {
             // Logout on 401
             console.log('Rejected by Axios Interceptor. Logging out... ' + error);
-            store.session.clear();
             store.session.logout();
             store.message.setError(appText.errorLogin['da']);
         } else if (error.code === AxiosError.ERR_NETWORK) {
