@@ -1,38 +1,36 @@
-
+import { Axios, AxiosError, AxiosResponse } from 'axios';
 import { makeAutoObservable } from 'mobx';
+import { User } from '../entities/user';
 
 import { linearAPI } from '../network/api';
+import store from './store';
 
-export default class TestStore {
+export class TestStore {
     constructor() {
         makeAutoObservable(this);
     }
 
     // Variables
+    loading: boolean = false;
     data: any = [];
 
     // Clear
     clear = () => {
-        //console.log('testStore cleared');
+        this.setLoading(false);
         this.setData('');
     };
 
-    setData(data: string) {
-        this.data = data;
-    }
-    getData = () => this.data;
+    setLoading = (loading: boolean) => (this.loading = loading);
+    setData = (data: string) => (this.data = data);
 
     // API Methods
-    getTest = () => {
-        linearAPI.get('/order/all').then((response: any) => {
-            console.log(response.data);
-            console.log(response.status);
-
-            if ((response.status as number) !== 200) {
-                this.data = [];
-            } else {
-                this.setData(response.data);
-            }
+    getDataForUser = async (user: User) => {
+        this.setLoading(true);
+        linearAPI.getWithUserId('/order/mine', user.id).then((response: AxiosResponse) => {
+            this.setData(response.data);
+            this.setLoading(false);
         });
     };
 }
+
+export default new TestStore();

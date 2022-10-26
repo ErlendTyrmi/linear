@@ -1,4 +1,6 @@
-import { Card, Typography } from '@mui/material';
+
+import { Box, Card, LinearProgress, Typography } from '@mui/material';
+import { AxiosResponse } from 'axios';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -7,38 +9,40 @@ import store from '../stores/store';
 
 const FrontPage = () => {
     const navigate = useNavigate();
-    const [dirty, setDirty] = useState(false);
+    let tries = 0;
 
     useEffect(() => {
-        if (dirty === false || store.test.data === '') {
-            store.test.getTest();
-
-            if (store.session.getUser() === null) {
-                navigate('/login');
-            }
+        if (store.session.user != null) {
+            store.test.getDataForUser(store.session.user!);
+        } else {
+            store.session.loadUser().then(() => {
+                if (store.session.user != null) {
+                    store.test.getDataForUser(store.session.user!);
+                }
+            });
         }
-        setDirty(true);
-    }, [dirty, navigate]);
+    }, [navigate]);
+
+    const items = (store.test.data as Order[])?.map((order: Order) => (
+        <Box key={order.id}>
+            <Typography variant="h3">{order.advertiserProductName}</Typography>
+            Vises fra uge {order.startWeek} til uge {order.endWeek}
+            <ul>
+                <li>Annoncør: {order.advertiserName}</li>
+                <li>Dette er en {order.salesProductName}-ordre.</li>
+                <li>Budget: {order.orderBudget}</li>
+                <li>Status: {order.orderStatus}</li>
+            </ul>
+        </Box>
+    ));
 
     return (
-        <Typography>
-            <h1>We got data</h1>
-            <p>UserName: {store.session.user?.name}</p>
-            <h2>Data</h2>
-            {store.test.data &&
-                store.test.data.map((data: Order) => (
-                    <Card>
-                        <h3>{data.advertiserProductName}</h3>
-                        <p>Annoncør: {data.advertiserName}</p>
-                        <p>Dette er en {data.salesProductName}-ordre.</p>
-                        <p>Budget: {data.orderBudget}</p>
-                        <p>Status: {data.orderStatus}</p>
-                        <p>
-                            Vises fra uge {data.startWeek} til uge {data.endWeek}
-                        </p>
-                    </Card>
-                ))}
-        </Typography>
+        <Box>
+            {store.test.loading && <LinearProgress />}
+            <Typography variant="h2">We got data?</Typography>
+            {store.test.data.count < 1 || (store.test.data === null && <p>Not yet...</p>)}
+            {store.test.data && <Box>{items}</Box>}
+        </Box>
     );
 };
 export default observer(FrontPage);

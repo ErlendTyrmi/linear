@@ -4,53 +4,60 @@ import { useEffect } from 'react';
 import { unstable_HistoryRouter, useNavigate } from 'react-router-dom';
 import { User } from '../entities/user';
 import { linearAPI } from '../network/api';
-import store from './store';
 
-export default class SessionStore {
+export class SessionStore {
+    // Variables
+    active: boolean = false;
+    user: User | null = null;
+    loading: boolean = false;
+
     constructor() {
         makeAutoObservable(this);
         makePersistable(this, {
             name: 'store',
-            properties: ['user'],
+            properties: ['active'],
             storage: window.localStorage,
-            expireIn: 30 * 60000, // 30 minutes
+            expireIn: 24 * 60 * 60000, // 24h or on logout
             removeOnExpiration: true
         }).then(
             action((persistStore) => {
-                console.log(persistStore.isHydrated ? 'hydrated' : 'failed to hydrate');
+                console.log(persistStore.isHydrated ? 'session hydrated' : 'session failed to hydrate');
             })
         );
     }
 
-    // Variables
-    user: User | null = null;
-
     // Clear
     clear() {
-        //console.log('sessionStore cleared');
+        this.active = false;
         this.user = null;
+        this.loading = false;
     }
 
     // API Methods
     login(usermame: string, password: string) {
-        store.clear();
+        this.clear();
+        this.loading = true;
         return linearAPI.post('/session/login', { username: usermame, password: password });
     }
 
+    async loadUser() {
+        const response = await linearAPI.get('/session/');
+        this.user = response.data;
+        this.setActive(true);
+    }
+
     logout() {
-        store.clear();
-        return linearAPI.get('/session/logout');
+        this.clear();
+        linearAPI.get('/session/logout').then(() => {
+            this.clear();
+        });
     }
 
-    setUser(user: User) {
-        this.user = user;
-    }
+    setActive = (active: boolean) => (this.active = active);
 
-    getUser() {
-        return this.user;
-    }
+    setLoading = (loading: boolean) => (this.loading = loading);
 
-    loadUser() {
-        return linearAPI.get('/session');
-    }
+    setUser = (user: User) => (this.user = user);
 }
+
+export default new SessionStore();

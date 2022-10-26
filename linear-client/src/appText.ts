@@ -12,5 +12,11 @@ export const appText = {
     },
     errorNetwork: {
         da: 'Der er et problem med netværksforbindelsen.'
+    },
+    noUserName: {
+        da: 'Intet Brugernavn'
+    },
+    advertiserLabel: {
+        da: 'anoncør'
     }
 };
