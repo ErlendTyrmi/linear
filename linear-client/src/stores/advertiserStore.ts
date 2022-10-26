@@ -18,19 +18,19 @@ export class AdvertiserStore {
             id: '1',
             modifiedTime: new Date(),
             name: 'Advertiser 1',
-            agency: 'id123'
+            agencyId: 'id123'
         },
         {
             id: '2',
             modifiedTime: new Date(),
             name: 'Advertiser 2',
-            agency: 'id123'
+            agencyId: 'id123'
         },
         {
             id: '3',
             modifiedTime: new Date(),
             name: 'Advertiser 3',
-            agency: 'id123'
+            agencyId: 'id123'
         }
     ];
 
@@ -50,15 +50,13 @@ export class AdvertiserStore {
     }
 
     // API Methods
-    getDataForUser = async (user: User) => {
+    getDataForUser = async (userId: string) => {
         this.setLoading(true);
 
-        // TODO: MAKE ADVERTISER BASED ON USER VIA AGENCY IN SERVER
-
-        // linearAPI.getWithUserId('/advertiser/mine', user.id).then((response: AxiosResponse) => {
-        //     this.setData(response.data);
-        //     this.setLoading(false);
-        // });
+        linearAPI.getWithUserId('/advertiser/mine', userId).then((response: AxiosResponse) => {
+            this.setData(response.data);
+            this.setLoading(false);
+        });
     };
 }
 

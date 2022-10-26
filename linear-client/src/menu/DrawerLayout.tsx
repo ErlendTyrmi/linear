@@ -1,17 +1,9 @@
-import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import PersonIcon from '@mui/icons-material/Person';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -20,7 +12,7 @@ import { MainMenu } from './MainMenu';
 import { observer } from 'mobx-react-lite';
 import styled from '@emotion/styled';
 import { Button } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SessionMenu from './SessionMenu';
 import { appText } from '../appText';
 
@@ -34,6 +26,16 @@ const DrawerLayout = (props: Props) => {
     const { children } = props;
     const [menuOpen, setMenuOpen] = useState(false);
     const [sessionMenuOpen, setSessionMenuOpen] = useState(false);
+
+    useEffect(() => {
+        if (store.advertiser.data.length > 0) return;
+
+        let user = store.session.user;
+
+        if (user != null) {
+            store.advertiser.getDataForUser(user.id);
+        }
+    });
 
     return (
         <Box sx={{ display: 'flex' }}>

@@ -45,8 +45,11 @@ const SessionMenu = (props: Props) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (store.session.user?.isAdmin) {
-            // TODO: DL advertiser list
+        if (store.advertiser.data.length === 0) return;
+
+        let user = store.session.user;
+        if (user != null) {
+            store.advertiser.getDataForUser(user.id);
         }
     });
 
