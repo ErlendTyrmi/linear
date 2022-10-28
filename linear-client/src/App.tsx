@@ -35,6 +35,36 @@ const Application = () => {
                             </ProtectedRoute>
                         }
                     />
+                    <Route
+                        path="/third"
+                        element={
+                            <ProtectedRoute>
+                                <DrawerLayout>
+                                    <OtherPage />
+                                </DrawerLayout>
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/fourth"
+                        element={
+                            <ProtectedRoute>
+                                <DrawerLayout>
+                                    <OtherPage />
+                                </DrawerLayout>
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/fifth"
+                        element={
+                            <ProtectedRoute>
+                                <DrawerLayout>
+                                    <OtherPage />
+                                </DrawerLayout>
+                            </ProtectedRoute>
+                        }
+                    />
                 </Routes>
             </BrowserRouter>
         </MessageDisplay>

@@ -6,19 +6,43 @@ export class MessageStore {
     }
 
     // Variables
-    messages: string[] = [];
+    successes: string[] = [];
+    infos: string[] = [];
+    warnings: string[] = [];
     errors: string[] = [];
 
     // Clear
-    clear = () => {
+    Clear = () => {
         console.log('statusStore cleared');
-        this.messages = [];
+        this.successes = [];
+        this.infos = [];
+        this.warnings = [];
         this.errors = [];
     };
 
-    setError = (value: string) => this.errors.push(value);
-    lastError = () => (this.errors.length > 0 ? this.errors.at(-1) : '');
-    clearErrors = () => (this.errors = []);
+    // TODO: Probably just clear the list
+    clearErrors = () => {
+        this.errors = [];
+    };
+    clearInfo = () => {
+        this.infos = [];
+    };
+    clearWarnings = () => {
+        this.warnings = [];
+    };
+    clearSuccess = () => {
+        this.successes = [];
+    };
+
+    addSuccess = (value: string) => this.successes.push(value);
+    addInfo = (value: string) => this.infos.push(value);
+    addWarning = (value: string) => this.warnings.push(value);
+    addError = (value: string) => this.errors.push(value);
+
+    lastSuccess = () => this.successes.at(-1) ?? '';
+    lastInfo = () => this.infos.at(-1) ?? '';
+    lastWarning = () => this.warnings.at(-1) ?? '';
+    lastError = () => this.errors.at(-1) ?? '';
 }
 
 export default new MessageStore();

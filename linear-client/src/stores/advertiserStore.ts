@@ -13,26 +13,7 @@ export class AdvertiserStore {
 
     // Variables
     loading: boolean = false;
-    data: Advertiser[] = [
-        {
-            id: '1',
-            modifiedTime: new Date(),
-            name: 'Advertiser 1',
-            agencyId: 'id123'
-        },
-        {
-            id: '2',
-            modifiedTime: new Date(),
-            name: 'Advertiser 2',
-            agencyId: 'id123'
-        },
-        {
-            id: '3',
-            modifiedTime: new Date(),
-            name: 'Advertiser 3',
-            agencyId: 'id123'
-        }
-    ];
+    data: Advertiser[] = [];
 
     selected: string = '';
 
@@ -53,7 +34,7 @@ export class AdvertiserStore {
     getDataForUser = async (userId: string) => {
         this.setLoading(true);
 
-        linearAPI.getWithUserId('/advertiser/mine', userId).then((response: AxiosResponse) => {
+        linearAPI.get('/advertiser/own').then((response: AxiosResponse) => {
             this.setData(response.data);
             this.setLoading(false);
         });

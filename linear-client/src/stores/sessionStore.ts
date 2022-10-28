@@ -1,9 +1,11 @@
+import { AxiosResponse } from 'axios';
 import { action, makeAutoObservable } from 'mobx';
 import { makePersistable } from 'mobx-persist-store';
 import { useEffect } from 'react';
 import { unstable_HistoryRouter, useNavigate } from 'react-router-dom';
 import { User } from '../entities/user';
 import { linearAPI } from '../network/api';
+import store from './store';
 
 export class SessionStore {
     // Variables
@@ -40,14 +42,12 @@ export class SessionStore {
         return linearAPI.post('/session/login', { username: usermame, password: password });
     }
 
-    async loadUser() {
-        const response = await linearAPI.get('/session/');
-        this.user = response.data;
-        this.setActive(true);
+    getUser() {
+        return linearAPI.get('/session/');
     }
 
     logout() {
-        this.clear();
+        store.Clear();
         linearAPI.get('/session/logout').then(() => {
             this.clear();
         });

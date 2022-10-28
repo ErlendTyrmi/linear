@@ -1,12 +1,9 @@
-
 import { Backdrop, Button, Card, CardActions, CardContent, CardHeader, CircularProgress, createStyles, makeStyles, TextField, Theme, Typography } from '@mui/material';
-import { AxiosError, AxiosResponse } from 'axios';
-import { runInAction } from 'mobx';
+import { AxiosResponse } from 'axios';
 import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { appText } from '../../appText';
-import { User } from '../../entities/user';
 import store from '../../stores/store';
 
 const LoginForm = () => {
@@ -15,8 +12,7 @@ const LoginForm = () => {
     const [password, setPassword] = useState('');
 
     const handleLogin = () => {
-
-        store.message.clear();
+        store.message.Clear();
         store.session.login(username, password).then((response: AxiosResponse) => {
             console.log(response);
             store.session.setUser(response.data);
@@ -44,7 +40,6 @@ const LoginForm = () => {
 
     return (
         <form noValidate autoComplete="on">
-
             <Card sx={{ position: 'relative' }}>
                 <Backdrop sx={{ position: 'absolute', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={store.session.loading}>
                     <CircularProgress color="inherit" />
@@ -75,8 +70,8 @@ const LoginForm = () => {
                             onKeyPress={handleKeyPress}
                         />
                     </div>
-                    <Typography>{store.message.errors.length} errors</Typography>
-                    {store.message.errors && store.message.errors.map((data: string) => <Typography>{data}</Typography>)}
+                    <Typography>{store.message.warnings.length} errors</Typography>
+                    {store.message.warnings && store.message.warnings.map((data: string) => <Typography>{data}</Typography>)}
                 </CardContent>
                 <CardActions>
                     <Button variant="contained" size="large" color="secondary" onClick={handleLogin} disabled={store.session.loading === true}>
@@ -84,7 +79,6 @@ const LoginForm = () => {
                     </Button>
                 </CardActions>
             </Card>
-            {store.status.loading == true && <CircularProgress />}
         </form>
     );
 };

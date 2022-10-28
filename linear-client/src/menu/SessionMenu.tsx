@@ -45,13 +45,12 @@ const SessionMenu = (props: Props) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (store.advertiser.data.length === 0) return;
-
+        if (store.advertiser.data.length > 0) return;
         let user = store.session.user;
         if (user != null) {
             store.advertiser.getDataForUser(user.id);
         }
-    });
+    }, []);
 
     const handleLogout = () => {
         closeMenu();

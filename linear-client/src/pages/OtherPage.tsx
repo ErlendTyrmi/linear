@@ -10,22 +10,20 @@ const OtherPage = () => {
     let tries = 0;
 
     useEffect(() => {
-        if (store.session.user === null) {
-            store.session.loadUser();
+        console.log('loading other');
+        if (store.session.user == null) {
+            store.session.getUser();
         }
-
-        if (store.session.user != null) {
-            store.test.getDataForUser(store.session.user);
-        }
-    }, [navigate]);
+        store.order.getData();
+    }, []);
 
     return (
         <Box>
-            {store.test.loading && <LinearProgress />}
+            {store.order.loading && <LinearProgress />}
             <Typography variant="h2">Other Page</Typography>
-            {store.test.data.count < 1 && <p>Not yet...</p>}
-            {store.test.data &&
-                (store.test.data as Order[]).map((order: Order) => (
+            {store.order.data?.length < 1 && <p>Not yet...</p>}
+            {store.order.data &&
+                (store.order.data as Order[]).map((order: Order) => (
                     <Box>
                         <Typography variant="h3">{order.advertiserProductName}</Typography>
                         Vises fra uge {order.startWeek} til uge {order.endWeek}

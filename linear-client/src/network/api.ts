@@ -2,6 +2,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 import { runInAction } from 'mobx';
 
 import { useEffect, useState } from 'react';
+import { appText } from '../appText';
 import store from '../stores/store';
 
 const axios = require('axios').default;
@@ -13,16 +14,21 @@ axios.defaults.withCredentials = true;
 // Response interceptor
 axios.interceptors.response.use(
     function (response: AxiosResponse) {
-        console.log(response);
         return response;
     },
     function (error: AxiosError) {
         // Redirect to login if 401 error
         if (error.code === AxiosError.ERR_BAD_REQUEST) {
             // Logout on 401
-            runInAction(() => {
-                store.session.logout();
-            });
+            console.log('Rejected by Axios Interceptor. Logging out... ' + error);
+            store.session.logout();
+            store.message.addWarning(appText.errorLogin['da']);
+        } else if (error.code === AxiosError.ERR_NETWORK) {
+            console.log('Rejected by Axios Interceptor: ' + error);
+            store.message.addWarning(appText.errorNetwork['da']);
+        } else {
+            console.log('Rejected by Axios Interceptor: ' + error);
+            store.message.addError(appText.error['da'] + ' ' + error.code);
         }
         return Promise.allSettled;
     }
@@ -31,7 +37,7 @@ axios.interceptors.response.use(
 export const linearAPI = {
     post: (url: string, param: any): Promise<AxiosResponse> => axios.post(url, param),
     get: (url: string): Promise<AxiosResponse> => axios.get(url),
-    getWithUserId: (url: string, userId: String): Promise<AxiosResponse> => axios.get(url, { params: { userId: userId } })
+    getWithParams: (url: string, params: {}): Promise<AxiosResponse> => axios.get(url, params)
     // put
     // delete
 };

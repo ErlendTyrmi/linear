@@ -35,7 +35,7 @@ const DrawerLayout = (props: Props) => {
         if (user != null) {
             store.advertiser.getDataForUser(user.id);
         }
-    });
+    }, [store.session.user]);
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -76,7 +76,7 @@ const DrawerLayout = (props: Props) => {
                         '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
                     }}
                 >
-                    {<MainMenu />}
+                    {<MainMenu setOpen={setMenuOpen} />}
                 </Drawer>
                 <Drawer
                     variant="permanent"
@@ -86,7 +86,7 @@ const DrawerLayout = (props: Props) => {
                     }}
                     open
                 >
-                    {<MainMenu />}
+                    {<MainMenu setOpen={setMenuOpen} />}
                 </Drawer>
             </Box>
 
