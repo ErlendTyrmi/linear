@@ -10,7 +10,6 @@ import Typography from '@mui/material/Typography';
 import store from '../stores/store';
 import { MainMenu } from './MainMenu';
 import { observer } from 'mobx-react-lite';
-import styled from '@emotion/styled';
 import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import SessionMenu from './SessionMenu';
@@ -29,13 +28,8 @@ const DrawerLayout = (props: Props) => {
 
     useEffect(() => {
         if (store.advertiser.data.length > 0) return;
-
-        let user = store.session.user;
-
-        if (user != null) {
-            store.advertiser.getDataForUser(user.id);
-        }
-    }, [store.session.user]);
+        store.advertiser.getAdvertisers();
+    }, []);
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -57,7 +51,7 @@ const DrawerLayout = (props: Props) => {
                         TVX linear
                     </Typography>
                     <Button color="inherit" onClick={() => setSessionMenuOpen(true)} endIcon={<PersonIcon />}>
-                        {store.session.user?.name ?? appText.noUserName['da']}
+                        {store.session.user?.name ?? appText.noUserName()}
                     </Button>
                 </Toolbar>
             </AppBar>
@@ -94,6 +88,7 @@ const DrawerLayout = (props: Props) => {
             <Box>
                 <Drawer
                     anchor="right"
+                    variant="temporary"
                     open={sessionMenuOpen}
                     onClose={() => setSessionMenuOpen(false)}
                     sx={{

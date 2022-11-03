@@ -1,5 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 
+// TODO: Use or lose this!!!
 export class UiStore {
     constructor() {
         makeAutoObservable(this);

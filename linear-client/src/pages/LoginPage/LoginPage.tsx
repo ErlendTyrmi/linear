@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
@@ -10,7 +10,13 @@ import LoginForm from './LoginForm';
 const LoginPage = () => {
     // Logo and layout here :-)
 
-    return <LoginForm />;
+    return (
+        <Grid container direction="row" justifyContent="center" alignItems="center">
+            <Box sx={{ maxWidth: 500 }}>
+                <LoginForm />;
+            </Box>
+        </Grid>
+    );
 };
 
 export default observer(LoginPage);

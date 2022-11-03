@@ -1,29 +1,15 @@
-import { Box, Card, LinearProgress, Typography } from '@mui/material';
-import { AxiosResponse } from 'axios';
+import { Box, LinearProgress, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Order } from '../entities/order';
 import store from '../stores/store';
 
 const FrontPage = () => {
-    const navigate = useNavigate();
-
     console.log("front page reloadin'");
 
     useEffect(() => {
-        if (store.session.user == null) {
-            store.session.setLoading(true);
-            store.session.getUser().then((response: AxiosResponse) => {
-                store.session.setUser(response.data);
-                store.session.setLoading(false);
-            });
-        }
-
-        store.order.getData().then((response: AxiosResponse) => {
-            store.order.setData(response.data);
-            store.order.setLoading(false);
-        });
+        store.session.getUser();
+        store.order.getData();
     }, []);
 
     const items = (store.order.data as Order[])?.map((order: Order) => (
@@ -41,11 +27,7 @@ const FrontPage = () => {
 
     return (
         <Box>
-            {store.order.loading && (
-                <Box sx={{ position: 'absolute', top: 0 }}>
-                    <LinearProgress />
-                </Box>
-            )}
+            {store.order.loading && <LinearProgress />}
             <Typography variant="h2">We got data?</Typography>
             {store.order.data && <Box>{items}</Box>}
         </Box>

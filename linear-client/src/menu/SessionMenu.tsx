@@ -1,38 +1,31 @@
 import {
     Avatar,
     Box,
-    Button,
-    Color,
     Divider,
     FormControl,
     Grid,
+    IconButton,
     InputLabel,
     List,
     ListItem,
     ListItemButton,
     ListItemIcon,
     ListItemText,
-    Menu,
     MenuItem,
     Select,
     SelectChangeEvent,
     ThemeProvider,
-    Toolbar,
-    Typography
+    Toolbar
 } from '@mui/material';
-import { autorun } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import React, { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { appText } from '../appText';
 import store from '../stores/store';
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
-import InboxIcon from '@mui/icons-material/Inbox';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import MailIcon from '@mui/icons-material/Mail';
-import { deepPurple } from '@mui/material/colors';
-import { collectStoredAnnotations } from 'mobx/dist/internal';
 import theme from '../theme';
 import { Advertiser } from '../entities/advertiser';
 
@@ -46,10 +39,7 @@ const SessionMenu = (props: Props) => {
 
     useEffect(() => {
         if (store.advertiser.data.length > 0) return;
-        let user = store.session.user;
-        if (user != null) {
-            store.advertiser.getDataForUser(user.id);
-        }
+        store.advertiser.getAdvertisers();
     }, []);
 
     const handleLogout = () => {
@@ -58,43 +48,48 @@ const SessionMenu = (props: Props) => {
         navigate('/login');
     };
 
-    let name = store.session.user?.name ?? 'N N';
+    let userName = store.session.user?.userName ?? 'NN';
 
     const advertisers = (store.advertiser.data as Advertiser[])?.map((advertiser: Advertiser) => <MenuItem value={advertiser.id}>{advertiser.name}</MenuItem>);
 
     return (
         <Box>
             <ThemeProvider theme={theme}>
-                <Toolbar />
+                {/* <Toolbar /> */}
+                <Toolbar>
+                    <IconButton onClick={closeMenu}>
+                        <ChevronRightIcon />
+                    </IconButton>
+                </Toolbar>
                 <Grid container justifyContent="center">
-                    <Avatar alt={name} sx={{ width: 160, height: 160, bgcolor: 'primary.main', margin: 1 }}>
-                        {name}
+                    <Avatar alt={userName} sx={{ width: 160, height: 160, bgcolor: 'primary.main', margin: 1 }}>
+                        {userName}
                     </Avatar>
                 </Grid>
 
                 <List>
-                    <ListItem>
+                    <ListItem key="name">
                         <ListItemIcon>
                             <PersonIcon />
                         </ListItemIcon>
                         <ListItemText primary={store.session.user?.name} />
                     </ListItem>
-                    <ListItem>
+                    <ListItem key="email">
                         <ListItemIcon>
                             <MailIcon />
                         </ListItemIcon>
                         <ListItemText primary={store.session.user?.email} />
                     </ListItem>
                     {store.advertiser.data && (
-                        <ListItem>
+                        <ListItem key="advertiserSelect">
                             <Box sx={{ width: '100%' }}>
                                 <FormControl fullWidth>
-                                    <InputLabel id="demo-simple-select-label">{appText.advertiserLabel['da']}</InputLabel>
+                                    <InputLabel id="advertiserlabel">{appText.advertiserLabel()}</InputLabel>
                                     <Select
                                         labelId="advertiserlabel"
-                                        id="demo-simple-select"
+                                        id="advertiserSelect"
                                         value={store.advertiser.selected}
-                                        label={appText.advertiserLabel['da']}
+                                        label={appText.advertiserLabel()}
                                         onChange={(event: SelectChangeEvent) => {
                                             store.advertiser.setSelected(event.target.value as string);
                                         }}
@@ -108,7 +103,7 @@ const SessionMenu = (props: Props) => {
                 </List>
                 <Divider />
                 <List>
-                    <ListItem disablePadding>
+                    <ListItem disablePadding key="logout">
                         <ListItemButton onClick={handleLogout}>
                             <ListItemIcon>
                                 <LogoutIcon />

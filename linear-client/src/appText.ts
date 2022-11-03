@@ -1,22 +1,31 @@
-export const LANG: string = process.env.REACT_APP_LOCALE ?? 'DA';
+export const language = process.env.REACT_APP_LOCALE ?? 'DA';
 
 export const appText = {
-    login: { da: 'Log ind' },
-    loginName: { da: 'Brugernavn' },
-    loginPassword: { da: 'Adgangskode' },
-    error: {
-        da: 'Der er sket en fejl.'
+    login() {
+        return 'Log ind';
     },
-    errorLogin: {
-        da: 'Forkert brugernavn eller adgangskode.'
+    loginName() {
+        return 'Brugernavn';
     },
-    errorNetwork: {
-        da: 'Der er et problem med netværksforbindelsen.'
+    loginPassword() {
+        return 'Adgangskode';
     },
-    noUserName: {
-        da: 'Intet Brugernavn'
+    error() {
+        return 'Der er sket en fejl.';
     },
-    advertiserLabel: {
-        da: 'anoncør'
+    errorLogin() {
+        return 'Login mislykkedes.';
+    },
+    errorNetwork() {
+        return 'Der er et problem med netværksforbindelsen.';
+    },
+    noUserName() {
+        return 'Intet Brugernavn';
+    },
+    advertiserLabel() {
+        return 'anoncør';
+    },
+    advertiserMissing() {
+        return 'Ingen annoncør';
     }
 };
