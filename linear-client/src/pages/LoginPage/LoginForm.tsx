@@ -36,14 +36,15 @@ const LoginForm = () => {
 
     return (
         <form noValidate autoComplete="on">
+            <img alt="logo" src={require('../../images/tv_x_logo_inline.png')} width="100%" />
             <Card sx={{ position: 'relative' }}>
-                <Backdrop sx={{ position: 'absolute', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={store.session.loading}>
-                    <CircularProgress color="inherit" />
-                </Backdrop>
-                <img alt="logo" src={require('../../images/logo_inline.png')} width="100%" />
-                <CardHeader title={appText.login()} />
                 <CardContent>
+                    <Typography variant="h4">{appText.login()}</Typography>
+
                     <div>
+                        <Backdrop sx={{ position: 'absolute', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={store.session.loading}>
+                            <CircularProgress color="inherit" />
+                        </Backdrop>
                         <TextField
                             error={isInvalid(username)}
                             fullWidth
@@ -68,12 +69,10 @@ const LoginForm = () => {
                         />
                     </div>
                     <Typography>{store.message.lastWarning()}</Typography>
-                </CardContent>
-                <CardActions>
-                    <Button variant="contained" size="large" color="secondary" onClick={handleLogin} disabled={store.session.loading === true}>
+                    <Button color="primary" variant="contained" sx={{ marginTop: '16px', padding: 2 }} fullWidth onClick={handleLogin} disabled={store.session.loading === true}>
                         Login
                     </Button>
-                </CardActions>
+                </CardContent>
             </Card>
         </form>
     );

@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import DrawerLayout from './menu/DrawerLayout';
 import MessageDisplay from './MessageDisplay';
@@ -11,8 +10,6 @@ const Application = () => {
     return (
         <MessageDisplay>
             <BrowserRouter>
-                {/* <MainMenu /> */}
-
                 <Routes>
                     <Route path="/login" element={<LoginPage />} />
                     <Route

@@ -1,5 +1,5 @@
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
-import { Alert, Snackbar } from '@mui/material';
+import { Alert, Box, Snackbar } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import React from 'react';
 import store from './stores/store';
@@ -7,7 +7,7 @@ import store from './stores/store';
 // Show Snackbars (errors and warnings)
 const MessageDisplay: React.FC<{ children: ReactJSXElement }> = ({ children }) => {
     return (
-        <div>
+        <Box>
             {children}
 
             <Snackbar open={store.message.successes?.length > 0} autoHideDuration={6000} onClose={() => {}}>
@@ -56,7 +56,7 @@ const MessageDisplay: React.FC<{ children: ReactJSXElement }> = ({ children }) =
                     {store.message.lastError()}
                 </Alert>
             </Snackbar>
-        </div>
+        </Box>
     );
 };
 
