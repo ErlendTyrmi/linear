@@ -1,10 +1,10 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import DrawerLayout from './menu/DrawerLayout';
-import MessageDisplay from './MessageDisplay';
+import DrawerLayout from './layout/DrawerLayout';
+import MessageDisplay from './layout/MessageDisplay';
 import FrontPage from './pages/FrontPage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import OtherPage from './pages/OtherPage';
-import ProtectedRoute from './ProtectedRoute';
+import ProtectedRoute from './layout/ProtectedRoute';
 
 const Application = () => {
     return (

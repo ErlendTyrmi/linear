@@ -13,6 +13,12 @@ const theme = createTheme({
         error: {
             main: red.A400
         }
+    },
+    shape: {
+        borderRadius: 1
+    },
+    typography: {
+        fontFamily: 'Ubuntu, sans-serif'
     }
 });
 

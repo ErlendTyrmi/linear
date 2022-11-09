@@ -1,4 +1,5 @@
-import { Backdrop, Button, Card, CardActions, CardContent, CardHeader, CircularProgress, TextField, Typography } from '@mui/material';
+import { Backdrop, Box, Button, Card, CardActions, CardContent, CardHeader, CircularProgress, Paper, TextField, Typography } from '@mui/material';
+import { padding } from '@mui/system';
 import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -35,51 +36,47 @@ const LoginForm = () => {
     };
 
     return (
-        <form noValidate autoComplete="on">
-            <img alt="logo" src={require('../../images/tv_x_logo_inline.png')} width="100%" />
-            <Card sx={{ position: 'relative' }}>
-                <CardContent>
-                    <Typography variant="h4">{appText.login()}</Typography>
+        <Paper sx={{ position: 'relative', padding: 2 }}>
+            <Typography variant="h4">{appText.login()}</Typography>
 
-                    <div>
-                        <Backdrop sx={{ position: 'absolute', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={store.session.loading}>
-                            <CircularProgress color="inherit" />
-                        </Backdrop>
-                        <TextField
-                            error={isInvalid(username)}
-                            fullWidth
-                            id="username"
-                            type="email"
-                            label={appText.loginName()}
-                            placeholder={appText.loginName()}
-                            margin="normal"
-                            onChange={handleUsernameChange}
-                            onKeyPress={handleKeyPress}
-                        />
-                        <TextField
-                            error={isInvalid(password)}
-                            fullWidth
-                            id="password"
-                            type="password"
-                            label={appText.loginPassword()}
-                            placeholder={appText.loginPassword()}
-                            margin="normal"
-                            onChange={handlePasswordChange}
-                            onKeyPress={handleKeyPress}
-                        />
-                    </div>
-                    <Typography>{store.message.lastWarning()}</Typography>
-                    <Button color="primary" variant="contained" sx={{ marginTop: '16px', padding: 2 }} fullWidth onClick={handleLogin} disabled={store.session.loading === true}>
-                        Login
-                    </Button>
-                </CardContent>
-            </Card>
-        </form>
+            <div>
+                <Backdrop sx={{ position: 'absolute', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={store.session.loading}>
+                    <CircularProgress color="inherit" />
+                </Backdrop>
+                <TextField
+                    id="username-input"
+                    label={appText.loginName()}
+                    fullWidth
+                    margin="normal"
+                    onChange={handleUsernameChange}
+                    onKeyPress={handleKeyPress}
+                    error={store.message.errors.length > 0}
+                />
+                <TextField
+                    id="password-input"
+                    label={appText.loginPassword()}
+                    fullWidth
+                    type="password"
+                    margin="normal"
+                    autoComplete="current-password"
+                    onChange={handlePasswordChange}
+                    onKeyPress={handleKeyPress}
+                    error={store.message.errors.length > 0}
+                    helperText={store.message.lastWarning() ?? appText.error()}
+                />
+            </div>
+            <Button
+                color="primary"
+                variant="contained"
+                sx={{ marginTop: '16px' }}
+                fullWidth
+                onClick={handleLogin}
+                disabled={store.session.loading === true || username.length < 3 || password.length < 3}
+            >
+                Login
+            </Button>
+        </Paper>
     );
 };
 
 export default observer(LoginForm);
-
-function isInvalid(credential: string): boolean | undefined {
-    return credential === '';
-}

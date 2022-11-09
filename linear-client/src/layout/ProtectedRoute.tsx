@@ -2,7 +2,7 @@ import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { Router, useNavigate } from 'react-router-dom';
-import store from './stores/store';
+import store from '../stores/store';
 
 // Redirect to login.
 const ProtectedRoute: React.FC<{ children: ReactJSXElement }> = ({ children }) => {

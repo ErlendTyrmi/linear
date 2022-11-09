@@ -38,7 +38,7 @@ const SessionMenu = (props: Props) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (store.advertiser.data.length > 0) return;
+        if (store.advertiser.advertisers.length > 0) return;
         store.advertiser.getAdvertisers();
     }, []);
 
@@ -50,7 +50,7 @@ const SessionMenu = (props: Props) => {
 
     let userName = store.session.user?.userName ?? 'NN';
 
-    const advertisers = (store.advertiser.data as Advertiser[])?.map((advertiser: Advertiser) => <MenuItem value={advertiser.id}>{advertiser.name}</MenuItem>);
+    const advertisers = (store.advertiser.advertisers as Advertiser[])?.map((advertiser: Advertiser) => <MenuItem value={advertiser.id}>{advertiser.name}</MenuItem>);
 
     return (
         <Box>
@@ -80,7 +80,7 @@ const SessionMenu = (props: Props) => {
                         </ListItemIcon>
                         <ListItemText primary={store.session.user?.email} />
                     </ListItem>
-                    {store.advertiser.data && (
+                    {store.advertiser.advertisers && (
                         <ListItem key="advertiserSelect">
                             <Box sx={{ width: '100%' }}>
                                 <FormControl fullWidth>

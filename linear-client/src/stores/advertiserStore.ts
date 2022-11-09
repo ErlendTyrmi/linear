@@ -10,7 +10,7 @@ export class AdvertiserStore {
         makeAutoObservable(this);
         makePersistable(this, {
             name: 'advertisers',
-            properties: ['data', 'selected'],
+            properties: ['advertisers', 'favorites', 'selected'],
             storage: window.localStorage,
             expireIn: 48 * 60 * 60000, // 48h or on logout
             removeOnExpiration: true
@@ -23,18 +23,21 @@ export class AdvertiserStore {
 
     // Variables
     loading: boolean = false;
-    data: Advertiser[] = [];
+    advertisers: Advertiser[] = [];
+    favorites: any[] = [];
     selected: string | undefined = undefined;
 
     // Clear
     clear = () => {
         this.setLoading(false);
-        this.data = [];
+        this.advertisers = [];
+        this.favorites;
         this.selected = undefined;
     };
 
     setLoading = (loading: boolean) => (this.loading = loading);
-    setData = (data: Advertiser[]) => (this.data = data);
+    setAdvertisers = (data: Advertiser[]) => (this.advertisers = data);
+    setFavorites = (data: any[]) => (this.favorites = data);
     setSelected(value: string) {
         this.selected = value;
         console.log(this.selected);
@@ -45,15 +48,25 @@ export class AdvertiserStore {
         this.setLoading(true);
         const url = store.session.user?.isAdmin ? 'advertiser/all' : '/advertiser/own';
         const response = await linearAPI.get(url);
-        this.setData(response.data);
+        this.setAdvertisers(response.data);
         if (this.selected === undefined) {
-            this.setInitialSelected(this.data);
+            this.setInitialSelected(this.advertisers);
+        }
+        this.setLoading(false);
+    }
+
+    async getFavorites() {
+        this.setLoading(true);
+        const response = await linearAPI.get('advertiser/favorites');
+        this.setFavorites(response.data);
+        if (this.selected === undefined) {
+            //this.setSelected(this.favorites); // TODO: selected must be favorite - favorites auto update on select - selected means active for whole session
         }
         this.setLoading(false);
     }
 
     private setInitialSelected(data: Advertiser[]) {
-        var first = this.data.at(0);
+        var first = this.advertisers.at(0);
         if (first !== undefined) {
             this.setSelected(first.id);
             console.log('Initial selected: ' + this.selected);
