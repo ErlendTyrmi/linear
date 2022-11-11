@@ -23,6 +23,7 @@ export default function TopMenuAdvertiserSelect() {
 
     const handleMenuItemClick = (event: React.MouseEvent<HTMLElement>, index: string) => {
         store.advertiser.setSelected(index);
+        navigate('/');
         setAnchorEl(null);
     };
 

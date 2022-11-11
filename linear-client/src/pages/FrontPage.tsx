@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { Order } from '../entities/order';
 import store from '../stores/store';
 import Image from '../assets/images/england.jpg';
-import { customColors } from '../theme';
+import theme, { customColors } from '../theme';
 import { appText } from '../appText';
 
 const FrontPage = () => {
@@ -35,23 +35,27 @@ const FrontPage = () => {
             <Box
                 sx={{
                     minHeight: 200,
-                    backgroundImage: `url(${Image})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
+                    // backgroundImage: `url(${Image})`,
+                    // backgroundSize: 'cover',
+                    // backgroundPosition: 'center',
+                    color: 'white',
+                    backgroundColor: theme.palette.primary.main,
                     flexDirection: 'row-reverse',
                     paddingTop: { xs: '100px', sm: '200px' },
                     display: 'flex'
                 }}
             >
-                <Box sx={{ padding: 2, maxWidth: 420, backgroundColor: customColors.whiteSemiTrans }}>
+                <Box sx={{ padding: 2, maxWidth: 420 }}>
                     {/* backgroundColor: customColors.whiteSemiTrans, */}
                     <Typography variant="h2">Vigtige tidsbestemte beskeder</Typography>
                     <Typography>Kæmpe mega kampagneudsalg! Elkrise-rabat på det hele.</Typography>
-                    <Button variant="contained">Køb mere nu</Button>
+                    <Button variant="outlined" color="inherit">
+                        Køb mere nu
+                    </Button>
                 </Box>
             </Box>
 
-            <Grid container spacing={2} sx={{ padding: 2 }}>
+            <Grid container spacing={{ xs: 2, sm: 4 }} sx={{ padding: 4 }}>
                 <Grid item xs={12} sm={12} md={4}>
                     <Box>
                         {store.order.loading && <LinearProgress />}
@@ -72,10 +76,6 @@ const FrontPage = () => {
                     <Typography variant="subtitle1">{store.advertiser.getCurrentAdvertiser()?.name}</Typography>
                     <Typography>{store.order.getOrdersForCurrentAdvertiser()?.length} ordre.</Typography>
                     <Typography>{store.order.getOrdersOverBudget()?.length} er over budget.</Typography>
-                    <Divider />
-                    <Typography variant="h3">Alle dine ordre</Typography>
-                    <Typography>{store.order.getOrdersForAllFavoriteAdvertisers()?.length} ordre.</Typography>
-                    <Typography>{store.order.getOrdersOverBudgetForAllSelected()?.length} er over budget.</Typography>
                     <Divider />
                     <Button>Se mere</Button>
                 </Grid>

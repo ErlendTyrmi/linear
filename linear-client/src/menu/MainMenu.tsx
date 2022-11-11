@@ -21,7 +21,7 @@ export const MainMenu = (props: Props) => {
                         navigate('/');
                     }}
                 >
-                    <img alt="banner-image" src={require('../assets/images/logo_inline.png')} width="100%" />
+                    <img alt="banner-image" src={require('../assets/images/logo_inline.png')} height="27px" />
                 </Button>
             </Toolbar>
             <Divider />
