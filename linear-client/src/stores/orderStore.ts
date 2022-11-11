@@ -1,8 +1,5 @@
-import { AxiosResponse } from 'axios';
 import { makeAutoObservable } from 'mobx';
 import { Order } from '../entities/order';
-import { User } from '../entities/user';
-
 import { linearAPI } from '../network/api';
 import store from './store';
 
@@ -23,6 +20,36 @@ export class OrderStore {
 
     setLoading = (loading: boolean) => (this.loading = loading);
     setData = (data: Order[]) => (this.data = data);
+    getOrdersForCurrentAdvertiser() {
+        let id = store.advertiser.selected;
+        if (id === undefined) return [];
+
+        return this.data?.filter((it) => {
+            let itsId = it.advertiserId;
+            return itsId && itsId === id;
+        });
+    }
+
+    getOrdersForAllFavoriteAdvertisers() {
+        var myAdvertisers = store.advertiser.getFavoriteIds();
+        if (myAdvertisers.length < 1) return [];
+
+        return this.data?.filter((it) => {
+            let advId = it.advertiserId;
+            return advId && myAdvertisers.includes(advId);
+        });
+    }
+
+    getOrdersOverBudgetForAllSelected() {
+        var myAdvertisers = store.advertiser.getFavoriteIds();
+        if (myAdvertisers.length < 1) return [];
+        return this.data?.filter((it: Order) => myAdvertisers.includes(it.advertiserId) && it.orderTotal > it.orderBudget);
+    }
+    getOrdersOverBudget() {
+        let id = store.advertiser.selected;
+        if (id === undefined) return [];
+        return this.data?.filter((it: Order) => it.advertiserId === id && it.orderTotal > it.orderBudget);
+    }
 
     // API Methods
     async loadOrders() {

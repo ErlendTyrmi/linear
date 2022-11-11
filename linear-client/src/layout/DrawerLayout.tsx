@@ -21,9 +21,8 @@ const DrawerLayout = (props: Props) => {
     const [sessionMenuOpen, setSessionMenuOpen] = useState(false);
 
     useEffect(() => {
-        if (store.advertiser.advertisers.length > 0) return;
-        store.advertiser.loadAdvertisers();
-        store.advertiser.loadFavorites();
+        if (store.advertiser.advertisers.length < 1) store.advertiser.loadAdvertisers();
+        if (store.advertiser.favorites.length < 1) store.advertiser.loadFavorites();
         if (store.agency.data === null) store.agency.loadAgency();
     }, []);
 
@@ -74,7 +73,7 @@ const DrawerLayout = (props: Props) => {
                     <SessionMenu setOpen={setSessionMenuOpen} />
                 </Drawer>
             </Box>
-            <Box component="main" sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
+            <Box component="main" sx={{ flexGrow: 1, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
                 <Toolbar />
                 {children}
             </Box>

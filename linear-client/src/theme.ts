@@ -22,4 +22,22 @@ const theme = createTheme({
     }
 });
 
+// Headers
+theme.typography.h1 = {
+    fontWeight: '800',
+    fontSize: '2em'
+};
+theme.typography.h2 = {
+    fontWeight: '800',
+    fontSize: '1.5em'
+};
+theme.typography.h3 = {
+    fontWeight: '800',
+    fontSize: '1.3em'
+};
+
+export const customColors = {
+    whiteSemiTrans: 'rgba(255, 255, 255, 0.6)'
+};
+
 export default theme;

@@ -39,10 +39,25 @@ export const appText = {
         return 'Tilføj';
     },
 
+    // Menu
+
+    menuOverview() {
+        return 'Overblik';
+    },
+    menuOrder() {
+        return 'Ordre';
+    },
+    menuStatus() {
+        return 'Status';
+    },
+    menuAdvertiser() {
+        return 'Annoncør';
+    },
+
     // Advertiser
 
     advertiserLabel() {
-        return 'annoncør';
+        return 'Annoncør';
     },
     advertiserMissing() {
         return 'Ingen annoncør';
@@ -55,5 +70,10 @@ export const appText = {
     },
     advertiserSelectExplainer() {
         return 'Her kan du vælge hvilke annoncører, der skal vises i menuen.';
+    },
+
+    // Order
+    orderNoneFound() {
+        return 'Ingen ordre fundet';
     }
 };

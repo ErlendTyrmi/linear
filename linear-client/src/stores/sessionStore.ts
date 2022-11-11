@@ -38,6 +38,7 @@ export class SessionStore {
         this.setLoading(true);
         const response = await linearAPI.post('/session/login', { username: usermame, password: password });
         this.setUser(response.data);
+        this.setLoading(false);
     }
 
     async loadUser() {

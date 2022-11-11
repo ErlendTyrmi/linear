@@ -42,6 +42,17 @@ export class AdvertiserStore {
         this.selected = value;
         console.log(this.selected);
     }
+    getAdvertiser(selected: string | undefined): Advertiser | undefined {
+        let advertiser = this.advertisers.find((it) => it.id === selected);
+        return advertiser;
+    }
+    getCurrentAdvertiser() {
+        return this.getAdvertiser(this.selected);
+    }
+    getFavoriteIds() {
+        if (this.favorites && this.favorites?.length > 0) return this.favorites.map((it) => it.id);
+        return [];
+    }
 
     // API Methods
     async loadAdvertisers() {
@@ -56,7 +67,7 @@ export class AdvertiserStore {
     async loadFavorites() {
         this.setLoading(true);
         const response = await linearAPI.get('/advertiser/favorites/');
-        if (response.data.length > 0) this.setFavorites(response.data);
+        if (response.data && response.data.length > 0) this.setFavorites(response.data);
         this.setInitialSelected();
         this.setLoading(false);
     }
@@ -70,7 +81,7 @@ export class AdvertiserStore {
     }
 
     async addFavoriteAndUpload(data: Advertiser) {
-        this.favorites.push(data);
+        this.favorites?.push(data);
         await this.postFavorites(this.favorites);
         this.setLoading(false);
     }
@@ -82,18 +93,9 @@ export class AdvertiserStore {
     }
 
     // Helpers
-    getAdvertiser(selected: string | undefined): Advertiser | undefined {
-        let advertiser = this.advertisers.find((it) => it.id === selected);
-        return advertiser;
-    }
-
-    getFavoriteIds() {
-        if (this.favorites.length > 0) return this.favorites.map((it) => it.id);
-        return [];
-    }
 
     private setInitialSelected() {
-        if (this.favorites.length < 1) {
+        if (!this.favorites || this.favorites.length < 1) {
             this.selected = undefined;
             return;
         }

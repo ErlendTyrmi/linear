@@ -48,7 +48,7 @@ const AdvertiserSelectPage = () => {
     ));
 
     return (
-        <Box>
+        <Box sx={{ padding: 2 }}>
             <Typography variant="h2">{appText.advertiserSelect()}</Typography>
             <Typography>{appText.advertiserSelectExplainer()}</Typography>
             {store.advertiser.advertisers.length > 0 && <List>{items}</List>}
