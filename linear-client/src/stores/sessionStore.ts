@@ -1,8 +1,5 @@
-import { AxiosResponse } from 'axios';
 import { action, makeAutoObservable } from 'mobx';
 import { makePersistable } from 'mobx-persist-store';
-import { useEffect } from 'react';
-import { unstable_HistoryRouter, useNavigate } from 'react-router-dom';
 import { User } from '../entities/user';
 import { linearAPI } from '../network/api';
 import store from './store';
@@ -16,10 +13,10 @@ export class SessionStore {
     constructor() {
         makeAutoObservable(this);
         makePersistable(this, {
-            name: 'store',
+            name: 'session',
             properties: ['active'],
             storage: window.localStorage,
-            expireIn: 24 * 60 * 60000, // 24h or on logout
+            expireIn: 48 * 60 * 60000, // 48h or on logout
             removeOnExpiration: true
         }).then(
             action((persistStore) => {
@@ -36,21 +33,24 @@ export class SessionStore {
     }
 
     // API Methods
-    login(usermame: string, password: string) {
+    async login(usermame: string, password: string) {
         this.clear();
+        this.setLoading(true);
+        const response = await linearAPI.post('/session/login', { username: usermame, password: password });
+        this.setUser(response.data);
+        this.setLoading(false);
+    }
+
+    async loadUser() {
         this.loading = true;
-        return linearAPI.post('/session/login', { username: usermame, password: password });
+        const response = await linearAPI.get('/session/');
+        this.setUser(response.data);
+        this.setLoading(false);
     }
 
-    getUser() {
-        return linearAPI.get('/session/');
-    }
-
-    logout() {
-        store.Clear();
-        linearAPI.get('/session/logout').then(() => {
-            this.clear();
-        });
+    async logout() {
+        store.clear();
+        linearAPI.get('/session/logout');
     }
 
     setActive = (active: boolean) => (this.active = active);

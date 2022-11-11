@@ -1,21 +1,22 @@
 import { makeAutoObservable } from 'mobx';
 
+// TODO: Use or lose this!!!
 export class UiStore {
     constructor() {
         makeAutoObservable(this);
     }
 
     // Variables
-    something: boolean = false;
+    loading: boolean = false;
 
     // Clear
     clear = () => {
-        this.something = false;
+        this.loading = false;
     };
 
     // Setters
     setSessionMenuOpen(open: boolean) {
-        this.something = open;
+        this.loading = open;
     }
 }
 

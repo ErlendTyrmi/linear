@@ -1,7 +1,4 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import { runInAction } from 'mobx';
-
-import { useEffect, useState } from 'react';
 import { appText } from '../appText';
 import store from '../stores/store';
 
@@ -22,13 +19,13 @@ axios.interceptors.response.use(
             // Logout on 401
             console.log('Rejected by Axios Interceptor. Logging out... ' + error);
             store.session.logout();
-            store.message.addWarning(appText.errorLogin['da']);
+            store.message.addError(appText.errorLogin());
         } else if (error.code === AxiosError.ERR_NETWORK) {
             console.log('Rejected by Axios Interceptor: ' + error);
-            store.message.addWarning(appText.errorNetwork['da']);
+            store.message.addWarning(appText.errorNetwork());
         } else {
             console.log('Rejected by Axios Interceptor: ' + error);
-            store.message.addError(appText.error['da'] + ' ' + error.code);
+            store.message.addError(appText.error() + ' ' + error.code);
         }
         return Promise.allSettled;
     }

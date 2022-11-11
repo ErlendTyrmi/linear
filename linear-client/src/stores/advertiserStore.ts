@@ -1,7 +1,6 @@
-import { Axios, AxiosError, AxiosResponse } from 'axios';
-import { makeAutoObservable } from 'mobx';
+import { action, makeAutoObservable } from 'mobx';
+import { makePersistable } from 'mobx-persist-store';
 import { Advertiser } from '../entities/advertiser';
-import { User } from '../entities/user';
 
 import { linearAPI } from '../network/api';
 import store from './store';
@@ -9,36 +8,102 @@ import store from './store';
 export class AdvertiserStore {
     constructor() {
         makeAutoObservable(this);
+        makePersistable(this, {
+            name: 'advertisers',
+            properties: ['advertisers', 'favorites', 'selected'],
+            storage: window.localStorage,
+            expireIn: 48 * 60 * 60000, // 48h or on logout
+            removeOnExpiration: true
+        }).then(
+            action((persistStore) => {
+                console.log(persistStore.isHydrated ? 'channels hydrated' : 'channels failed to hydrate');
+            })
+        );
     }
 
     // Variables
     loading: boolean = false;
-    data: Advertiser[] = [];
-
-    selected: string = '';
+    advertisers: Advertiser[] = [];
+    favorites: Advertiser[] = [];
+    selected: string | undefined = undefined;
 
     // Clear
     clear = () => {
         this.setLoading(false);
-        this.data = [];
-        this.selected = '';
+        this.advertisers = [];
+        this.favorites = [];
+        this.selected = undefined;
     };
 
     setLoading = (loading: boolean) => (this.loading = loading);
-    setData = (data: Advertiser[]) => (this.data = data);
+    setAdvertisers = (data: Advertiser[]) => (this.advertisers = data);
+    setFavorites = (data: Advertiser[]) => (this.favorites = data);
     setSelected(value: string) {
         this.selected = value;
+        console.log(this.selected);
+    }
+    getAdvertiser(selected: string | undefined): Advertiser | undefined {
+        let advertiser = this.advertisers.find((it) => it.id === selected);
+        return advertiser;
+    }
+    getCurrentAdvertiser() {
+        return this.getAdvertiser(this.selected);
+    }
+    getFavoriteIds() {
+        if (this.favorites && this.favorites?.length > 0) return this.favorites.map((it) => it.id);
+        return [];
     }
 
     // API Methods
-    getDataForUser = async (userId: string) => {
+    async loadAdvertisers() {
         this.setLoading(true);
+        const url = store.session.user?.isAdmin ? '/advertiser/all/' : '/advertiser/own/';
+        const response = await linearAPI.get(url);
+        if (response.data.length > 0) this.setAdvertisers(response.data);
+        this.setInitialSelected();
+        this.setLoading(false);
+    }
 
-        linearAPI.get('/advertiser/own').then((response: AxiosResponse) => {
-            this.setData(response.data);
-            this.setLoading(false);
-        });
-    };
+    async loadFavorites() {
+        this.setLoading(true);
+        const response = await linearAPI.get('/advertiser/favorites/');
+        if (response.data && response.data.length > 0) this.setFavorites(response.data);
+        this.setInitialSelected();
+        this.setLoading(false);
+    }
+
+    async postFavorites(favorites: Advertiser[]) {
+        this.setLoading(true);
+        const response = await linearAPI.post('/advertiser/favorites/', favorites);
+        this.setFavorites(response.data);
+        this.setInitialSelected();
+        this.setLoading(false);
+    }
+
+    async addFavoriteAndUpload(data: Advertiser) {
+        this.favorites?.push(data);
+        await this.postFavorites(this.favorites);
+        this.setLoading(false);
+    }
+
+    async removeFavoriteAndUpload(data: Advertiser) {
+        let newFavorites = this.favorites.filter((advertiser) => advertiser.id !== data.id);
+        this.setFavorites(newFavorites);
+        await this.postFavorites(this.favorites);
+    }
+
+    // Helpers
+
+    private setInitialSelected() {
+        if (!this.favorites || this.favorites.length < 1) {
+            this.selected = undefined;
+            return;
+        }
+        var first = this.favorites.at(0);
+        if (first !== undefined) {
+            this.setSelected(first.id);
+        }
+    }
 }
 
 export default new AdvertiserStore();

@@ -1,22 +1,79 @@
-export const LANG: string = process.env.REACT_APP_LOCALE ?? 'DA';
+import TopMenuAdvertiserSelect from './menu/TopMenuAdvertiserSelect';
+
+export const language = process.env.REACT_APP_LOCALE ?? 'DA';
 
 export const appText = {
-    login: { da: 'Log ind' },
-    loginName: { da: 'Brugernavn' },
-    loginPassword: { da: 'Adgangskode' },
-    error: {
-        da: 'Der er sket en fejl.'
+    // Login & general errors
+
+    login() {
+        return 'Log ind';
     },
-    errorLogin: {
-        da: 'Forkert brugernavn eller adgangskode.'
+    logout() {
+        return 'Log ud';
     },
-    errorNetwork: {
-        da: 'Der er et problem med netværksforbindelsen.'
+    loginName() {
+        return 'Brugernavn';
     },
-    noUserName: {
-        da: 'Intet Brugernavn'
+    loginPassword() {
+        return 'Adgangskode';
     },
-    advertiserLabel: {
-        da: 'anoncør'
+    error() {
+        return 'Der er sket en fejl.';
+    },
+    errorLogin() {
+        return 'Login mislykkedes.';
+    },
+    errorNetwork() {
+        return 'Der er et problem med netværksforbindelsen.';
+    },
+    noUserName() {
+        return 'Ingen Bruger';
+    },
+
+    // Lists and collections
+
+    edit() {
+        return 'Redigèr';
+    },
+    add() {
+        return 'Tilføj';
+    },
+
+    // Menu
+
+    menuOverview() {
+        return 'Overblik';
+    },
+    menuOrder() {
+        return 'Ordre';
+    },
+    menuStatus() {
+        return 'Status';
+    },
+    menuAdvertiser() {
+        return 'Annoncør';
+    },
+
+    // Advertiser
+
+    advertiserLabel() {
+        return 'Annoncør';
+    },
+    advertiserMissing() {
+        return 'Ingen annoncør';
+    },
+    advertiserFavorites() {
+        return 'Dine annoncører';
+    },
+    advertiserSelect() {
+        return 'Vælg annoncører';
+    },
+    advertiserSelectExplainer() {
+        return 'Her kan du vælge hvilke annoncører, der skal vises i menuen.';
+    },
+
+    // Order
+    orderNoneFound() {
+        return 'Ingen ordre fundet';
     }
 };

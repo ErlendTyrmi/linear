@@ -1,20 +1,13 @@
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import PersonIcon from '@mui/icons-material/Person';
-import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import store from '../stores/store';
-import { MainMenu } from './MainMenu';
+import { MainMenu } from '../menu/MainMenu';
 import { observer } from 'mobx-react-lite';
-import styled from '@emotion/styled';
-import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
-import SessionMenu from './SessionMenu';
-import { appText } from '../appText';
+import SessionMenu from '../menu/SessionMenu';
+import TopMenu from '../menu/TopMenu';
 
 const drawerWidth = 240;
 
@@ -28,41 +21,18 @@ const DrawerLayout = (props: Props) => {
     const [sessionMenuOpen, setSessionMenuOpen] = useState(false);
 
     useEffect(() => {
-        if (store.advertiser.data.length > 0) return;
-
-        let user = store.session.user;
-
-        if (user != null) {
-            store.advertiser.getDataForUser(user.id);
-        }
-    }, [store.session.user]);
+        if (store.advertiser.advertisers.length < 1) store.advertiser.loadAdvertisers();
+        if (store.advertiser.favorites.length < 1) store.advertiser.loadFavorites();
+        if (store.agency.data === null) store.agency.loadAgency();
+    }, []);
 
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
 
-            <AppBar
-                elevation={0}
-                position="fixed"
-                sx={{
-                    width: { sm: `calc(100% - ${drawerWidth}px)` },
-                    ml: { sm: `${drawerWidth}px` }
-                }}
-            >
-                <Toolbar>
-                    <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={() => setMenuOpen(true)} sx={{ mr: 2, display: { sm: 'none' } }}>
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6" noWrap component="div" sx={{ flexGrow: '1' }}>
-                        TVX linear
-                    </Typography>
-                    <Button color="inherit" onClick={() => setSessionMenuOpen(true)} endIcon={<PersonIcon />}>
-                        {store.session.user?.name ?? appText.noUserName['da']}
-                    </Button>
-                </Toolbar>
-            </AppBar>
-
             {/* Main Menu - Mobile and destop drawers */}
+            {<TopMenu setMenuOpen={setMenuOpen.bind(this)} setSessionMenuOpen={setSessionMenuOpen.bind(this)} drawerWidth={drawerWidth} />}
+
             <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label="mailbox folders">
                 <Drawer
                     variant="temporary"
@@ -89,11 +59,11 @@ const DrawerLayout = (props: Props) => {
                     {<MainMenu setOpen={setMenuOpen} />}
                 </Drawer>
             </Box>
-
             {/* Session Menu */}
             <Box>
                 <Drawer
                     anchor="right"
+                    variant="temporary"
                     open={sessionMenuOpen}
                     onClose={() => setSessionMenuOpen(false)}
                     sx={{
@@ -103,8 +73,7 @@ const DrawerLayout = (props: Props) => {
                     <SessionMenu setOpen={setSessionMenuOpen} />
                 </Drawer>
             </Box>
-
-            <Box component="main" sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
+            <Box component="main" sx={{ flexGrow: 1, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
                 <Toolbar />
                 {children}
             </Box>

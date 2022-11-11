@@ -1,7 +1,7 @@
-import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Toolbar, Button } from '@mui/material';
-import InboxIcon from '@mui/icons-material/Inbox';
-import MailIcon from '@mui/icons-material/Mail';
+import { List, ListItem, ListItemButton, ListItemText, Divider, Toolbar, Button, useTheme, Typography, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { menuItems } from '../App';
+import store from '../stores/store';
 
 interface Props {
     setOpen: any;
@@ -9,38 +9,50 @@ interface Props {
 
 export const MainMenu = (props: Props) => {
     const navigate = useNavigate();
+    const theme = useTheme();
     const close = () => props.setOpen(false);
 
     return (
-        <div>
+        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <Toolbar>
                 <Button
-                    variant="contained"
                     onClickCapture={() => {
                         close();
                         navigate('/');
                     }}
                 >
-                    <img src={require('../images/logo.png')} height="40" />
+                    <img alt="banner-image" src={require('../assets/images/logo_inline.png')} width="100%" />
                 </Button>
             </Toolbar>
             <Divider />
             <List>
-                {['/', '/Other', '/third', '/fourth', '/fifth'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
+                {menuItems.map((item) => (
+                    <ListItem key={item.name} disablePadding>
                         <ListItemButton
                             onClickCapture={() => {
                                 close();
-                                navigate(text);
+                                navigate(item.url);
                             }}
                         >
-                            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                            <ListItemText primary={text} />
+                            <ListItemText primary={item.name} />
                         </ListItemButton>
                     </ListItem>
                 ))}
             </List>
             <Divider />
-        </div>
+            <Box id="Spacer" sx={{ flex: '1' }}>
+                {' '}
+            </Box>
+            <List>
+                <ListItem key="manu-warnings">
+                    <Divider />
+                    <ListItemText>
+                        <Typography variant="h3">Alle dine ordre</Typography>
+                        <Typography>{store.order.getOrdersForAllFavoriteAdvertisers()?.length} ordre.</Typography>
+                        <Typography>{store.order.getOrdersOverBudgetForAllSelected()?.length} er over budget.</Typography>
+                    </ListItemText>
+                </ListItem>
+            </List>
+        </Box>
     );
 };
