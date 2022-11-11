@@ -21,10 +21,10 @@ const DrawerLayout = (props: Props) => {
     const [sessionMenuOpen, setSessionMenuOpen] = useState(false);
 
     useEffect(() => {
-        store.advertiser.getFavorites();
-
         if (store.advertiser.advertisers.length > 0) return;
-        store.advertiser.getAdvertisers();
+        store.advertiser.loadAdvertisers();
+        store.advertiser.loadFavorites();
+        if (store.agency.data === null) store.agency.loadAgency();
     }, []);
 
     return (

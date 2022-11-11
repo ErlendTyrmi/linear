@@ -5,6 +5,7 @@ import FrontPage from './pages/FrontPage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import OtherPage from './pages/OtherPage';
 import ProtectedRoute from './layout/ProtectedRoute';
+import AdvertiserSelectPage from './pages/AdvertiserSelectPage';
 
 const Application = () => {
     return (
@@ -23,11 +24,11 @@ const Application = () => {
                         }
                     />
                     <Route
-                        path="/other"
+                        path="/advertiser"
                         element={
                             <ProtectedRoute>
                                 <DrawerLayout>
-                                    <OtherPage />
+                                    <AdvertiserSelectPage />
                                 </DrawerLayout>
                             </ProtectedRoute>
                         }

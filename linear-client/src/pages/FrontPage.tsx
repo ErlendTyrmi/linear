@@ -8,8 +8,10 @@ const FrontPage = () => {
     console.log("front page reloadin'");
 
     useEffect(() => {
-        store.session.getUser();
-        store.order.getData();
+        if (store.session.user === null) {
+            store.session.loadUser();
+        }
+        store.order.loadOrders();
     }, []);
 
     const items = (store.order.data as Order[])?.map((order: Order) => (

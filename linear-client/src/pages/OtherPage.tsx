@@ -6,8 +6,8 @@ import store from '../stores/store';
 
 const OtherPage = () => {
     useEffect(() => {
-        store.session.getUser();
-        store.order.getData();
+        store.session.loadUser();
+        store.order.loadOrders();
     }, []);
 
     const items = (store.order.data as Order[])?.map((order: Order) => (

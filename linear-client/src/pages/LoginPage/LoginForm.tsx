@@ -62,7 +62,7 @@ const LoginForm = () => {
                     onChange={handlePasswordChange}
                     onKeyPress={handleKeyPress}
                     error={store.message.errors.length > 0}
-                    helperText={store.message.lastWarning() ?? appText.error()}
+                    helperText={store.message.lastError() ?? appText.error()}
                 />
             </div>
             <Button

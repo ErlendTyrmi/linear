@@ -7,16 +7,16 @@ export class UiStore {
     }
 
     // Variables
-    something: boolean = false;
+    loading: boolean = false;
 
     // Clear
     clear = () => {
-        this.something = false;
+        this.loading = false;
     };
 
     // Setters
     setSessionMenuOpen(open: boolean) {
-        this.something = open;
+        this.loading = open;
     }
 }
 

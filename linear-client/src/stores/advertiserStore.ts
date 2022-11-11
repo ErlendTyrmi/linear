@@ -24,52 +24,82 @@ export class AdvertiserStore {
     // Variables
     loading: boolean = false;
     advertisers: Advertiser[] = [];
-    favorites: any[] = [];
+    favorites: Advertiser[] = [];
     selected: string | undefined = undefined;
 
     // Clear
     clear = () => {
         this.setLoading(false);
         this.advertisers = [];
-        this.favorites;
+        this.favorites = [];
         this.selected = undefined;
     };
 
     setLoading = (loading: boolean) => (this.loading = loading);
     setAdvertisers = (data: Advertiser[]) => (this.advertisers = data);
-    setFavorites = (data: any[]) => (this.favorites = data);
+    setFavorites = (data: Advertiser[]) => (this.favorites = data);
     setSelected(value: string) {
         this.selected = value;
         console.log(this.selected);
     }
 
     // API Methods
-    async getAdvertisers() {
+    async loadAdvertisers() {
         this.setLoading(true);
-        const url = store.session.user?.isAdmin ? 'advertiser/all' : '/advertiser/own';
+        const url = store.session.user?.isAdmin ? '/advertiser/all/' : '/advertiser/own/';
         const response = await linearAPI.get(url);
-        this.setAdvertisers(response.data);
-        if (this.selected === undefined) {
-            this.setInitialSelected(this.advertisers);
-        }
+        if (response.data.length > 0) this.setAdvertisers(response.data);
+        this.setInitialSelected();
         this.setLoading(false);
     }
 
-    async getFavorites() {
+    async loadFavorites() {
         this.setLoading(true);
-        const response = await linearAPI.get('advertiser/favorites');
-        this.setFavorites(response.data);
-        if (this.selected === undefined) {
-            //this.setSelected(this.favorites); // TODO: selected must be favorite - favorites auto update on select - selected means active for whole session
-        }
+        const response = await linearAPI.get('/advertiser/favorites/');
+        if (response.data.length > 0) this.setFavorites(response.data);
+        this.setInitialSelected();
         this.setLoading(false);
     }
 
-    private setInitialSelected(data: Advertiser[]) {
-        var first = this.advertisers.at(0);
+    async postFavorites(favorites: Advertiser[]) {
+        this.setLoading(true);
+        const response = await linearAPI.post('/advertiser/favorites/', favorites);
+        this.setFavorites(response.data);
+        this.setInitialSelected();
+        this.setLoading(false);
+    }
+
+    async addFavoriteAndUpload(data: Advertiser) {
+        this.favorites.push(data);
+        await this.postFavorites(this.favorites);
+        this.setLoading(false);
+    }
+
+    async removeFavoriteAndUpload(data: Advertiser) {
+        let newFavorites = this.favorites.filter((advertiser) => advertiser.id !== data.id);
+        this.setFavorites(newFavorites);
+        await this.postFavorites(this.favorites);
+    }
+
+    // Helpers
+    getAdvertiser(selected: string | undefined): Advertiser | undefined {
+        let advertiser = this.advertisers.find((it) => it.id === selected);
+        return advertiser;
+    }
+
+    getFavoriteIds() {
+        if (this.favorites.length > 0) return this.favorites.map((it) => it.id);
+        return [];
+    }
+
+    private setInitialSelected() {
+        if (this.favorites.length < 1) {
+            this.selected = undefined;
+            return;
+        }
+        var first = this.favorites.at(0);
         if (first !== undefined) {
             this.setSelected(first.id);
-            console.log('Initial selected: ' + this.selected);
         }
     }
 }

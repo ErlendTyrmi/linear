@@ -39,7 +39,7 @@ export class ChannelStore {
     }
 
     // API Methods
-    async getChannels() {
+    async loadChannels() {
         this.setLoading(true);
         const response = await linearAPI.get('/channel');
         this.setData(response.data);

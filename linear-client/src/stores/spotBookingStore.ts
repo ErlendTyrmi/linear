@@ -27,7 +27,7 @@ export class SpotBookingStore {
     }
 
     // API Methods
-    async getSpotBookings() {
+    async loadSpotBookings() {
         this.setLoading(true);
         const response = await linearAPI.get('/spotbooking/own');
         this.setData(response.data);

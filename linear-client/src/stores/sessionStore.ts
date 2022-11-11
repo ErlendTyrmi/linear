@@ -40,7 +40,7 @@ export class SessionStore {
         this.setUser(response.data);
     }
 
-    async getUser() {
+    async loadUser() {
         this.loading = true;
         const response = await linearAPI.get('/session/');
         this.setUser(response.data);

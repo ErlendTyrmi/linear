@@ -26,7 +26,7 @@ export const MainMenu = (props: Props) => {
             </Toolbar>
             <Divider />
             <List>
-                {['/', '/Other', '/third', '/fourth', '/fifth'].map((text, index) => (
+                {['/', '/advertiser', '/third', '/fourth', '/fifth'].map((text, index) => (
                     <ListItem key={text} disablePadding>
                         <ListItemButton
                             onClickCapture={() => {

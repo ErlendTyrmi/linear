@@ -9,27 +9,27 @@ export class AgencyStore {
 
     // Variables
     loading: boolean = false;
-    data: Agency[] = [];
+    data: Agency | null = null;
 
     default: string = '';
 
     // Clear
     clear = () => {
         this.setLoading(false);
-        this.data = [];
+        this.data = null;
         this.default = '';
     };
 
     setLoading = (loading: boolean) => (this.loading = loading);
-    setData = (data: Agency[]) => (this.data = data);
+    setData = (data: Agency) => (this.data = data);
     setDefault(value: string) {
         this.default = value;
     }
 
     // API Methods
-    async getAgencies() {
+    async loadAgency() {
         this.setLoading(true);
-        const response = await linearAPI.get('/agency/own');
+        const response = await linearAPI.get('/agency/');
         this.setData(response.data);
         this.setLoading(false);
     }

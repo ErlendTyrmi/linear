@@ -25,9 +25,9 @@ export class OrderStore {
     setData = (data: Order[]) => (this.data = data);
 
     // API Methods
-    async getData() {
+    async loadOrders() {
         this.loading = true;
-        const response = await linearAPI.get('/order/own');
+        const response = await linearAPI.get('/order/own/');
         this.setData(response.data);
         this.setLoading(false);
     }

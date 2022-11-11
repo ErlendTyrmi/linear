@@ -38,7 +38,7 @@ export class SalesProductStore {
     }
 
     // API Methods
-    async getSalesProducts() {
+    async loadSalesProducts() {
         this.setLoading(true);
         const response = await linearAPI.get('/salesProduct');
         this.setData(response.data);
