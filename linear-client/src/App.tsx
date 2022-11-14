@@ -3,11 +3,11 @@ import DrawerLayout from './layout/DrawerLayout';
 import MessageDisplay from './layout/MessageDisplay';
 import FrontPage from './pages/FrontPage';
 import LoginPage from './pages/LoginPage/LoginPage';
-import OtherPage from './pages/OtherPage';
+import NewOrderPage from './pages/NewOrderPage';
 import ProtectedRoute from './layout/ProtectedRoute';
 import AdvertiserSelectModal from './menu/AdvertiserSelectModal';
 import { appText } from './appText';
-import OrderPage from './pages/OrderPage';
+import OrdersPage from './pages/OrdersPage';
 import StatusPage from './pages/StatusPage';
 
 export interface LinearMenuItem {
@@ -16,10 +16,10 @@ export interface LinearMenuItem {
 }
 
 export const menuItems: LinearMenuItem[] = [
+    { name: appText.menuNewOrder(), url: '/new-order' },
     { name: appText.menuOverview(), url: '/' },
     { name: appText.menuOrder(), url: '/order' },
-    { name: appText.menuStatus(), url: '/status' },
-    { name: appText.menuAdvertiser(), url: '/advertiser' }
+    { name: appText.menuStatus(), url: '/status' }
 ];
 
 const Application = () => {
@@ -30,6 +30,14 @@ const Application = () => {
                     <Routes>
                         <Route path="/login" element={<LoginPage />} />
                         <Route
+                            path="/new-order"
+                            element={
+                                <ProtectedRoute>
+                                    <NewOrderPage />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
                             path="/"
                             element={
                                 <ProtectedRoute>
@@ -37,12 +45,11 @@ const Application = () => {
                                 </ProtectedRoute>
                             }
                         />
-
                         <Route
                             path="/order"
                             element={
                                 <ProtectedRoute>
-                                    <OrderPage />
+                                    <OrdersPage />
                                 </ProtectedRoute>
                             }
                         />
@@ -59,7 +66,7 @@ const Application = () => {
                             path="/fifth"
                             element={
                                 <ProtectedRoute>
-                                    <OtherPage />
+                                    <NewOrderPage />
                                 </ProtectedRoute>
                             }
                         />

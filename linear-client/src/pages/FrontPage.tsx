@@ -6,9 +6,11 @@ import store from '../stores/store';
 import Image from '../assets/images/screen.png';
 import theme, { customColors } from '../theme';
 import { appText } from '../appText';
+import { useNavigate } from 'react-router-dom';
 
 const FrontPage = () => {
     console.log('front page reloading');
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (store.session.user === null && store.session.loading === false) store.session.loadUser();
@@ -48,21 +50,28 @@ const FrontPage = () => {
                     backgroundPosition: 'bottom left',
                     color: 'white',
                     flexDirection: 'row-reverse',
-                    paddingTop: { xs: '100px', sm: '200px' },
+                    padding: 8,
+                    paddingTop: { xs: '100px', sm: '180px', md: '220px' },
                     display: 'flex'
                 }}
             >
                 <Box sx={{ padding: 2, maxWidth: 420 }}>
                     {/* backgroundColor: customColors.whiteSemiTrans, */}
-                    <Typography variant="h2">Vigtige tidsbestemte beskeder</Typography>
-                    <Typography>Kæmpe kampagneudsalg! Rabat på det hele i januar.</Typography>
-                    <Button variant="outlined" color="inherit">
-                        Bestil kampagne{' '}
+                    <Typography variant="h2">{appText.newsLatestHeader()}</Typography>
+                    <Typography>{appText.newsLatest()}</Typography>
+                    <Button
+                        variant="outlined"
+                        color="inherit"
+                        onClickCapture={() => {
+                            navigate('/new-order');
+                        }}
+                    >
+                        {appText.newsLatestButtonText()}
                     </Button>
                 </Box>
             </Box>
 
-            <Grid container spacing={{ xs: 2, sm: 4 }} sx={{ padding: 4 }}>
+            <Grid container spacing={{ xs: 1, sm: 2 }} sx={{ padding: 4 }}>
                 <Grid item xs={12} sm={12} md={4}>
                     <Box>
                         {store.order.loading && <LinearProgress />}

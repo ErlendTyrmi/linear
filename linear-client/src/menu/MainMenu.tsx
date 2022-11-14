@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import { menuItems } from '../App';
 import store from '../stores/store';
+import OverBudgetArea from './OverBudgetArea';
 
 interface Props {
     setOpen: any;
@@ -44,16 +45,8 @@ const MainMenu = (props: Props) => {
             <Box id="Spacer" sx={{ flex: '1' }}>
                 {' '}
             </Box>
-            <List>
-                <ListItem key="manu-warnings">
-                    <Divider />
-                    <ListItemText>
-                        <Typography variant="h3">Alle dine ordre</Typography>
-                        <Typography>{store.order.getOrdersForAllFavoriteAdvertisers()?.length} ordre.</Typography>
-                        <Typography>{store.order.getOrdersOverBudgetForAllSelected()?.length} er over budget.</Typography>
-                    </ListItemText>
-                </ListItem>
-            </List>
+            <Divider />
+            <OverBudgetArea />
         </Box>
     );
 };
