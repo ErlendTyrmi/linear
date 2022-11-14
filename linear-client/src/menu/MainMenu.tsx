@@ -1,4 +1,5 @@
 import { List, ListItem, ListItemButton, ListItemText, Divider, Toolbar, Button, useTheme, Typography, Box } from '@mui/material';
+import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import { menuItems } from '../App';
 import store from '../stores/store';
@@ -7,7 +8,7 @@ interface Props {
     setOpen: any;
 }
 
-export const MainMenu = (props: Props) => {
+const MainMenu = (props: Props) => {
     const navigate = useNavigate();
     const theme = useTheme();
     const close = () => props.setOpen(false);
@@ -56,3 +57,5 @@ export const MainMenu = (props: Props) => {
         </Box>
     );
 };
+
+export default observer(MainMenu);

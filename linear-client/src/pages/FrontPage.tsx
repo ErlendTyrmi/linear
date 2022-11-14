@@ -3,18 +3,24 @@ import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 import { Order } from '../entities/order';
 import store from '../stores/store';
-import Image from '../assets/images/england.jpg';
+import Image from '../assets/images/screen.png';
 import theme, { customColors } from '../theme';
 import { appText } from '../appText';
 
 const FrontPage = () => {
-    console.log("front page reloadin'");
+    console.log('front page reloading');
 
     useEffect(() => {
-        if (store.session.user === null) {
-            store.session.loadUser();
+        if (store.session.user === null && store.session.loading === false) store.session.loadUser();
+
+        if (store.agency.data === null && store.agency.loading === false) store.agency.loadAgency();
+
+        if (store.advertiser.loading === false) {
+            store.advertiser.loadFavorites();
+            store.advertiser.loadAdvertisers();
         }
-        store.order.loadOrders();
+
+        if (store.order.loading === false) store.order.loadOrders();
     }, []);
 
     const items = store.order.getOrdersForCurrentAdvertiser()?.map((order: Order) => (
@@ -35,11 +41,12 @@ const FrontPage = () => {
             <Box
                 sx={{
                     minHeight: 200,
-                    // backgroundImage: `url(${Image})`,
-                    // backgroundSize: 'cover',
-                    // backgroundPosition: 'center',
-                    color: 'white',
                     backgroundColor: theme.palette.primary.main,
+                    backgroundImage: `url(${Image})`,
+                    backgroundSize: '40%',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'bottom left',
+                    color: 'white',
                     flexDirection: 'row-reverse',
                     paddingTop: { xs: '100px', sm: '200px' },
                     display: 'flex'
@@ -48,9 +55,9 @@ const FrontPage = () => {
                 <Box sx={{ padding: 2, maxWidth: 420 }}>
                     {/* backgroundColor: customColors.whiteSemiTrans, */}
                     <Typography variant="h2">Vigtige tidsbestemte beskeder</Typography>
-                    <Typography>Kæmpe mega kampagneudsalg! Elkrise-rabat på det hele.</Typography>
+                    <Typography>Kæmpe kampagneudsalg! Rabat på det hele i januar.</Typography>
                     <Button variant="outlined" color="inherit">
-                        Køb mere nu
+                        Bestil kampagne{' '}
                     </Button>
                 </Box>
             </Box>
@@ -74,9 +81,9 @@ const FrontPage = () => {
                 <Grid item xs={12} sm={6} md={4}>
                     <Typography variant="h3">Status</Typography>
                     <Typography variant="subtitle1">{store.advertiser.getCurrentAdvertiser()?.name}</Typography>
+                    <Divider />
                     <Typography>{store.order.getOrdersForCurrentAdvertiser()?.length} ordre.</Typography>
                     <Typography>{store.order.getOrdersOverBudget()?.length} er over budget.</Typography>
-                    <Divider />
                     <Button>Se mere</Button>
                 </Grid>
             </Grid>

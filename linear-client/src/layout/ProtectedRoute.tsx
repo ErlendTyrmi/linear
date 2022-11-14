@@ -11,7 +11,6 @@ const ProtectedRoute: React.FC<{ children: ReactJSXElement }> = ({ children }) =
 
     useEffect(() => {
         if (store.session.active === false || store.session.active === undefined) {
-            console.log('ProtectedRoute stopped navigation. Navigating to login...');
             navigate('/login', { replace: true });
         }
     }, [navigate, active]);
