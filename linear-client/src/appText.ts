@@ -1,4 +1,4 @@
-import TopMenuAdvertiserSelect from './menu/TopMenuAdvertiserSelect';
+import AdvertiserSelectMenu from './menu/AdvertiserSelectMenu';
 
 export const language = process.env.REACT_APP_LOCALE ?? 'DA';
 
@@ -37,6 +37,20 @@ export const appText = {
     },
     add() {
         return 'Tilføj';
+    },
+    filter() {
+        return 'Filtrér';
+    },
+
+    // Actions
+    close() {
+        return 'Luk';
+    },
+    save() {
+        return 'Gem';
+    },
+    ok() {
+        return 'OK';
     },
 
     // Menu

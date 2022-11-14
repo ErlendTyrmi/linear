@@ -2,8 +2,7 @@ import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Drawer from '@mui/material/Drawer';
 import Toolbar from '@mui/material/Toolbar';
-import store from '../stores/store';
-import { MainMenu } from '../menu/MainMenu';
+import MainMenu from '../menu/MainMenu';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import SessionMenu from '../menu/SessionMenu';
@@ -19,12 +18,6 @@ const DrawerLayout = (props: Props) => {
     const { children } = props;
     const [menuOpen, setMenuOpen] = useState(false);
     const [sessionMenuOpen, setSessionMenuOpen] = useState(false);
-
-    useEffect(() => {
-        if (store.advertiser.advertisers.length < 1) store.advertiser.loadAdvertisers();
-        if (store.advertiser.favorites.length < 1) store.advertiser.loadFavorites();
-        if (store.agency.data === null) store.agency.loadAgency();
-    }, []);
 
     return (
         <Box sx={{ display: 'flex' }}>

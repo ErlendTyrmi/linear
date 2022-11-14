@@ -4,8 +4,7 @@ import store from '../stores/store';
 import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import { observer } from 'mobx-react-lite';
-import { Advertiser } from '../entities/advertiser';
-import TopMenuAdvertiserSelect from './TopMenuAdvertiserSelect';
+import AdvertiserSelectMenu from './AdvertiserSelectMenu';
 import { useNavigate } from 'react-router-dom';
 
 interface Props {
@@ -19,12 +18,6 @@ const TopMenu = (props: Props) => {
     const setSessionMenuOpen = props.setSessionMenuOpen;
     const drawerWidth = props.drawerWidth;
     const navigate = useNavigate();
-
-    const advertisers = (store.advertiser.advertisers as Advertiser[])?.map((advertiser: Advertiser) => (
-        <MenuItem key={advertiser.id} value={advertiser.id}>
-            {advertiser.name}
-        </MenuItem>
-    ));
 
     return (
         <AppBar
@@ -46,10 +39,10 @@ const TopMenu = (props: Props) => {
                         }}
                         sx={{ display: { xs: 'inline-block', sm: 'none' } }}
                     >
-                        <img src={require('../assets/images/tv_x_logo_mini.png')} height="16" />
+                        <img src={require('../assets/images/screen-x-logo.png')} height="16" />
                     </IconButton>
                 </Box>
-                <TopMenuAdvertiserSelect />
+                <AdvertiserSelectMenu />
                 <Button color="inherit" onClick={() => setSessionMenuOpen(true)} startIcon={<PersonIcon />}>
                     {store.session.user?.userName ?? appText.noUserName()}
                 </Button>

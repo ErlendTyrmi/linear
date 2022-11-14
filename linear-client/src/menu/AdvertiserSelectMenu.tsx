@@ -4,19 +4,23 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import { Box, Button, Divider, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, TextField, Typography } from '@mui/material';
 import store from '../stores/store';
 import { Advertiser } from '../entities/advertiser';
 import { appText } from '../appText';
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
+import { useState } from 'react';
+import AdvertiserSelectModal from './AdvertiserSelectModal';
 
-export default function TopMenuAdvertiserSelect() {
+const AdvertiserSelectMenu = () => {
     const navigate = useNavigate();
     const favorites: Advertiser[] = store.advertiser.favorites;
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const selectorWidth = { big: '300px', small: '280px', tiny: '150px' };
     const open = Boolean(anchorEl);
+    const [editDialogOpen, SetEditDialogOpen] = useState(false);
     const handleClickListItem = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -28,7 +32,7 @@ export default function TopMenuAdvertiserSelect() {
     };
 
     const handleEditButton = () => {
-        navigate('/advertiser');
+        SetEditDialogOpen(true);
         setAnchorEl(null);
     };
 
@@ -79,6 +83,10 @@ export default function TopMenuAdvertiserSelect() {
                     {appText.edit()}
                 </MenuItem>
             </Menu>
+
+            <AdvertiserSelectModal open={editDialogOpen} setOpen={SetEditDialogOpen.bind(this)} />
         </Box>
     );
-}
+};
+
+export default observer(AdvertiserSelectMenu);

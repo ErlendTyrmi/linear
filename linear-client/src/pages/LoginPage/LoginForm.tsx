@@ -39,12 +39,13 @@ const LoginForm = () => {
         <Paper sx={{ position: 'relative', padding: 2 }}>
             <Typography variant="h4">{appText.login()}</Typography>
 
-            <div>
+            <form>
                 <Backdrop sx={{ position: 'absolute', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={store.session.loading}>
                     <CircularProgress color="inherit" />
                 </Backdrop>
                 <TextField
                     id="username-input"
+                    autoComplete="username"
                     label={appText.loginName()}
                     fullWidth
                     margin="normal"
@@ -54,17 +55,17 @@ const LoginForm = () => {
                 />
                 <TextField
                     id="password-input"
+                    autoComplete="current-password"
                     label={appText.loginPassword()}
                     fullWidth
                     type="password"
                     margin="normal"
-                    autoComplete="current-password"
                     onChange={handlePasswordChange}
                     onKeyPress={handleKeyPress}
                     error={store.message.errors.length > 0}
                     helperText={store.message.lastError() ?? appText.error()}
                 />
-            </div>
+            </form>
             <Button
                 color="primary"
                 variant="contained"

@@ -5,7 +5,7 @@ import FrontPage from './pages/FrontPage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import OtherPage from './pages/OtherPage';
 import ProtectedRoute from './layout/ProtectedRoute';
-import AdvertiserSelectPage from './pages/AdvertiserSelectPage';
+import AdvertiserSelectModal from './menu/AdvertiserSelectModal';
 import { appText } from './appText';
 import OrderPage from './pages/OrderPage';
 import StatusPage from './pages/StatusPage';
@@ -26,60 +26,45 @@ const Application = () => {
     return (
         <MessageDisplay>
             <BrowserRouter>
-                <Routes>
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route
-                        path="/"
-                        element={
-                            <ProtectedRoute>
-                                <DrawerLayout>
+                <DrawerLayout>
+                    <Routes>
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route
+                            path="/"
+                            element={
+                                <ProtectedRoute>
                                     <FrontPage />
-                                </DrawerLayout>
-                            </ProtectedRoute>
-                        }
-                    />
+                                </ProtectedRoute>
+                            }
+                        />
 
-                    <Route
-                        path="/order"
-                        element={
-                            <ProtectedRoute>
-                                <DrawerLayout>
+                        <Route
+                            path="/order"
+                            element={
+                                <ProtectedRoute>
                                     <OrderPage />
-                                </DrawerLayout>
-                            </ProtectedRoute>
-                        }
-                    />
-                    <Route
-                        path="/status"
-                        element={
-                            <ProtectedRoute>
-                                <DrawerLayout>
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/status"
+                            element={
+                                <ProtectedRoute>
                                     <StatusPage />
-                                </DrawerLayout>
-                            </ProtectedRoute>
-                        }
-                    />
-                    <Route
-                        path="/advertiser"
-                        element={
-                            <ProtectedRoute>
-                                <DrawerLayout>
-                                    <AdvertiserSelectPage />
-                                </DrawerLayout>
-                            </ProtectedRoute>
-                        }
-                    />
-                    <Route
-                        path="/fifth"
-                        element={
-                            <ProtectedRoute>
-                                <DrawerLayout>
+                                </ProtectedRoute>
+                            }
+                        />
+
+                        <Route
+                            path="/fifth"
+                            element={
+                                <ProtectedRoute>
                                     <OtherPage />
-                                </DrawerLayout>
-                            </ProtectedRoute>
-                        }
-                    />
-                </Routes>
+                                </ProtectedRoute>
+                            }
+                        />
+                    </Routes>
+                </DrawerLayout>
             </BrowserRouter>
         </MessageDisplay>
     );

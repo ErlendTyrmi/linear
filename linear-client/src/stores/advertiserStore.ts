@@ -10,7 +10,7 @@ export class AdvertiserStore {
         makeAutoObservable(this);
         makePersistable(this, {
             name: 'advertisers',
-            properties: ['advertisers', 'favorites', 'selected'],
+            properties: ['data', 'favorites', 'selected'],
             storage: window.localStorage,
             expireIn: 48 * 60 * 60000, // 48h or on logout
             removeOnExpiration: true
@@ -23,27 +23,26 @@ export class AdvertiserStore {
 
     // Variables
     loading: boolean = false;
-    advertisers: Advertiser[] = [];
+    data: Advertiser[] = [];
     favorites: Advertiser[] = [];
     selected: string | undefined = undefined;
 
     // Clear
     clear = () => {
         this.setLoading(false);
-        this.advertisers = [];
+        this.data = [];
         this.favorites = [];
         this.selected = undefined;
     };
 
     setLoading = (loading: boolean) => (this.loading = loading);
-    setAdvertisers = (data: Advertiser[]) => (this.advertisers = data);
+    setAdvertisers = (data: Advertiser[]) => (this.data = data);
     setFavorites = (data: Advertiser[]) => (this.favorites = data);
     setSelected(value: string) {
         this.selected = value;
-        console.log(this.selected);
     }
     getAdvertiser(selected: string | undefined): Advertiser | undefined {
-        let advertiser = this.advertisers.find((it) => it.id === selected);
+        let advertiser = this.favorites.find((it) => it.id === selected);
         return advertiser;
     }
     getCurrentAdvertiser() {
@@ -59,7 +58,7 @@ export class AdvertiserStore {
         this.setLoading(true);
         const url = store.session.user?.isAdmin ? '/advertiser/all/' : '/advertiser/own/';
         const response = await linearAPI.get(url);
-        if (response.data.length > 0) this.setAdvertisers(response.data);
+        if (response.data?.length > 0) this.setAdvertisers(response.data);
         this.setInitialSelected();
         this.setLoading(false);
     }

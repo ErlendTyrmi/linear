@@ -6,7 +6,7 @@ import store from '../stores/store';
 
 const OrderPage = () => {
     useEffect(() => {
-        store.session.loadUser();
+        if (store.session.user === null) store.session.loadUser();
         store.order.loadOrders();
     }, []);
 
