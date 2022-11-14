@@ -18,23 +18,24 @@ const theme = createTheme({
         borderRadius: 1
     },
     typography: {
-        fontFamily: 'Ubuntu, sans-serif'
+        fontFamily: 'Ubuntu, sans-serif',
+        button: {
+            textTransform: 'none'
+        },
+        h1: {
+            fontWeight: '800',
+            fontSize: '2em'
+        },
+        h2: {
+            fontWeight: '800',
+            fontSize: '1.5em'
+        },
+        h3: {
+            fontWeight: '800',
+            fontSize: '1.3em'
+        }
     }
 });
-
-// Headers
-theme.typography.h1 = {
-    fontWeight: '800',
-    fontSize: '2em'
-};
-theme.typography.h2 = {
-    fontWeight: '800',
-    fontSize: '1.5em'
-};
-theme.typography.h3 = {
-    fontWeight: '800',
-    fontSize: '1.3em'
-};
 
 export const customColors = {
     whiteSemiTrans: 'rgba(255, 255, 255, 0.6)'

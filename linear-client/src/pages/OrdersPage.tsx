@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { Order } from '../entities/order';
 import store from '../stores/store';
 
-const OtherPage = () => {
+const OrdersPage = () => {
     useEffect(() => {
         if (store.session.user === null) store.session.loadUser();
         store.order.loadOrders();
@@ -26,9 +26,9 @@ const OtherPage = () => {
     return (
         <Box>
             {store.order.loading && <LinearProgress />}
-            <Typography variant="h2">We got data?</Typography>
+            <Typography variant="h2">We got Orders?</Typography>
             {store.order.data && <Box>{items}</Box>}
         </Box>
     );
 };
-export default observer(OtherPage);
+export default observer(OrdersPage);

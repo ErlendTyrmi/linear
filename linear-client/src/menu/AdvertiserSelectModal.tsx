@@ -1,22 +1,4 @@
-import {
-    Backdrop,
-    Box,
-    Button,
-    CircularProgress,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    LinearProgress,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-    TextField,
-    Typography
-} from '@mui/material';
+import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, List, ListItem, ListItemButton, ListItemIcon, ListItemText, TextField } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { appText } from '../appText';
@@ -38,7 +20,6 @@ const AdvertiserSelectModal = (props: Props) => {
     const [advertisers, setAdvertisers] = useState(store.advertiser.data);
 
     useEffect(() => {
-        if (store.session.user === null) store.session.loadUser();
         if (store.advertiser.favorites.length < 1) store.advertiser.loadFavorites();
         if (store.advertiser.data.length < 1) store.advertiser.loadAdvertisers();
     }, []);
@@ -53,32 +34,31 @@ const AdvertiserSelectModal = (props: Props) => {
 
     const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFilterText(event.target.value);
-        setAdvertisers(
-            store.advertiser.data.filter((it) => {
-                filterText === '' || it.name.toLowerCase().includes(filterText.toLowerCase());
-            })
-        );
     };
 
-    const items = advertisers.map((advertiser: Advertiser) => (
-        <ListItem key={advertiser.id}>
-            {store.advertiser.getFavoriteIds().includes(advertiser.id) ? (
-                <ListItemButton onClick={() => removeFav(advertiser)} disabled={store.advertiser.loading}>
-                    <ListItemIcon>
-                        <StarIcon />
-                    </ListItemIcon>
-                    <ListItemText>{advertiser.name}</ListItemText>
-                </ListItemButton>
-            ) : (
-                <ListItemButton color="secondary" onClick={() => addFav(advertiser)} disabled={store.advertiser.loading}>
-                    <ListItemIcon>
-                        <StarBorderIcon />
-                    </ListItemIcon>
-                    <ListItemText>{advertiser.name}</ListItemText>
-                </ListItemButton>
-            )}
-        </ListItem>
-    ));
+    const items = advertisers
+        .filter((it) => {
+            return filterText === '' || it.name.toLocaleLowerCase().includes(filterText.toLocaleLowerCase());
+        })
+        .map((advertiser: Advertiser) => (
+            <ListItem key={advertiser.id}>
+                {store.advertiser.getFavoriteIds().includes(advertiser.id) ? (
+                    <ListItemButton onClick={() => removeFav(advertiser)} disabled={store.advertiser.loading}>
+                        <ListItemIcon>
+                            <StarIcon />
+                        </ListItemIcon>
+                        <ListItemText>{advertiser.name}</ListItemText>
+                    </ListItemButton>
+                ) : (
+                    <ListItemButton color="secondary" onClick={() => addFav(advertiser)} disabled={store.advertiser.loading}>
+                        <ListItemIcon>
+                            <StarBorderIcon />
+                        </ListItemIcon>
+                        <ListItemText>{advertiser.name}</ListItemText>
+                    </ListItemButton>
+                )}
+            </ListItem>
+        ));
 
     return (
         <Dialog open={open} onClose={() => setOpen(false)}>

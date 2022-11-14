@@ -19,7 +19,7 @@ const LoginPage = () => {
                 backgroundImage: `url(${Image})`,
                 backgroundSize: '80%',
                 backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'bottom left',
+                backgroundPosition: 'bottom center',
                 zIndex: 1201,
                 position: 'absolute',
                 top: 0,

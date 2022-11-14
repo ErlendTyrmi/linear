@@ -54,6 +54,9 @@ export const appText = {
     },
 
     // Menu
+    menuNewOrder() {
+        return 'Bestil Ny';
+    },
 
     menuOverview() {
         return 'Overblik';
@@ -89,5 +92,43 @@ export const appText = {
     // Order
     orderNoneFound() {
         return 'Ingen ordre fundet';
+    },
+    ordersOverBudgetHeader() {
+        return 'Budget';
+    },
+    ordersOverBudgetSummary() {
+        return ' ordre over budget';
+    },
+    ordersOverBudgetSummaryWhenZero() {
+        return 'Ingen ordre over budget';
+    },
+    orderShowOverBudget() {
+        return 'Vis for alle annoncører';
+    },
+    orderOverBudgetModalHeader() {
+        return 'Se overbudgetterede ordre fordelt på annoncør';
+    },
+    orderOverBudgetModalExplainer() {
+        return 'Her er et overblik over alle annoncørens overbudgetterede ordre.';
+    },
+    orderOverBudgetListItemAdvertiserText() {
+        return 'Overbooket for ';
+    },
+    orderDKK() {
+        return 'DKK';
+    },
+    orderOverBudgetSeeAdvertiser() {
+        return 'Gå til annoncørens ordre';
+    },
+
+    // NewsContent
+    newsLatestHeader() {
+        return 'Vigtige tidsafhængige nyheder';
+    },
+    newsLatest() {
+        return 'Vi er fuldbooket i januar, men der er ledige spots fra den 1. Februar.';
+    },
+    newsLatestButtonText() {
+        return 'Bestil nu';
     }
 };
