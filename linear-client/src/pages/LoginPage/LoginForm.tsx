@@ -3,7 +3,7 @@ import { padding } from '@mui/system';
 import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { appText } from '../../appText';
+import { appText } from '../../assets/text';
 import store from '../../stores/store';
 
 const LoginForm = () => {

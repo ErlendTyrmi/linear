@@ -8,15 +8,18 @@ export class UiStore {
 
     // Variables
     loading: boolean = false;
+    mobileMenuOpen: boolean = false;
 
     // Clear
     clear = () => {
         this.loading = false;
+        this.mobileMenuOpen = false;
     };
 
     // Setters
-    setSessionMenuOpen(open: boolean) {
-        this.loading = open;
+    setMobileMenuOpen(open: boolean) {
+        this.mobileMenuOpen = open;
+        console.log('menu open' + open);
     }
 }
 

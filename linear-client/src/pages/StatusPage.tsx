@@ -13,7 +13,7 @@ const StatusPage = () => {
     const items = (store.order.data as Order[])?.map((order: Order) => (
         <Box key={order.id}>
             <Typography variant="h3">{order.advertiserProductName}</Typography>
-            Vises fra uge {order.startWeek} til uge {order.endWeek}
+
             <ul>
                 <li>Annoncør: {order.advertiserName}</li>
                 <li>Dette er en {order.salesProductName}-ordre.</li>

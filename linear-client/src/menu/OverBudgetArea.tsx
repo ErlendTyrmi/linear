@@ -1,17 +1,16 @@
-import { List, ListItem, Divider, ListItemText, Typography, Box, Paper, Button } from '@mui/material';
+import { ListItem, Typography, Box, Button } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import WarningIcon from '@mui/icons-material/WarningAmber';
 import SuccessIcon from '@mui/icons-material/CheckCircleOutline';
 import store from '../stores/store';
-import { appText } from '../appText';
+import { appText } from '../assets/text';
 import OverBudgetModal from './OverBudgetModal';
 import { useState } from 'react';
+import { OrderCategory } from '../utility/orderEnums';
 
 const OverBudgetArea = () => {
-    const order = store.order;
     const [modalOpen, setModalOpen] = useState(false);
-    let ordersAmount = store.order.getOrdersForAllFavoriteAdvertisers().length;
-    let warningsAmount = store.order.getOrdersOverBudgetForAllSelected().length;
+    let warningsAmount = store.order.getOrdersWithFiltersAndSearch([OrderCategory.allFavorites, OrderCategory.overBudget], null).length;
 
     const handleClick = () => {
         setModalOpen(true);
@@ -23,12 +22,15 @@ const OverBudgetArea = () => {
                 {warningsAmount > 0 ? (
                     <div>
                         <Box sx={{ display: 'flex', flexDirection: 'horizontal' }}>
-                            <WarningIcon color="warning" sx={{ paddingRight: 1 }} />
-                            <Typography variant="h3">{appText.ordersOverBudgetHeader()}</Typography>
+                            <WarningIcon color="warning" sx={{ paddingRight: 1, fontSize: 47 }} />
+                            <Box>
+                                <Typography variant="h3">{appText.ordersOverBudgetHeader()}</Typography>
+                                <Typography variant="body2">
+                                    {warningsAmount} {appText.ordersOverBudgetSummary()}
+                                </Typography>
+                            </Box>
                         </Box>
-                        <Typography>
-                            {warningsAmount} {appText.ordersOverBudgetSummary()}
-                        </Typography>
+
                         <Button size="small" onClick={handleClick} sx={{ paddingLeft: 0 }}>
                             {appText.orderShowOverBudget()}
                         </Button>
@@ -36,11 +38,12 @@ const OverBudgetArea = () => {
                 ) : (
                     <div>
                         <Box sx={{ display: 'flex', flexDirection: 'horizontal' }}>
-                            <SuccessIcon color="success" sx={{ paddingRight: 1 }} />
-                            <Typography variant="h3">{appText.ordersOverBudgetHeader()}</Typography>
+                            <SuccessIcon color="success" sx={{ paddingRight: 1, fontSize: 47 }} />
+                            <Box>
+                                <Typography variant="h3">{appText.ordersOverBudgetHeader()}</Typography>
+                                <Typography variant="body2">{appText.ordersOverBudgetSummaryWhenZero()}</Typography>
+                            </Box>
                         </Box>
-
-                        <Typography>{appText.ordersOverBudgetSummaryWhenZero()}</Typography>
                     </div>
                 )}
             </Box>

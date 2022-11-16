@@ -1,5 +1,5 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import { appText } from '../appText';
+import { appText } from '../assets/text';
 import store from '../stores/store';
 
 const axios = require('axios').default;

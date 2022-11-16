@@ -1,7 +1,7 @@
 import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, List, ListItem, ListItemButton, ListItemIcon, ListItemText, TextField } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
-import { appText } from '../appText';
+import { appText } from '../assets/text';
 import { Advertiser } from '../entities/advertiser';
 import { Order } from '../entities/order';
 import store from '../stores/store';
@@ -17,7 +17,6 @@ const AdvertiserSelectModal = (props: Props) => {
     const open = props.open;
     const setOpen = props.setOpen;
     const [filterText, setFilterText] = useState('');
-    const [advertisers, setAdvertisers] = useState(store.advertiser.data);
 
     useEffect(() => {
         if (store.advertiser.favorites.length < 1) store.advertiser.loadFavorites();
@@ -36,7 +35,7 @@ const AdvertiserSelectModal = (props: Props) => {
         setFilterText(event.target.value);
     };
 
-    const items = advertisers
+    const items = store.advertiser.data
         .filter((it) => {
             return filterText === '' || it.name.toLocaleLowerCase().includes(filterText.toLocaleLowerCase());
         })
@@ -69,7 +68,7 @@ const AdvertiserSelectModal = (props: Props) => {
                 {store.advertiser.data.length > 0 ? <List>{items}</List> : <CircularProgress color="inherit" />}
             </DialogContent>
             <DialogActions>
-                <Button onClickCapture={() => setOpen(false)}>{appText.close()}</Button>
+                <Button onClickCapture={() => setOpen(false)}>{appText.actionsClose()}</Button>
             </DialogActions>
         </Dialog>
     );

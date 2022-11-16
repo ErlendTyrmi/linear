@@ -3,16 +3,13 @@ import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import { menuItems } from '../App';
 import store from '../stores/store';
+import { OrderCategory } from '../utility/orderEnums';
 import OverBudgetArea from './OverBudgetArea';
 
-interface Props {
-    setOpen: any;
-}
-
-const MainMenu = (props: Props) => {
+const MainMenu = () => {
     const navigate = useNavigate();
     const theme = useTheme();
-    const close = () => props.setOpen(false);
+    const close = () => store.ui.setMobileMenuOpen(false);
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -42,11 +39,10 @@ const MainMenu = (props: Props) => {
                 ))}
             </List>
             <Divider />
-            <Box id="Spacer" sx={{ flex: '1' }}>
-                {' '}
-            </Box>
+            <Box id="Spacer" sx={{ flex: '1' }}></Box>
             <Divider />
-            <OverBudgetArea />
+
+            {store.order.getOrdersWithFiltersAndSearch([OrderCategory.selectedAdvertiser], null).length > 0 && <OverBudgetArea />}
         </Box>
     );
 };

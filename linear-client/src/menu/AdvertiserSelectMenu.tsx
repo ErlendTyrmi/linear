@@ -7,7 +7,7 @@ import Menu from '@mui/material/Menu';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, TextField, Typography } from '@mui/material';
 import store from '../stores/store';
 import { Advertiser } from '../entities/advertiser';
-import { appText } from '../appText';
+import { appText } from '../assets/text';
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
@@ -27,7 +27,6 @@ const AdvertiserSelectMenu = () => {
 
     const handleMenuItemClick = (event: React.MouseEvent<HTMLElement>, index: string) => {
         store.advertiser.setSelected(index);
-        navigate('/');
         setAnchorEl(null);
     };
 
@@ -43,6 +42,7 @@ const AdvertiserSelectMenu = () => {
     return (
         <Box>
             <Button
+                disabled={store.advertiser.loading}
                 color="inherit"
                 id="advertiser-button"
                 aria-haspopup="listbox"

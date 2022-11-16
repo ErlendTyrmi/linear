@@ -1,23 +1,24 @@
 import { AppBar, Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, Toolbar, Typography } from '@mui/material';
-import { appText } from '../appText';
+import { appText } from '../assets/text';
 import store from '../stores/store';
 import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
+import WarningIcon from '@mui/icons-material/WarningAmber';
 import { observer } from 'mobx-react-lite';
 import AdvertiserSelectMenu from './AdvertiserSelectMenu';
 import { useNavigate } from 'react-router-dom';
+import { OrderCategory as OrderFilter } from '../utility/orderEnums';
 
 interface Props {
-    setMenuOpen: any;
     setSessionMenuOpen: any;
     drawerWidth: number;
 }
 
 const TopMenu = (props: Props) => {
-    const setMenuOpen = props.setMenuOpen;
     const setSessionMenuOpen = props.setSessionMenuOpen;
     const drawerWidth = props.drawerWidth;
     const navigate = useNavigate();
+    let warningsAmount = store.order.getOrdersWithFiltersAndSearch([OrderFilter.allFavorites, OrderFilter.overBudget], null).length;
 
     return (
         <AppBar
@@ -29,8 +30,9 @@ const TopMenu = (props: Props) => {
             }}
         >
             <Toolbar>
-                <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={() => setMenuOpen(true)} sx={{ mr: 2, display: { sm: 'none' } }}>
+                <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={() => store.ui.setMobileMenuOpen(true)} sx={{ mr: 2, display: { sm: 'none' } }}>
                     <MenuIcon />
+                    {warningsAmount > 0 && <WarningIcon color="warning" />}
                 </IconButton>
                 <Box sx={{ flexGrow: '1' }}>
                     <IconButton
@@ -39,11 +41,11 @@ const TopMenu = (props: Props) => {
                         }}
                         sx={{ display: { xs: 'inline-block', sm: 'none' } }}
                     >
-                        <img src={require('../assets/images/screen-x-logo.png')} height="16" />
+                        <img src={require('../assets/images/logo.png')} height="22" />
                     </IconButton>
                 </Box>
                 <AdvertiserSelectMenu />
-                <Button color="inherit" onClick={() => setSessionMenuOpen(true)} startIcon={<PersonIcon />}>
+                <Button disabled={store.session.loading || store.agency.loading} color="inherit" onClick={() => setSessionMenuOpen(true)} startIcon={<PersonIcon />}>
                     {store.session.user?.userName ?? appText.noUserName()}
                 </Button>
             </Toolbar>

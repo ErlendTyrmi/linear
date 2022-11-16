@@ -7,6 +7,7 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import SessionMenu from '../menu/SessionMenu';
 import TopMenu from '../menu/TopMenu';
+import store from '../stores/store';
 
 const drawerWidth = 240;
 
@@ -16,7 +17,6 @@ interface Props {
 
 const DrawerLayout = (props: Props) => {
     const { children } = props;
-    const [menuOpen, setMenuOpen] = useState(false);
     const [sessionMenuOpen, setSessionMenuOpen] = useState(false);
 
     return (
@@ -24,13 +24,13 @@ const DrawerLayout = (props: Props) => {
             <CssBaseline />
 
             {/* Main Menu - Mobile and destop drawers */}
-            {<TopMenu setMenuOpen={setMenuOpen.bind(this)} setSessionMenuOpen={setSessionMenuOpen.bind(this)} drawerWidth={drawerWidth} />}
+            {<TopMenu setSessionMenuOpen={setSessionMenuOpen.bind(this)} drawerWidth={drawerWidth} />}
 
             <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label="mailbox folders">
                 <Drawer
                     variant="temporary"
-                    open={menuOpen}
-                    onClose={() => setMenuOpen(false)}
+                    open={store.ui.mobileMenuOpen}
+                    onClose={() => store.ui.setMobileMenuOpen(false)}
                     ModalProps={{
                         keepMounted: true
                     }}
@@ -39,7 +39,7 @@ const DrawerLayout = (props: Props) => {
                         '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
                     }}
                 >
-                    {<MainMenu setOpen={setMenuOpen} />}
+                    {<MainMenu />}
                 </Drawer>
                 <Drawer
                     variant="permanent"
@@ -49,7 +49,7 @@ const DrawerLayout = (props: Props) => {
                     }}
                     open
                 >
-                    {<MainMenu setOpen={setMenuOpen} />}
+                    {<MainMenu />}
                 </Drawer>
             </Box>
             {/* Session Menu */}

@@ -45,7 +45,7 @@ export class AdvertiserStore {
         let advertiser = this.favorites.find((it) => it.id === selected);
         return advertiser;
     }
-    getCurrentAdvertiser() {
+    getSelectedAdvertiser() {
         return this.getAdvertiser(this.selected);
     }
     getFavoriteIds() {

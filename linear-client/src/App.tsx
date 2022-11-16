@@ -1,14 +1,15 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import DrawerLayout from './layout/DrawerLayout';
 import MessageDisplay from './layout/MessageDisplay';
-import FrontPage from './pages/FrontPage';
+import FrontPage from './pages/FrontPage/FrontPage';
 import LoginPage from './pages/LoginPage/LoginPage';
-import NewOrderPage from './pages/NewOrderPage';
+import BookingPage from './pages/BookingPage';
 import ProtectedRoute from './layout/ProtectedRoute';
 import AdvertiserSelectModal from './menu/AdvertiserSelectModal';
-import { appText } from './appText';
-import OrdersPage from './pages/OrdersPage';
+import { appText } from './assets/text';
+import OrdersPage from './pages/ordersPage/OrdersPage';
 import StatusPage from './pages/StatusPage';
+import NewsPage from './pages/NewsPage';
 
 export interface LinearMenuItem {
     name: string;
@@ -16,9 +17,10 @@ export interface LinearMenuItem {
 }
 
 export const menuItems: LinearMenuItem[] = [
-    { name: appText.menuNewOrder(), url: '/new-order' },
     { name: appText.menuOverview(), url: '/' },
-    { name: appText.menuOrder(), url: '/order' },
+    { name: appText.menuBooking(), url: '/booking' },
+    { name: appText.menuOrders(), url: '/order' },
+    { name: appText.menuNews(), url: '/news' },
     { name: appText.menuStatus(), url: '/status' }
 ];
 
@@ -30,18 +32,18 @@ const Application = () => {
                     <Routes>
                         <Route path="/login" element={<LoginPage />} />
                         <Route
-                            path="/new-order"
-                            element={
-                                <ProtectedRoute>
-                                    <NewOrderPage />
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
                             path="/"
                             element={
                                 <ProtectedRoute>
                                     <FrontPage />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/booking"
+                            element={
+                                <ProtectedRoute>
+                                    <BookingPage />
                                 </ProtectedRoute>
                             }
                         />
@@ -63,10 +65,10 @@ const Application = () => {
                         />
 
                         <Route
-                            path="/fifth"
+                            path="/news"
                             element={
                                 <ProtectedRoute>
-                                    <NewOrderPage />
+                                    <NewsPage />
                                 </ProtectedRoute>
                             }
                         />

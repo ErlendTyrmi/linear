@@ -1,13 +1,14 @@
 import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, List, ListItem, ListItemButton, ListItemIcon, ListItemText, TextField } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
-import { appText } from '../appText';
+import { appText } from '../assets/text';
 import { Advertiser } from '../entities/advertiser';
 import { Order } from '../entities/order';
 import store from '../stores/store';
 import WarningIcon from '@mui/icons-material/WarningAmber';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { OrderCategory } from '../utility/orderEnums';
 
 interface Props {
     open: boolean;
@@ -15,13 +16,14 @@ interface Props {
 }
 
 const OverBudgetModal = (props: Props) => {
+    const navigate = useNavigate();
     const open = props.open;
     const setOpen = props.setOpen;
     const [filterText, setFilterText] = useState('');
-    const [advertisers, setAdvertisers] = useState(store.advertiser.favorites);
 
     useEffect(() => {
         if (store.advertiser.favorites.length < 1) store.advertiser.loadFavorites();
+        if (store.order.data.length < 1) store.order.loadOrders();
     }, []);
 
     const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -29,15 +31,19 @@ const OverBudgetModal = (props: Props) => {
     };
 
     const handleClick = (advertiser: Advertiser) => {
-        console.log(`${advertiser.name} was clicked`);
+        store.advertiser.setSelected(advertiser.id);
+        store.order.setPresetFilters([OrderCategory.overBudget, OrderCategory.selectedAdvertiser]);
+        navigate('/order');
+        setOpen(false);
+        store.ui.setMobileMenuOpen(false);
     };
 
-    const items = advertisers
+    const items = store.advertiser.favorites
         .filter((it) => {
             return filterText === '' || it.name.toLocaleLowerCase().includes(filterText.toLocaleLowerCase());
         })
         .map((advertiser: Advertiser) => (
-            <ListItem key={advertiser.id}>
+            <ListItem key={advertiser.id} disablePadding>
                 <ListItemButton onClick={() => handleClick(advertiser)}>
                     <ListItemIcon>
                         <WarningIcon color="warning" />
@@ -56,7 +62,7 @@ const OverBudgetModal = (props: Props) => {
                 {store.advertiser.data.length > 0 ? <List>{items}</List> : <CircularProgress color="inherit" />}
             </DialogContent>
             <DialogActions>
-                <Button onClickCapture={() => setOpen(false)}>{appText.close()}</Button>
+                <Button onClickCapture={() => setOpen(false)}>{appText.actionsClose()}</Button>
             </DialogActions>
         </Dialog>
     );

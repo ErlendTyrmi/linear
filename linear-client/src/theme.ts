@@ -1,5 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
+import { palette } from '@mui/system';
 
 // A custom theme for this app
 const theme = createTheme({
@@ -20,19 +21,28 @@ const theme = createTheme({
     typography: {
         fontFamily: 'Ubuntu, sans-serif',
         button: {
-            textTransform: 'none'
+            textTransform: 'none',
+            fontSize: 'inherit'
         },
         h1: {
             fontWeight: '800',
-            fontSize: '2em'
+            fontSize: '2.5em',
+            paddingTop: 24,
+            paddingBottom: 8
         },
         h2: {
             fontWeight: '800',
-            fontSize: '1.5em'
+            fontSize: '1.6em',
+            paddingTop: 24,
+            paddingBottom: 8
         },
         h3: {
             fontWeight: '800',
             fontSize: '1.3em'
+        },
+        subtitle1: {
+            fontSize: '12px',
+            color: 'primary'
         }
     }
 });
