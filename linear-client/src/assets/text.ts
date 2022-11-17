@@ -41,6 +41,12 @@ export const appText = {
     filter() {
         return 'Filtrér';
     },
+    search() {
+        return 'Søg';
+    },
+    onOrderName() {
+        return 'på kampagnenavn';
+    },
 
     // Meta
     metaLocaleMonth(month: number) {
@@ -59,6 +65,9 @@ export const appText = {
             'december'
         }
         return months[month - 1];
+    },
+    pageNotImplemented() {
+        return 'Denne side er ikke implementeret.';
     },
 
     // Actions
@@ -111,7 +120,7 @@ export const appText = {
         return 'Vælg annoncører';
     },
     advertiserSelectExplainer() {
-        return 'Her kan du vælge hvilke annoncører, der skal vises i menuen.';
+        return 'Vælg de annoncører, du vil være tilknyttet. Annoncører, der ikke er markeret vil ikke være synlige, og ikke tages med i status.';
     },
 
     // Order
@@ -143,7 +152,7 @@ export const appText = {
         return 'Her er et overblik over alle annoncørens overbudgetterede ordre.';
     },
     orderOverBudgetListItemAdvertiserText() {
-        return 'Overbooket for ';
+        return 'ordre er over budget.';
     },
     orderDKK() {
         return 'DKK';
@@ -153,6 +162,11 @@ export const appText = {
     },
     orderSeeMore() {
         return 'Se hele listen';
+    },
+
+    // Booking
+    bookingHeader() {
+        return 'Book ny kampagne';
     },
 
     // NewsContent
@@ -178,5 +192,24 @@ export const appText = {
     },
     statusReadMore() {
         return 'Se detaljer';
+    },
+
+    // Footer
+
+    // Contact
+    footerCopyright() {
+        return 'Copyright 2018 TVX AdSales';
+    },
+    footerContactHeader() {
+        return 'Kontakt TVX AdSales';
+    },
+    footerContactMail() {
+        return 'contact@tvxAds.tyrmi.com';
+    },
+    footerContactAddress(): string[] {
+        return ['TVX', 'Gadegade 123', '1234 København', 'Danmark'];
+    },
+    footerNavigationHeader() {
+        return 'Navigation';
     }
 };

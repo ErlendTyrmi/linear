@@ -50,6 +50,8 @@ export class AdvertiserStore {
     }
     getFavoriteIds() {
         if (this.favorites && this.favorites?.length > 0) return this.favorites.map((it) => it.id);
+
+        console.log('no favs');
         return [];
     }
 

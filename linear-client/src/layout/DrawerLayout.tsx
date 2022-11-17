@@ -8,6 +8,8 @@ import { useEffect, useState } from 'react';
 import SessionMenu from '../menu/SessionMenu';
 import TopMenu from '../menu/TopMenu';
 import store from '../stores/store';
+import { Footer } from '../menu/Footer';
+import theme from '../theme';
 
 const drawerWidth = 240;
 
@@ -20,7 +22,7 @@ const DrawerLayout = (props: Props) => {
     const [sessionMenuOpen, setSessionMenuOpen] = useState(false);
 
     return (
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', minHeight: '100vh' }}>
             <CssBaseline />
 
             {/* Main Menu - Mobile and destop drawers */}
@@ -66,9 +68,10 @@ const DrawerLayout = (props: Props) => {
                     <SessionMenu setOpen={setSessionMenuOpen} />
                 </Drawer>
             </Box>
-            <Box component="main" sx={{ flexGrow: 1, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
+            <Box component="main" sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
                 <Toolbar />
-                {children}
+                <Box sx={{ flex: 1 }}>{children}</Box>
+                <Footer />
             </Box>
         </Box>
     );

@@ -7,7 +7,7 @@ import WarningIcon from '@mui/icons-material/WarningAmber';
 import { observer } from 'mobx-react-lite';
 import AdvertiserSelectMenu from './AdvertiserSelectMenu';
 import { useNavigate } from 'react-router-dom';
-import { OrderCategory as OrderFilter } from '../utility/orderEnums';
+import { OrderFilter as OrderFilter } from '../utility/orderEnums';
 
 interface Props {
     setSessionMenuOpen: any;

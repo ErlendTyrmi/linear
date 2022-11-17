@@ -2,7 +2,7 @@ import { ToggleButtonGroup, ToggleButton, Typography } from '@mui/material';
 import { useState } from 'react';
 import { appText } from '../../assets/text';
 import store from '../../stores/store';
-import { OrderCategory as OrderFilter } from '../../utility/orderEnums';
+import { OrderFilter as OrderFilter } from '../../utility/orderEnums';
 
 export default function ToggleFilters() {
     const handleFilters = (event: React.MouseEvent<HTMLElement>, value: OrderFilter[]) => {

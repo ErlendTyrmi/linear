@@ -5,7 +5,7 @@ import { appText } from '../../assets/text';
 import { Order } from '../../entities/order';
 import WarningIcon from '@mui/icons-material/WarningAmber';
 import store from '../../stores/store';
-import { OrderCategory } from '../../utility/orderEnums';
+import { OrderFilter } from '../../utility/orderEnums';
 import ToggleFilters from './ToggleFilters';
 
 const OrdersPage = () => {
@@ -13,7 +13,7 @@ const OrdersPage = () => {
 
     useEffect(() => {
         // Add selectedADvertoser as filter category
-        store.order.addPresetFilter(OrderCategory.selectedAdvertiser);
+        store.order.addPresetFilter(OrderFilter.selectedAdvertiser);
 
         if (store.session.user === null) store.session.loadUser();
 
@@ -49,11 +49,15 @@ const OrdersPage = () => {
             <Box sx={{ marginRight: 3, marginLeft: 3 }}>
                 <Typography variant="h1">{appText.orderHeader()}</Typography>
                 <Divider />
-                <ToggleFilters />
 
-                <TextField autoFocus margin="dense" id="filter" label={appText.filter()} type="text" fullWidth variant="standard" value={searchText} onChange={handleSearch} />
+                <Box sx={{ marginBottom: 2, marginTop: 2 }}>
+                    <ToggleFilters />
+                </Box>
 
-                {store.advertiser.data.length > 0 ? <List>{items}</List> : <CircularProgress color="inherit" />}
+                <Box sx={{ marginBottom: 2 }}>
+                    <TextField autoFocus id="filter" label={`${appText.search()} ${appText.onOrderName()}`} type="text" fullWidth variant="standard" value={searchText} onChange={handleSearch} />
+                </Box>
+                {store.order.getOrdersWithFiltersAndSearch(store.order.presetFilters, searchText).length > 0 ? <List>{items}</List> : <Typography>{appText.orderNoneFound()}</Typography>}
             </Box>
         </div>
     );

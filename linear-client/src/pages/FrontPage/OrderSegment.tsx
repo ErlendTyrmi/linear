@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { appText } from '../../assets/text';
 import { Order } from '../../entities/order';
 import store from '../../stores/store';
-import { OrderCategory, OrderStatus } from '../../utility/orderEnums';
+import { OrderFilter, OrderStatus } from '../../utility/orderEnums';
 
 const OrderSegment = () => {
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ const OrderSegment = () => {
 
     const items = (
         store.order
-            .getOrdersWithFiltersAndSearch([OrderCategory.selectedAdvertiser], null)
+            .getOrdersWithFiltersAndSearch([OrderFilter.selectedAdvertiser], null)
             .filter((it) => {
                 return it.orderStatus === OrderStatus.created;
                 console.log(it.orderStatus);

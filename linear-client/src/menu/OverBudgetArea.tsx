@@ -6,11 +6,12 @@ import store from '../stores/store';
 import { appText } from '../assets/text';
 import OverBudgetModal from './OverBudgetModal';
 import { useState } from 'react';
-import { OrderCategory } from '../utility/orderEnums';
+import { OrderFilter as OrderFilter } from '../utility/orderEnums';
 
 const OverBudgetArea = () => {
     const [modalOpen, setModalOpen] = useState(false);
-    let warningsAmount = store.order.getOrdersWithFiltersAndSearch([OrderCategory.allFavorites, OrderCategory.overBudget], null).length;
+
+    let warningsAmount = store.order.getOrdersWithFiltersAndSearch([OrderFilter.allFavorites, OrderFilter.overBudget], null).length;
 
     const handleClick = () => {
         setModalOpen(true);
@@ -25,15 +26,14 @@ const OverBudgetArea = () => {
                             <WarningIcon color="warning" sx={{ paddingRight: 1, fontSize: 47 }} />
                             <Box>
                                 <Typography variant="h3">{appText.ordersOverBudgetHeader()}</Typography>
+
                                 <Typography variant="body2">
-                                    {warningsAmount} {appText.ordersOverBudgetSummary()}
+                                    <Button onClick={handleClick} sx={{ padding: 0 }}>
+                                        {warningsAmount} {appText.ordersOverBudgetSummary()}
+                                    </Button>
                                 </Typography>
                             </Box>
                         </Box>
-
-                        <Button size="small" onClick={handleClick} sx={{ paddingLeft: 0 }}>
-                            {appText.orderShowOverBudget()}
-                        </Button>
                     </div>
                 ) : (
                     <div>

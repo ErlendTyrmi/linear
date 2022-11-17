@@ -8,7 +8,7 @@ import store from '../stores/store';
 import WarningIcon from '@mui/icons-material/WarningAmber';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { OrderCategory } from '../utility/orderEnums';
+import { OrderFilter } from '../utility/orderEnums';
 
 interface Props {
     open: boolean;
@@ -32,7 +32,7 @@ const OverBudgetModal = (props: Props) => {
 
     const handleClick = (advertiser: Advertiser) => {
         store.advertiser.setSelected(advertiser.id);
-        store.order.setPresetFilters([OrderCategory.overBudget, OrderCategory.selectedAdvertiser]);
+        store.order.setPresetFilters([OrderFilter.overBudget, OrderFilter.selectedAdvertiser]);
         navigate('/order');
         setOpen(false);
         store.ui.setMobileMenuOpen(false);
@@ -48,7 +48,9 @@ const OverBudgetModal = (props: Props) => {
                     <ListItemIcon>
                         <WarningIcon color="warning" />
                     </ListItemIcon>
-                    <ListItemText>{`${advertiser.name} ${appText.orderOverBudgetListItemAdvertiserText()} 33000 ${appText.orderDKK()}`}</ListItemText>
+                    <ListItemText>{`${advertiser.name} - ${
+                        store.order.getOrdersWithFiltersAndAdvertiser([OrderFilter.overBudget], advertiser.id).length
+                    } ${appText.orderOverBudgetListItemAdvertiserText()}`}</ListItemText>
                 </ListItemButton>
             </ListItem>
         ));

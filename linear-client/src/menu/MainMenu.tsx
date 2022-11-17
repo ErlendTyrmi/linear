@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import { menuItems } from '../App';
 import store from '../stores/store';
-import { OrderCategory } from '../utility/orderEnums';
+import { OrderFilter } from '../utility/orderEnums';
 import OverBudgetArea from './OverBudgetArea';
 
 const MainMenu = () => {
@@ -42,7 +42,7 @@ const MainMenu = () => {
             <Box id="Spacer" sx={{ flex: '1' }}></Box>
             <Divider />
 
-            {store.order.getOrdersWithFiltersAndSearch([OrderCategory.selectedAdvertiser], null).length > 0 && <OverBudgetArea />}
+            {store.order.getOrdersWithFiltersAndSearch([OrderFilter.selectedAdvertiser], null).length > 0 && <OverBudgetArea />}
         </Box>
     );
 };

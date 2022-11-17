@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import NewsSegment from './NewsSegment';
 import OrderSegment from './OrderSegment';
 import StatusSegment from './StatusSegment';
-import { OrderCategory } from '../../utility/orderEnums';
+import { OrderFilter } from '../../utility/orderEnums';
 
 const FrontPage = () => {
     console.log('front page reloading');

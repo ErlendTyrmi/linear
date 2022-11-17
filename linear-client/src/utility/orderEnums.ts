@@ -11,7 +11,7 @@ export enum OrderTypeName {
     exposure = 'exposure'
 }
 
-export enum OrderCategory {
+export enum OrderFilter {
     overBudget = 'overBudget',
     allFavorites = 'allFavorites',
     selectedAdvertiser = 'selectedAdvertiser',

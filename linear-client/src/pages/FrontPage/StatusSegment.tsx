@@ -6,14 +6,14 @@ import { appText } from '../../assets/text';
 import { NewsArticle } from '../../entities/NewsArticle';
 import { Cms_mock } from '../../network/textCms_mock';
 import store from '../../stores/store';
-import { OrderCategory } from '../../utility/orderEnums';
+import { OrderFilter } from '../../utility/orderEnums';
 
 const StatusSegment = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
         if (store.advertiser.loading === false && store.advertiser.getSelectedAdvertiser()) store.advertiser.loadFavorites();
-        if (store.order.loading === false && store.order.getOrdersWithFiltersAndSearch([OrderCategory.selectedAdvertiser], null).length < 1) store.order.loadOrders();
+        if (store.order.loading === false && store.order.getOrdersWithFiltersAndSearch([OrderFilter.selectedAdvertiser], null).length < 1) store.order.loadOrders();
     }, []);
 
     return (
@@ -24,8 +24,8 @@ const StatusSegment = () => {
                 {store.advertiser.getSelectedAdvertiser()?.name ?? appText.advertiserMissing()}
             </Typography>
 
-            <Typography>{store.order.getOrdersWithFiltersAndSearch([OrderCategory.selectedAdvertiser], null).length} ordre</Typography>
-            <Typography>{store.order.getOrdersWithFiltersAndSearch([OrderCategory.selectedAdvertiser, OrderCategory.overBudget], null).length} er over budget</Typography>
+            <Typography>{store.order.getOrdersWithFiltersAndSearch([OrderFilter.selectedAdvertiser], null).length} ordre</Typography>
+            <Typography>{store.order.getOrdersWithFiltersAndSearch([OrderFilter.selectedAdvertiser, OrderFilter.overBudget], null).length} er over budget</Typography>
             <Button
                 size="small"
                 sx={{ paddingLeft: 0 }}
