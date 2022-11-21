@@ -2,28 +2,28 @@ import { Box, Typography, Divider, LinearProgress, List, ListItem, ListItemButto
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { appText } from '../../assets/text';
+import { appText } from '../../assets/appText';
 import { Order } from '../../entities/order';
+import orderStore from '../../stores/orderStore';
 import store from '../../stores/store';
-import { OrderFilter, OrderStatus } from '../../utility/orderEnums';
+import { OrderAdvertiserScope, OrderFilter, OrderStatus } from '../../utility/orderEnums';
 
 const OrderSegment = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (store.order.data.length < 1 && store.order.loading === false) {
+        if (store.order.data.length < 1 && store.order.isLoading === false) {
             store.order.loadOrders();
         }
     }, []);
 
     const items = (
         store.order
-            .getOrdersWithFiltersAndSearch([OrderFilter.selectedAdvertiser], null)
+            .getOrdersWithFiltersAndSearch(OrderAdvertiserScope.selectedAdvertiser, OrderFilter.none, null)
             .filter((it) => {
                 return it.orderStatus === OrderStatus.created;
-                console.log(it.orderStatus);
             })
-            .slice(0, 4) as Order[]
+            .slice(0, 5) as Order[]
     )?.map((order: Order) => (
         <ListItem disablePadding key={order.id}>
             <ListItemButton onClick={() => navigate('/order')}>
@@ -37,9 +37,9 @@ const OrderSegment = () => {
 
     return (
         <div>
-            {store.order.loading && <LinearProgress />}
-            <Typography variant="h2">Ordre</Typography>
+            <Typography variant="h2">{appText.orderSegmentHeader()}</Typography>
             <Divider />
+            {store.order.isLoading && <LinearProgress />}
             <Typography variant="subtitle1" sx={{ paddingTop: 1 }}>
                 {store.advertiser.getSelectedAdvertiser()?.name ?? appText.advertiserMissing()}
             </Typography>
@@ -50,6 +50,8 @@ const OrderSegment = () => {
                 size="small"
                 sx={{ paddingLeft: 0 }}
                 onClick={() => {
+                    orderStore.setScope(OrderAdvertiserScope.selectedAdvertiser);
+                    orderStore.setFilter(OrderFilter.none);
                     navigate('/order');
                 }}
             >

@@ -1,11 +1,26 @@
-import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, List, ListItem, ListItemButton, ListItemIcon, ListItemText, TextField } from '@mui/material';
+import {
+    Button,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    IconButton,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    TextField
+} from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
-import { appText } from '../assets/text';
+import { appText } from '../assets/appText';
 import { Advertiser } from '../entities/advertiser';
-import { Order } from '../entities/order';
 import store from '../stores/store';
 import StarIcon from '@mui/icons-material/Star';
+import ClearIcon from '@mui/icons-material/Clear';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 
 interface Props {
@@ -16,7 +31,7 @@ interface Props {
 const AdvertiserSelectModal = (props: Props) => {
     const open = props.open;
     const setOpen = props.setOpen;
-    const [filterText, setFilterText] = useState('');
+    const [searchText, setSearchText] = useState('');
 
     useEffect(() => {
         if (store.advertiser.favorites.length < 1) store.advertiser.loadFavorites();
@@ -32,24 +47,24 @@ const AdvertiserSelectModal = (props: Props) => {
     };
 
     const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setFilterText(event.target.value);
+        setSearchText(event.target.value);
     };
 
     const items = store.advertiser.data
         .filter((it) => {
-            return filterText === '' || it.name.toLocaleLowerCase().includes(filterText.toLocaleLowerCase());
+            return searchText === '' || it.name.toLocaleLowerCase().includes(searchText.toLocaleLowerCase());
         })
         .map((advertiser: Advertiser) => (
             <ListItem key={advertiser.id}>
                 {store.advertiser.getFavoriteIds().includes(advertiser.id) ? (
-                    <ListItemButton onClick={() => removeFav(advertiser)} disabled={store.advertiser.loading}>
+                    <ListItemButton onClick={() => removeFav(advertiser)} disabled={store.advertiser.isLoading}>
                         <ListItemIcon>
                             <StarIcon />
                         </ListItemIcon>
                         <ListItemText>{advertiser.name}</ListItemText>
                     </ListItemButton>
                 ) : (
-                    <ListItemButton color="secondary" onClick={() => addFav(advertiser)} disabled={store.advertiser.loading}>
+                    <ListItemButton color="secondary" onClick={() => addFav(advertiser)} disabled={store.advertiser.isLoading}>
                         <ListItemIcon>
                             <StarBorderIcon />
                         </ListItemIcon>
@@ -64,7 +79,29 @@ const AdvertiserSelectModal = (props: Props) => {
             <DialogTitle variant="h2">{appText.advertiserSelect()}</DialogTitle>
             <DialogContent>
                 <DialogContentText sx={{ color: 'inherit' }}>{appText.advertiserSelectExplainer()}</DialogContentText>
-                <TextField autoFocus margin="dense" id="filter" label={appText.filter()} type="email" fullWidth variant="standard" value={filterText} onChange={handleFilterChange} />
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    id="filter"
+                    label={appText.filter()}
+                    type="email"
+                    fullWidth
+                    variant="standard"
+                    value={searchText}
+                    onChange={handleFilterChange}
+                    InputProps={{
+                        endAdornment: (
+                            <IconButton
+                                sx={{ visibility: searchText.length > 0 ? 'visible' : 'hidden' }}
+                                onClick={() => {
+                                    setSearchText('');
+                                }}
+                            >
+                                <ClearIcon />
+                            </IconButton>
+                        )
+                    }}
+                />
                 {store.advertiser.data.length > 0 ? <List>{items}</List> : <CircularProgress color="inherit" />}
             </DialogContent>
             <DialogActions>

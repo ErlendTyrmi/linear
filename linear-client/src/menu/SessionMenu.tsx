@@ -2,7 +2,7 @@ import { Avatar, Box, Divider, Grid, IconButton, List, ListItem, ListItemButton,
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { appText } from '../assets/text';
+import { appText } from '../assets/appText';
 import store from '../stores/store';
 import PersonIcon from '@mui/icons-material/Person';
 import BusinessIcon from '@mui/icons-material/Business';
@@ -21,6 +21,7 @@ const SessionMenu = (props: Props) => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        if (store.session.user === null && store.session.isLoading === false) store.session.loadUser();
         if (store.agency.data === null) store.agency.loadAgency();
     }, []);
 

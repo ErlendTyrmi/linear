@@ -12,6 +12,7 @@ export interface Order {
     endDate: Date;
     orderTypeName: string;
     channelId: string;
+    channelName: string;
     salesProductId: string;
     salesProductName: string;
     salesGroupNumber?: any;
@@ -37,6 +38,7 @@ export interface OrderDTO {
     endDate: string;
     orderTypeName: string;
     channelId: string;
+    channelName: string;
     salesProductId: string;
     salesProductName: string;
     salesGroupNumber?: any;

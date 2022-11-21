@@ -40,7 +40,7 @@ export class SalesProductStore {
     // API Methods
     async loadSalesProducts() {
         this.setLoading(true);
-        const response = await linearAPI.get('/salesProduct');
+        const response = await linearAPI.get('/salesProduct/');
         this.setData(response.data);
         this.setLoading(false);
     }

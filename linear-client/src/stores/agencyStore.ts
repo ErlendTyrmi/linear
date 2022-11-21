@@ -8,19 +8,19 @@ export class AgencyStore {
     }
 
     // Variables
-    loading: boolean = false;
+    isLoading: boolean = false;
     data: Agency | null = null;
 
     default: string = '';
 
     // Clear
     clear = () => {
-        this.setLoading(false);
+        this.setIsLoading(false);
         this.data = null;
         this.default = '';
     };
 
-    setLoading = (loading: boolean) => (this.loading = loading);
+    setIsLoading = (loading: boolean) => (this.isLoading = loading);
     setData = (data: Agency) => (this.data = data);
     setDefault(value: string) {
         this.default = value;
@@ -28,10 +28,10 @@ export class AgencyStore {
 
     // API Methods
     async loadAgency() {
-        this.setLoading(true);
+        this.setIsLoading(true);
         const response = await linearAPI.get('/agency/');
         this.setData(response.data);
-        this.setLoading(false);
+        this.setIsLoading(false);
     }
 }
 

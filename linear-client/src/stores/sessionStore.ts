@@ -8,7 +8,7 @@ export class SessionStore {
     // Variables
     active: boolean = false;
     user: User | null = null;
-    loading: boolean = false;
+    isLoading: boolean = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -29,20 +29,20 @@ export class SessionStore {
     clear() {
         this.active = false;
         this.user = null;
-        this.loading = false;
+        this.isLoading = false;
     }
 
     // API Methods
     async login(usermame: string, password: string) {
         this.clear();
         this.setLoading(true);
-        const response = await linearAPI.post('/session/login', { username: usermame, password: password });
+        const response = await linearAPI.post('/session/login/', { username: usermame, password: password });
         this.setUser(response.data);
         this.setLoading(false);
     }
 
     async loadUser() {
-        this.loading = true;
+        this.isLoading = true;
         const response = await linearAPI.get('/session/');
         this.setUser(response.data);
         this.setLoading(false);
@@ -50,12 +50,12 @@ export class SessionStore {
 
     async logout() {
         store.clear();
-        linearAPI.get('/session/logout');
+        linearAPI.get('/session/logout/');
     }
 
     setActive = (active: boolean) => (this.active = active);
 
-    setLoading = (loading: boolean) => (this.loading = loading);
+    setLoading = (loading: boolean) => (this.isLoading = loading);
 
     setUser = (user: User) => (this.user = user);
 }

@@ -1,15 +1,16 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useNavigation } from 'react-router-dom';
 import DrawerLayout from './layout/DrawerLayout';
 import MessageDisplay from './layout/MessageDisplay';
 import FrontPage from './pages/FrontPage/FrontPage';
 import LoginPage from './pages/LoginPage/LoginPage';
-import BookingPage from './pages/BookingPage';
+import BookingPage from './pages/Booking/BookingPage';
 import ProtectedRoute from './layout/ProtectedRoute';
-import AdvertiserSelectModal from './menu/AdvertiserSelectModal';
-import { appText } from './assets/text';
+import { appText } from './assets/appText';
 import OrdersPage from './pages/ordersPage/OrdersPage';
 import StatusPage from './pages/StatusPage';
 import NewsPage from './pages/NewsPage';
+import store from './stores/store';
+import { OrderAdvertiserScope } from './utility/orderEnums';
 
 export interface LinearMenuItem {
     name: string;

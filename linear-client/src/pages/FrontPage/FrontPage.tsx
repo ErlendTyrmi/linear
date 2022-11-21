@@ -6,7 +6,7 @@ import store from '../../stores/store';
 import Image from '../../assets/images/superheroes-dark.jpg';
 import NewsBg from '../../assets/images/news-bg.png';
 import theme from '../../theme';
-import { appText } from '../../assets/text';
+import { appText } from '../../assets/appText';
 import { useNavigate } from 'react-router-dom';
 import NewsSegment from './NewsSegment';
 import OrderSegment from './OrderSegment';
@@ -18,16 +18,16 @@ const FrontPage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (store.session.user === null && store.session.loading === false) store.session.loadUser();
+        if (store.session.user === null && store.session.isLoading === false) store.session.loadUser();
 
-        if (store.agency.data === null && store.agency.loading === false) store.agency.loadAgency();
+        if (store.agency.data === null && store.agency.isLoading === false) store.agency.loadAgency();
 
-        if (store.advertiser.loading === false) {
+        if (store.advertiser.isLoading === false) {
             store.advertiser.loadFavorites();
             store.advertiser.loadAdvertisers();
         }
 
-        if (store.order.loading === false) store.order.loadOrders();
+        if (store.order.isLoading === false) store.order.loadOrders();
     }, []);
 
     return (
@@ -73,13 +73,13 @@ const FrontPage = () => {
             </Box>
 
             <Grid container spacing={{ xs: 1, sm: 4 }} sx={{ paddingLeft: 4, paddingRight: 4 }}>
-                <Grid item xs={12} sm={12} md={4}>
+                <Grid item xs={12} sm={6} md={4}>
                     <OrderSegment />
                 </Grid>
                 <Grid item xs={12} sm={6} md={4}>
                     <NewsSegment />
                 </Grid>
-                <Grid item xs={12} sm={6} md={4}>
+                <Grid item xs={12} sm={12} md={4}>
                     <StatusSegment />
                 </Grid>
             </Grid>

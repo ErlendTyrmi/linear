@@ -3,7 +3,7 @@ import { padding } from '@mui/system';
 import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { appText } from '../../assets/text';
+import { appText } from '../../assets/appText';
 import store from '../../stores/store';
 
 const LoginForm = () => {
@@ -40,7 +40,7 @@ const LoginForm = () => {
             <Typography variant="h4">{appText.login()}</Typography>
 
             <form>
-                <Backdrop sx={{ position: 'absolute', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={store.session.loading}>
+                <Backdrop sx={{ position: 'absolute', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={store.session.isLoading}>
                     <CircularProgress color="inherit" />
                 </Backdrop>
                 <TextField
@@ -72,7 +72,7 @@ const LoginForm = () => {
                 sx={{ marginTop: '16px' }}
                 fullWidth
                 onClick={handleLogin}
-                disabled={store.session.loading === true || username.length < 3 || password.length < 3}
+                disabled={store.session.isLoading === true || username.length < 3 || password.length < 3}
             >
                 Login
             </Button>

@@ -2,7 +2,7 @@ import { OrderDTO, Order } from '../entities/order';
 import { DateConverter } from './dateConverter';
 
 export const OrderConverters = {
-    convertOrderFromDto(dto: OrderDTO): Order {
+    convertDtoToOrder(dto: OrderDTO): Order {
         const start = new Date(dto.startDate);
         const end = new Date(dto.endDate);
         const newOrder: Order = {
@@ -17,6 +17,7 @@ export const OrderConverters = {
             endDate: end,
             orderTypeName: dto.orderTypeName,
             channelId: dto.channelId,
+            channelName: dto.channelName,
             salesProductId: dto.salesProductId,
             salesProductName: dto.salesProductName,
             salesGroupNumber: dto.salesGroupNumber,
@@ -48,6 +49,7 @@ export const OrderConverters = {
             endDate: end,
             orderTypeName: order.orderTypeName,
             channelId: order.channelId,
+            channelName: order.channelName,
             salesProductId: order.salesProductId,
             salesProductName: order.salesProductName,
             salesGroupNumber: order.salesGroupNumber,

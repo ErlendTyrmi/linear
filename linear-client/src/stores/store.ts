@@ -5,9 +5,9 @@ import uiStore, { UiStore } from './uiStore';
 import advertiserStore, { AdvertiserStore } from './advertiserStore';
 import agencyStore, { AgencyStore } from './agencyStore';
 import channelStore, { ChannelStore } from './channelStore';
-import salesProductStore, { SalesProductStore } from './salesProductStore';
 import spotBookingStore, { SpotBookingStore } from './spotBookingStore';
 import spotStore, { SpotStore } from './spotStore';
+import bookingStore, { BookingStore } from './bookingStore';
 
 export type RootStore = {
     // Session
@@ -15,10 +15,10 @@ export type RootStore = {
     clear(): void;
     // Data
     advertiser: AdvertiserStore;
+    booking: BookingStore;
     agency: AgencyStore;
     channel: ChannelStore;
     order: OrderStore;
-    salesProduct: SalesProductStore;
     spotBooking: SpotBookingStore;
     spot: SpotStore;
     // UI
@@ -31,10 +31,10 @@ const store: RootStore = {
     session: sessionStore,
     // Data
     advertiser: advertiserStore,
+    booking: bookingStore,
     agency: agencyStore,
     channel: channelStore,
     order: orderStore,
-    salesProduct: salesProductStore,
     spotBooking: spotBookingStore,
     spot: spotStore,
     // UI
@@ -44,6 +44,7 @@ const store: RootStore = {
     clear() {
         sessionStore.clear();
         advertiserStore.clear();
+        bookingStore.clear();
         agencyStore.clear();
         orderStore.clear();
         spotBookingStore.clear();

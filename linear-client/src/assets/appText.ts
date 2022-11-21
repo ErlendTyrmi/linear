@@ -1,6 +1,4 @@
-import AdvertiserSelectMenu from '../menu/AdvertiserSelectMenu';
-
-export const language = process.env.REACT_APP_LOCALE ?? 'DA';
+const language = process.env.REACT_APP_LOCALE ?? 'DA';
 
 export const appText = {
     // Login & general errors
@@ -40,6 +38,9 @@ export const appText = {
     },
     filter() {
         return 'Filtrér';
+    },
+    filters() {
+        return 'Filtre';
     },
     search() {
         return 'Søg';
@@ -86,7 +87,7 @@ export const appText = {
 
     // Menu
     menuBooking() {
-        return 'Book ny kampagne';
+        return 'Booking';
     },
 
     menuOverview() {
@@ -127,6 +128,9 @@ export const appText = {
     orderHeader() {
         return 'Ordre';
     },
+    orderSegmentHeader() {
+        return 'Nye ordre';
+    },
     orderNoneFound() {
         return 'Ingen ordre fundet';
     },
@@ -154,6 +158,9 @@ export const appText = {
     orderOverBudgetListItemAdvertiserText() {
         return 'ordre er over budget.';
     },
+    orderOverBudgetForText() {
+        return 'ordre er over budget for';
+    },
     orderDKK() {
         return 'DKK';
     },
@@ -161,12 +168,57 @@ export const appText = {
         return 'Gå til annoncørens ordre';
     },
     orderSeeMore() {
-        return 'Se hele listen';
+        return 'Se alle ordre';
+    },
+    orderItemAdvertiser() {
+        return 'Annoncør';
+    },
+    orderItemAdvertiserProduct() {
+        return 'Produkt';
+    },
+    orderItemBudget() {
+        return 'Budget';
+    },
+    orderRegulateButton() {
+        return 'Regulér ordre';
+    },
+    orderDashOrder() {
+        return '-ordre';
+    },
+    orderIsExposureCannotEdit() {
+        return 'er en eksponeringsordre, og kan ikke redigeres her.';
     },
 
     // Booking
     bookingHeader() {
-        return 'Book ny kampagne';
+        return 'Book ny ordre';
+    },
+    bookingEditHeader() {
+        return 'Rediger booking';
+    },
+    bookingCreateNewButton() {
+        return 'Opret ny ordre';
+    },
+    bookingSeeExisting() {
+        return 'Se og rediger eksisterende ordre';
+    },
+    bookingInAll() {
+        return 'I alt';
+    },
+    bookingOrderIs() {
+        return 'Ordren er';
+    },
+    bookingDkkOverBudget() {
+        return 'DKK over budget.';
+    },
+    bookingActionsDeleteSpotBooking() {
+        return 'Slet spotbooking';
+    },
+    bookingSpotBookingHeader() {
+        return 'Spots';
+    },
+    bookingSpotBookingDeleted() {
+        return 'Spotbooking er slettet.';
     },
 
     // NewsContent

@@ -22,27 +22,27 @@ export class AdvertiserStore {
     }
 
     // Variables
-    loading: boolean = false;
+    isLoading: boolean = false;
     data: Advertiser[] = [];
     favorites: Advertiser[] = [];
     selected: string | undefined = undefined;
 
     // Clear
     clear = () => {
-        this.setLoading(false);
+        this.setIsLoading(false);
         this.data = [];
         this.favorites = [];
         this.selected = undefined;
     };
 
-    setLoading = (loading: boolean) => (this.loading = loading);
+    setIsLoading = (loading: boolean) => (this.isLoading = loading);
     setAdvertisers = (data: Advertiser[]) => (this.data = data);
     setFavorites = (data: Advertiser[]) => (this.favorites = data);
     setSelected(value: string) {
         this.selected = value;
     }
     getAdvertiser(selected: string | undefined): Advertiser | undefined {
-        let advertiser = this.favorites.find((it) => it.id === selected);
+        let advertiser = this.favorites?.find((it) => it.id === selected);
         return advertiser;
     }
     getSelectedAdvertiser() {
@@ -50,41 +50,39 @@ export class AdvertiserStore {
     }
     getFavoriteIds() {
         if (this.favorites && this.favorites?.length > 0) return this.favorites.map((it) => it.id);
-
-        console.log('no favs');
         return [];
     }
 
     // API Methods
     async loadAdvertisers() {
-        this.setLoading(true);
+        this.setIsLoading(true);
         const url = store.session.user?.isAdmin ? '/advertiser/all/' : '/advertiser/own/';
         const response = await linearAPI.get(url);
         if (response.data?.length > 0) this.setAdvertisers(response.data);
         this.setInitialSelected();
-        this.setLoading(false);
+        this.setIsLoading(false);
     }
 
     async loadFavorites() {
-        this.setLoading(true);
+        this.setIsLoading(true);
         const response = await linearAPI.get('/advertiser/favorites/');
         if (response.data && response.data.length > 0) this.setFavorites(response.data);
         this.setInitialSelected();
-        this.setLoading(false);
+        this.setIsLoading(false);
     }
 
     async postFavorites(favorites: Advertiser[]) {
-        this.setLoading(true);
+        this.setIsLoading(true);
         const response = await linearAPI.post('/advertiser/favorites/', favorites);
         this.setFavorites(response.data);
         this.setInitialSelected();
-        this.setLoading(false);
+        this.setIsLoading(false);
     }
 
     async addFavoriteAndUpload(data: Advertiser) {
         this.favorites?.push(data);
         await this.postFavorites(this.favorites);
-        this.setLoading(false);
+        this.setIsLoading(false);
     }
 
     async removeFavoriteAndUpload(data: Advertiser) {

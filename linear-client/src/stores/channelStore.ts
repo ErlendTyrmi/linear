@@ -20,19 +20,19 @@ export class ChannelStore {
     }
 
     // Variables
-    loading: boolean = false;
+    isLoading: boolean = false;
     data: Channel[] = [];
 
     selected: string = '';
 
     // Clear
     clear = () => {
-        this.setLoading(false);
+        this.setIsLoading(false);
         this.setData([]);
         this.setSelected('');
     };
 
-    setLoading = (loading: boolean) => (this.loading = loading);
+    setIsLoading = (loading: boolean) => (this.isLoading = loading);
     setData = (data: Channel[]) => (this.data = data);
     setSelected(value: string) {
         this.selected = value;
@@ -40,10 +40,10 @@ export class ChannelStore {
 
     // API Methods
     async loadChannels() {
-        this.setLoading(true);
-        const response = await linearAPI.get('/channel');
+        this.setIsLoading(true);
+        const response = await linearAPI.get('/channel/');
         this.setData(response.data);
-        this.setLoading(false);
+        this.setIsLoading(false);
     }
 }
 

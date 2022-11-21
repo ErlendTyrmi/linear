@@ -1,24 +1,19 @@
 import * as React from 'react';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, TextField, Typography } from '@mui/material';
+import { Box, Button, Divider } from '@mui/material';
 import store from '../stores/store';
 import { Advertiser } from '../entities/advertiser';
-import { appText } from '../assets/text';
+import { appText } from '../assets/appText';
 import EditIcon from '@mui/icons-material/Edit';
-import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import AdvertiserSelectModal from './AdvertiserSelectModal';
 
 const AdvertiserSelectMenu = () => {
-    const navigate = useNavigate();
     const favorites: Advertiser[] = store.advertiser.favorites;
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const selectorWidth = { big: '300px', small: '280px', tiny: '150px' };
+    const selectorWidth = { big: '300px', small: '270px', tiny: '150px' };
     const open = Boolean(anchorEl);
     const [editDialogOpen, SetEditDialogOpen] = useState(false);
     const handleClickListItem = (event: React.MouseEvent<HTMLElement>) => {
@@ -42,13 +37,13 @@ const AdvertiserSelectMenu = () => {
     return (
         <Box>
             <Button
-                disabled={store.advertiser.loading}
+                disabled={store.advertiser.isLoading}
                 color="inherit"
                 id="advertiser-button"
                 aria-haspopup="listbox"
                 aria-controls="advertiser-menu"
                 aria-label="personification of an advertiser"
-                aria-expanded={open ? 'true' : undefined}
+                aria-expanded={open ? 'true' : 'false'}
                 onClick={handleClickListItem}
             >
                 {store.advertiser.getAdvertiser(store.advertiser.selected)?.name ?? `${appText.advertiserMissing()} (${appText.add()})`}

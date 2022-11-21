@@ -11,10 +11,14 @@ export enum OrderTypeName {
     exposure = 'exposure'
 }
 
+export enum OrderAdvertiserScope {
+    allFavorites = 'allFavorites',
+    selectedAdvertiser = 'selectedAdvertiser'
+}
+
 export enum OrderFilter {
     overBudget = 'overBudget',
-    allFavorites = 'allFavorites',
-    selectedAdvertiser = 'selectedAdvertiser',
     exposure = 'exposure',
-    specifics = 'specifics'
+    specific = 'specifics',
+    none = 'none'
 }

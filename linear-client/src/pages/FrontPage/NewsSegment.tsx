@@ -2,7 +2,7 @@ import { Box, Typography, Divider, Button } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { appText } from '../../assets/text';
+import { appText } from '../../assets/appText';
 import { NewsArticle } from '../../entities/NewsArticle';
 import { Cms_mock } from '../../network/textCms_mock';
 

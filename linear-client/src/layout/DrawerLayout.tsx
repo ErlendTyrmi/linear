@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Drawer from '@mui/material/Drawer';
 import Toolbar from '@mui/material/Toolbar';
-import MainMenu from '../menu/MainMenu';
+import MainMenuDrawer from '../menu/MainMenuDrawer';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import SessionMenu from '../menu/SessionMenu';
@@ -41,7 +41,7 @@ const DrawerLayout = (props: Props) => {
                         '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
                     }}
                 >
-                    {<MainMenu />}
+                    {<MainMenuDrawer />}
                 </Drawer>
                 <Drawer
                     variant="permanent"
@@ -51,7 +51,7 @@ const DrawerLayout = (props: Props) => {
                     }}
                     open
                 >
-                    {<MainMenu />}
+                    {<MainMenuDrawer />}
                 </Drawer>
             </Box>
             {/* Session Menu */}

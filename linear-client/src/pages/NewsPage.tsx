@@ -1,15 +1,17 @@
 import { Box, Divider, List, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
-import { appText } from '../assets/text';
+import { appText } from '../assets/appText';
 import { NewsArticle } from '../entities/NewsArticle';
 import { Cms_mock } from '../network/textCms_mock';
+import store from '../stores/store';
 import { customColors } from '../theme';
 
 const NewsPage = () => {
     const [news, setNews] = useState<NewsArticle[]>([]);
 
     useEffect(() => {
+        if (store.session.user === null && store.session.isLoading === false) store.session.loadUser();
         Cms_mock.getNews().then((result) => {
             setNews(result);
         });

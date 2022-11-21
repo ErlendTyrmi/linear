@@ -1,6 +1,7 @@
 import { makeAutoObservable } from 'mobx';
-import { Spot } from '../entities/spot';
+import { Spot, SpotDTO } from '../entities/spot';
 import { linearAPI } from '../network/api';
+import { SpotConverter } from '../utility/spotConverter';
 
 export class SpotStore {
     constructor() {
@@ -8,7 +9,7 @@ export class SpotStore {
     }
 
     // Variables
-    loading: boolean = false;
+    isLoading: boolean = false;
     data: Spot[] = [];
 
     selected: string = '';
@@ -20,17 +21,25 @@ export class SpotStore {
         this.setSelected('');
     };
 
-    setLoading = (loading: boolean) => (this.loading = loading);
+    setLoading = (loading: boolean) => (this.isLoading = loading);
     setData = (data: Spot[]) => (this.data = data);
     setSelected(value: string) {
         this.selected = value;
     }
 
+    getBySpotId(id: string): Spot | undefined {
+        return this.data.find((it) => it.id === id);
+    }
+
     // API Methods
-    async getSpots() {
+    async loadSpots() {
         this.setLoading(true);
-        const response = await linearAPI.get('/spot');
-        this.setData(response.data);
+        const response = await linearAPI.get('/spot/');
+        const spots: Spot[] = [];
+        (response.data as SpotDTO[]).forEach((it) => {
+            spots.push(SpotConverter.convertDtotoSpot(it));
+        });
+        this.setData(spots);
         this.setLoading(false);
     }
 }

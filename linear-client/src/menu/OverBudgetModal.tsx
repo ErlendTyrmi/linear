@@ -1,14 +1,29 @@
-import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, List, ListItem, ListItemButton, ListItemIcon, ListItemText, TextField } from '@mui/material';
+import {
+    Button,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    IconButton,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    TextField,
+    Typography
+} from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
-import { appText } from '../assets/text';
+import { appText } from '../assets/appText';
 import { Advertiser } from '../entities/advertiser';
-import { Order } from '../entities/order';
 import store from '../stores/store';
 import WarningIcon from '@mui/icons-material/WarningAmber';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { OrderFilter } from '../utility/orderEnums';
+import { useNavigate } from 'react-router-dom';
+import { OrderAdvertiserScope, OrderFilter } from '../utility/orderEnums';
 
 interface Props {
     open: boolean;
@@ -19,7 +34,7 @@ const OverBudgetModal = (props: Props) => {
     const navigate = useNavigate();
     const open = props.open;
     const setOpen = props.setOpen;
-    const [filterText, setFilterText] = useState('');
+    const [searchText, setSearchText] = useState('');
 
     useEffect(() => {
         if (store.advertiser.favorites.length < 1) store.advertiser.loadFavorites();
@@ -27,12 +42,13 @@ const OverBudgetModal = (props: Props) => {
     }, []);
 
     const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setFilterText(event.target.value);
+        setSearchText(event.target.value);
     };
 
     const handleClick = (advertiser: Advertiser) => {
         store.advertiser.setSelected(advertiser.id);
-        store.order.setPresetFilters([OrderFilter.overBudget, OrderFilter.selectedAdvertiser]);
+        store.order.setScope(OrderAdvertiserScope.selectedAdvertiser);
+        store.order.setFilter(OrderFilter.overBudget);
         navigate('/order');
         setOpen(false);
         store.ui.setMobileMenuOpen(false);
@@ -40,18 +56,20 @@ const OverBudgetModal = (props: Props) => {
 
     const items = store.advertiser.favorites
         .filter((it) => {
-            return filterText === '' || it.name.toLocaleLowerCase().includes(filterText.toLocaleLowerCase());
+            return searchText === '' || it.name.toLocaleLowerCase().includes(searchText.toLocaleLowerCase());
         })
         .map((advertiser: Advertiser) => (
             <ListItem key={advertiser.id} disablePadding>
-                <ListItemButton onClick={() => handleClick(advertiser)}>
-                    <ListItemIcon>
-                        <WarningIcon color="warning" />
-                    </ListItemIcon>
-                    <ListItemText>{`${advertiser.name} - ${
-                        store.order.getOrdersWithFiltersAndAdvertiser([OrderFilter.overBudget], advertiser.id).length
-                    } ${appText.orderOverBudgetListItemAdvertiserText()}`}</ListItemText>
-                </ListItemButton>
+                {store.order.getOrdersByFilterAndAdvertiser(OrderFilter.overBudget, advertiser.id).length > 0 && (
+                    <ListItemButton onClick={() => handleClick(advertiser)}>
+                        <ListItemIcon>
+                            <WarningIcon color="warning" />
+                        </ListItemIcon>
+                        <ListItemText>{`${advertiser.name} - ${
+                            store.order.getOrdersByFilterAndAdvertiser(OrderFilter.overBudget, advertiser.id).length
+                        } ${appText.orderOverBudgetListItemAdvertiserText()}`}</ListItemText>
+                    </ListItemButton>
+                )}
             </ListItem>
         ));
 
@@ -60,7 +78,29 @@ const OverBudgetModal = (props: Props) => {
             <DialogTitle variant="h2">{appText.orderOverBudgetModalHeader()}</DialogTitle>
             <DialogContent>
                 <DialogContentText sx={{ color: 'inherit', maxWidth: '800px' }}>{appText.orderOverBudgetModalExplainer()}</DialogContentText>
-                <TextField autoFocus margin="dense" id="filter" label={appText.filter()} type="text" fullWidth variant="standard" value={filterText} onChange={handleFilterChange} />
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    id="filter"
+                    label={appText.filter()}
+                    type="text"
+                    fullWidth
+                    variant="standard"
+                    value={searchText}
+                    onChange={handleFilterChange}
+                    InputProps={{
+                        endAdornment: (
+                            <IconButton
+                                sx={{ visibility: searchText.length > 0 ? 'visible' : 'hidden' }}
+                                onClick={() => {
+                                    setSearchText('');
+                                }}
+                            >
+                                <ClearIcon />
+                            </IconButton>
+                        )
+                    }}
+                />
                 {store.advertiser.data.length > 0 ? <List>{items}</List> : <CircularProgress color="inherit" />}
             </DialogContent>
             <DialogActions>

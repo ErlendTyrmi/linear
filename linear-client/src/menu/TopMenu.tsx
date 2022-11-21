@@ -1,5 +1,5 @@
 import { AppBar, Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, Toolbar, Typography } from '@mui/material';
-import { appText } from '../assets/text';
+import { appText } from '../assets/appText';
 import store from '../stores/store';
 import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -7,7 +7,7 @@ import WarningIcon from '@mui/icons-material/WarningAmber';
 import { observer } from 'mobx-react-lite';
 import AdvertiserSelectMenu from './AdvertiserSelectMenu';
 import { useNavigate } from 'react-router-dom';
-import { OrderFilter as OrderFilter } from '../utility/orderEnums';
+import { OrderAdvertiserScope, OrderFilter as OrderFilter } from '../utility/orderEnums';
 
 interface Props {
     setSessionMenuOpen: any;
@@ -18,7 +18,7 @@ const TopMenu = (props: Props) => {
     const setSessionMenuOpen = props.setSessionMenuOpen;
     const drawerWidth = props.drawerWidth;
     const navigate = useNavigate();
-    let warningsAmount = store.order.getOrdersWithFiltersAndSearch([OrderFilter.allFavorites, OrderFilter.overBudget], null).length;
+    let warningsAmount = store.order.getOrdersWithFiltersAndSearch(OrderAdvertiserScope.allFavorites, OrderFilter.overBudget, null).length;
 
     return (
         <AppBar
@@ -45,7 +45,7 @@ const TopMenu = (props: Props) => {
                     </IconButton>
                 </Box>
                 <AdvertiserSelectMenu />
-                <Button disabled={store.session.loading || store.agency.loading} color="inherit" onClick={() => setSessionMenuOpen(true)} startIcon={<PersonIcon />}>
+                <Button disabled={store.session.isLoading || store.agency.isLoading} color="inherit" onClick={() => setSessionMenuOpen(true)} startIcon={<PersonIcon />}>
                     {store.session.user?.userName ?? appText.noUserName()}
                 </Button>
             </Toolbar>

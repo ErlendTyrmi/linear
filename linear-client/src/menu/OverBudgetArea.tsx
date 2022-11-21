@@ -3,15 +3,15 @@ import { observer } from 'mobx-react-lite';
 import WarningIcon from '@mui/icons-material/WarningAmber';
 import SuccessIcon from '@mui/icons-material/CheckCircleOutline';
 import store from '../stores/store';
-import { appText } from '../assets/text';
+import { appText } from '../assets/appText';
 import OverBudgetModal from './OverBudgetModal';
 import { useState } from 'react';
-import { OrderFilter as OrderFilter } from '../utility/orderEnums';
+import { OrderAdvertiserScope, OrderFilter } from '../utility/orderEnums';
 
 const OverBudgetArea = () => {
     const [modalOpen, setModalOpen] = useState(false);
 
-    let warningsAmount = store.order.getOrdersWithFiltersAndSearch([OrderFilter.allFavorites, OrderFilter.overBudget], null).length;
+    let warningsAmount = store.order.getOrdersWithFiltersAndSearch(OrderAdvertiserScope.allFavorites, OrderFilter.overBudget, null).length;
 
     const handleClick = () => {
         setModalOpen(true);
