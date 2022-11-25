@@ -55,17 +55,9 @@ const BookingEdit = () => {
             </Box>
 
             {store.booking.getCurrentOrderBudgetDiff() > 0 && (
-                <Typography color="error">
+                <Typography sx={{ paddingTop: 1, paddingBottom: 1 }}>
                     {appText.bookingOrderIs()} {store.booking.getCurrentOrderBudgetDiff()} {appText.bookingDkkOverBudget()}
                 </Typography>
-            )}
-            {store.advertiser.getSelectedAdvertiser() !== undefined && (
-                <Box sx={{ paddingTop: 1, paddingBottom: 1 }}>
-                    {/* <Typography>
-                        {appText.bookingInAll()} {store.order.getOrdersByFilterAndAdvertiser(OrderFilter.overBudget, store.advertiser.getSelectedAdvertiser()?.id).length}{' '}
-                        {appText.orderOverBudgetForText()} {store.advertiser.getSelectedAdvertiser()?.name}
-                    </Typography> */}
-                </Box>
             )}
 
             {store.booking.getCurrentOrder()?.orderTypeName === OrderTypeName.specific ? (

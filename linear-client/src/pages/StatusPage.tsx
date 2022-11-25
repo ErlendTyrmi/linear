@@ -5,6 +5,7 @@ import { appText } from '../assets/appText';
 import { Order } from '../entities/order';
 import OverBudgetArea from '../menu/OverBudgetArea';
 import store from '../stores/store';
+import { OrderAdvertiserScope, OrderFilter } from '../utility/orderEnums';
 import StatusSegment from './FrontPage/StatusSegment';
 
 const StatusPage = () => {
@@ -19,7 +20,12 @@ const StatusPage = () => {
                 <Typography variant="h1">{appText.statusHeader()}</Typography>
                 <Divider />
                 <Typography>{appText.pageNotImplemented()}</Typography>
-                <StatusSegment />
+                <Typography variant="subtitle1" sx={{ paddingTop: 1, paddingBottom: 1 }}>
+                    {store.advertiser.getSelectedAdvertiser()?.name ?? appText.advertiserMissing()}
+                </Typography>
+
+                <Typography>{store.order.getOrdersWithFiltersAndSearch(OrderAdvertiserScope.selectedAdvertiser, OrderFilter.none, null).length} ordre</Typography>
+                <Typography>{store.order.getOrdersWithFiltersAndSearch(OrderAdvertiserScope.selectedAdvertiser, OrderFilter.overBudget, null).length} er over budget</Typography>
             </Box>
         </div>
     );

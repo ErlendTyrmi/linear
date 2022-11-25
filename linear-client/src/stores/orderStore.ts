@@ -95,7 +95,7 @@ export class OrderStore {
         this.isLoading = true;
         const response = await linearAPI.get('/order/own/');
         const orders: Order[] = [];
-        (response.data as OrderDTO[]).forEach((it) => {
+        (response.data as OrderDTO[])?.forEach((it) => {
             orders.push(OrderConverters.convertDtoToOrder(it));
         });
         this.setData(orders);

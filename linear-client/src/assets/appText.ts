@@ -81,6 +81,9 @@ export const appText = {
     actionsOk() {
         return 'OK';
     },
+    actionsCancel() {
+        return 'Afbryd';
+    },
     readMoreactionsReadMore() {
         return 'Læs mere';
     },
@@ -150,10 +153,10 @@ export const appText = {
         return 'Vis for alle annoncører';
     },
     orderOverBudgetModalHeader() {
-        return 'Se overbudgetterede ordre fordelt på annoncør';
+        return 'Se ordre, der er over budget ordre fordelt på annoncør';
     },
     orderOverBudgetModalExplainer() {
-        return 'Her er et overblik over alle annoncørens overbudgetterede ordre.';
+        return 'Her er et overblik over alle annoncørers ordre, der er over budget.';
     },
     orderOverBudgetListItemAdvertiserText() {
         return 'ordre er over budget.';
@@ -219,6 +222,22 @@ export const appText = {
     },
     bookingSpotBookingDeleted() {
         return 'Spotbooking er slettet.';
+    },
+    bookingAirsBerforeProgram() {
+        return 'Sendes inden';
+    },
+
+    bookingBookedSecondsInSpot1() {
+        return 'af';
+    },
+    bookingBookedSecondsInSpot2() {
+        return 'sek. er booket i denne reklamepause';
+    },
+    bookingPriceLabel() {
+        return 'Pris:';
+    },
+    bookingDoYouWantToDelete() {
+        return 'Er du sikker på at du vil slette booking inden';
     },
 
     // NewsContent

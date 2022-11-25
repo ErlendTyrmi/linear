@@ -1,7 +1,6 @@
-import { Box, Button, Divider, Grid, LinearProgress, Typography } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
-import { Order } from '../../entities/order';
 import store from '../../stores/store';
 import Image from '../../assets/images/superheroes-dark.jpg';
 import NewsBg from '../../assets/images/news-bg.png';
@@ -11,7 +10,6 @@ import { useNavigate } from 'react-router-dom';
 import NewsSegment from './NewsSegment';
 import OrderSegment from './OrderSegment';
 import StatusSegment from './StatusSegment';
-import { OrderFilter } from '../../utility/orderEnums';
 
 const FrontPage = () => {
     console.log('front page reloading');

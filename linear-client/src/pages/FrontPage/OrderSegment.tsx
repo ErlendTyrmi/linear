@@ -29,7 +29,6 @@ const OrderSegment = () => {
             <ListItemButton onClick={() => navigate('/order')}>
                 <Box sx={{ flexDirection: 'vertical' }}>
                     <Typography>{order.advertiserProductName}</Typography>
-                    <Typography variant="subtitle1">{/* Vises fra {order.startDate.getDay()} {appText.metaLocaleMonth(order.startDate.getMonth())} til {order.endDate.getDate()} */}</Typography>
                 </Box>
             </ListItemButton>
         </ListItem>

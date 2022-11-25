@@ -6,6 +6,7 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
+    Divider,
     IconButton,
     List,
     ListItem,
@@ -50,27 +51,33 @@ const AdvertiserSelectModal = (props: Props) => {
         setSearchText(event.target.value);
     };
 
-    const items = store.advertiser.data
+    const favorites = store.advertiser.favorites
         .filter((it) => {
             return searchText === '' || it.name.toLocaleLowerCase().includes(searchText.toLocaleLowerCase());
         })
         .map((advertiser: Advertiser) => (
             <ListItem key={advertiser.id}>
-                {store.advertiser.getFavoriteIds().includes(advertiser.id) ? (
-                    <ListItemButton onClick={() => removeFav(advertiser)} disabled={store.advertiser.isLoading}>
-                        <ListItemIcon>
-                            <StarIcon />
-                        </ListItemIcon>
-                        <ListItemText>{advertiser.name}</ListItemText>
-                    </ListItemButton>
-                ) : (
-                    <ListItemButton color="secondary" onClick={() => addFav(advertiser)} disabled={store.advertiser.isLoading}>
-                        <ListItemIcon>
-                            <StarBorderIcon />
-                        </ListItemIcon>
-                        <ListItemText>{advertiser.name}</ListItemText>
-                    </ListItemButton>
-                )}
+                <ListItemButton onClick={() => removeFav(advertiser)} disabled={store.advertiser.isLoading}>
+                    <ListItemIcon>
+                        <StarIcon />
+                    </ListItemIcon>
+                    <ListItemText>{advertiser.name}</ListItemText>
+                </ListItemButton>
+            </ListItem>
+        ));
+
+    const nonFavorites = store.advertiser.data
+        .filter((it) => {
+            return store.advertiser.getFavoriteIds().includes(it.id) === false && (searchText === '' || it.name.toLocaleLowerCase().includes(searchText.toLocaleLowerCase()));
+        })
+        .map((advertiser: Advertiser) => (
+            <ListItem key={advertiser.id}>
+                <ListItemButton color="secondary" onClick={() => addFav(advertiser)} disabled={store.advertiser.isLoading}>
+                    <ListItemIcon>
+                        <StarBorderIcon />
+                    </ListItemIcon>
+                    <ListItemText>{advertiser.name}</ListItemText>
+                </ListItemButton>
             </ListItem>
         ));
 
@@ -102,7 +109,10 @@ const AdvertiserSelectModal = (props: Props) => {
                         )
                     }}
                 />
-                {store.advertiser.data.length > 0 ? <List>{items}</List> : <CircularProgress color="inherit" />}
+                {favorites.length < 1 && nonFavorites.length < 1 && <CircularProgress color="inherit" />}
+                {favorites.length > 0 && <List>{favorites}</List>}
+                {favorites.length > 0 && nonFavorites.length > 0 && <Divider />}
+                {nonFavorites.length > 0 && <List>{nonFavorites}</List>}
             </DialogContent>
             <DialogActions>
                 <Button onClickCapture={() => setOpen(false)}>{appText.actionsClose()}</Button>
