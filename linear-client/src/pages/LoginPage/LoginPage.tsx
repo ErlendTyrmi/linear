@@ -10,7 +10,6 @@ import Image from '../../assets/images/screen.png';
 import theme from '../../theme';
 
 const LoginPage = () => {
-    // Logo and layout here :-)
 
     return (
         <Box

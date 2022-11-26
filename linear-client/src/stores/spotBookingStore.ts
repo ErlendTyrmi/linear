@@ -40,11 +40,6 @@ export class SpotBookingStore {
         return [];
     }
 
-    // getSpotsForCurrentOrder(): Spot[] {
-    //     let ids = this.getSpotBookingsForCurrentOrder().map((it) => it.spotId);
-    //     return store.spot.data.filter((it) => ids.includes(it.id));
-    // }
-
     // API Methods
     async loadSpotBookings() {
         this.setLoading(true);
