@@ -16,7 +16,6 @@ const OrdersPage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Add selectedADvertoser as filter category
         store.order.setScope(OrderAdvertiserScope.selectedAdvertiser);
         if (store.session.user === null) store.session.loadUser();
         store.order.loadOrders();
