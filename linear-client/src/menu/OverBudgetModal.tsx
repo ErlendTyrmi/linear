@@ -12,8 +12,7 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
-    TextField,
-    Typography
+    TextField
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import { observer } from 'mobx-react-lite';

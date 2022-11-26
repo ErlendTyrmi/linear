@@ -1,20 +1,16 @@
-import { Box, Divider, Grid, List, ListItem, ListItemButton, ListItemText, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Box, Divider, Grid, Typography } from '@mui/material';
 import Link from '@mui/material/Link';
-import { menuItems } from '../App';
 import { appText } from '../assets/appText';
 import theme from '../theme';
 import MainMenu from './MainMenu';
 
 export const Footer = () => {
-    const navigate = useNavigate();
-    const items = menuItems;
 
     return (
         <Box sx={{ marginTop: 6, padding: 3, color: theme.palette.primary.contrastText, backgroundColor: theme.palette.primary.main }}>
             <Grid container spacing={{ xs: 1, sm: 4 }}>
                 <Grid item xs={12} sm={4}>
-                    <img alt="banner-image" src={require('../assets/images/tv_x_logo_inline_opaque.png')} height="24px" />
+                    <img alt="tvx-logo" src={require('../assets/images/tv_x_logo_inline_opaque.png')} height="24px" />
                 </Grid>
 
                 <Grid item xs={12} sm={12} md={4}>

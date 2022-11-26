@@ -1,5 +1,3 @@
-import { appText } from '../assets/appText';
-
 export const DateFormatter = {
     prettyDateWithTime(date: Date | undefined) {
         if (date !== undefined) {
