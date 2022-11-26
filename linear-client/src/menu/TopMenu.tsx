@@ -1,4 +1,4 @@
-import { AppBar, Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Button, IconButton,Toolbar } from '@mui/material';
 import { appText } from '../assets/appText';
 import store from '../stores/store';
 import PersonIcon from '@mui/icons-material/Person';
@@ -7,7 +7,7 @@ import WarningIcon from '@mui/icons-material/WarningAmber';
 import { observer } from 'mobx-react-lite';
 import AdvertiserSelectMenu from './AdvertiserSelectMenu';
 import { useNavigate } from 'react-router-dom';
-import { OrderAdvertiserScope, OrderFilter as OrderFilter } from '../utility/orderEnums';
+import { OrderAdvertiserScope, OrderFilter } from '../utility/orderEnums';
 
 interface Props {
     setSessionMenuOpen: any;
@@ -41,7 +41,7 @@ const TopMenu = (props: Props) => {
                         }}
                         sx={{ display: { xs: 'inline-block', sm: 'none' } }}
                     >
-                        <img src={require('../assets/images/logo.png')} height="22" />
+                        <img alt="logo" src={require('../assets/images/logo.png')} height="22" />
                     </IconButton>
                 </Box>
                 <AdvertiserSelectMenu />

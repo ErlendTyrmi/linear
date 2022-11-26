@@ -1,8 +1,7 @@
-import { List, ListItem, ListItemButton, ListItemText, Divider, Toolbar, Button, Box, MenuItem } from '@mui/material';
+import {Divider, Toolbar, Button, Box} from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { menuItems } from '../App';
+import { useNavigate } from 'react-router-dom';
 import store from '../stores/store';
 import { OrderAdvertiserScope, OrderFilter } from '../utility/orderEnums';
 import MainMenu from './MainMenu';
@@ -10,7 +9,6 @@ import OverBudgetArea from './OverBudgetArea';
 
 const MainMenuDrawer = () => {
     const navigate = useNavigate();
-    const location = useLocation();
     const close = () => store.ui.setMobileMenuOpen(false);
 
     useEffect(() => {

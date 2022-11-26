@@ -1,10 +1,10 @@
-import { Box, Button, Divider, LinearProgress, Paper, Typography } from '@mui/material';
+import { Box, Button, Divider, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { appText } from '../../assets/appText';
 import AddIcon from '@mui/icons-material/AddCircleOutline';
 import store from '../../stores/store';
 import { useNavigate } from 'react-router-dom';
-import { OrderFilter, OrderTypeName } from '../../utility/orderEnums';
+import { OrderTypeName } from '../../utility/orderEnums';
 import EditSpecificSpots from './EditSpecific';
 import advertiserStore from '../../stores/advertiserStore';
 
