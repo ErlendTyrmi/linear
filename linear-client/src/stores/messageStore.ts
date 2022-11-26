@@ -20,7 +20,6 @@ export class MessageStore {
         this.errors = [];
     };
 
-    // TODO: Probably just clear the list
     clearErrors = () => {
         this.errors = [];
     };

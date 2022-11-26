@@ -58,7 +58,7 @@ export class SpotBookingStore {
         await linearAPI.delete('/spotbooking/', booking);
         // Reload on delete
         await this.loadSpotBookings();
-        await store.order.loadOrders(); // TODO: loadorder?
+        await store.order.loadOrders(); 
         store.message.addSuccess(appText.bookingSpotBookingDeleted());
         this.setLoading(false);
     }
