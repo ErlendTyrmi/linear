@@ -1,6 +1,8 @@
 # linear client
 
-This is the client side of linear.
+linear is an exam project for the Technical University of Denmark, 2022. 
+
+The project is not maintained, so it is kept here for demonstration only.
 
 ![login](readme_resources/login.png)
 ![landing](readme_resources/landing.png)
